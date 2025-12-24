@@ -1,0 +1,550 @@
+{smcl}
+{com}{sf}{ul off}{txt}
+{com}. 
+. 
+. 
+. ****************TABLE 2: GSEM MODELS***********************
+. 
+. use  "E:\16GBBACKUPUSB\BACKUP_USB_SEPTEMBER2014\SUMMER_STUDENT_2025\HRS_NHANES_HEI_EPICLOCKS_MORT\FINAL_DATA\COMBINED\NHANES_HRS_DATACOMBINEDfin", clear
+{txt}
+{com}. 
+. capture drop zAGE_NHANES
+{txt}
+{com}. egen zAGE_NHANES=std(AGE) if COHORT_COMP==1
+{txt}(65,700 missing values generated)
+
+{com}. 
+. capture drop zAGE_HRS
+{txt}
+{com}. egen zAGE_HRS=std(AGE) if COHORT_COMP==2
+{txt}(66,066 missing values generated)
+
+{com}. 
+. capture drop NHB
+{txt}
+{com}. gen NHB=.
+{txt}(67,858 missing values generated)
+
+{com}. replace NHB=1 if RACE==1
+{txt}(12,832 real changes made)
+
+{com}. replace NHB=0 if NHB~=1
+{txt}(55,026 real changes made)
+
+{com}. 
+. capture drop HISP
+{txt}
+{com}. gen HISP=.
+{txt}(67,858 missing values generated)
+
+{com}. replace HISP=1 if RACE==2
+{txt}(12,529 real changes made)
+
+{com}. replace HISP=0 if HISP~=1
+{txt}(55,329 real changes made)
+
+{com}. 
+. capture drop OTHER
+{txt}
+{com}. gen OTHER=.
+{txt}(67,858 missing values generated)
+
+{com}. replace OTHER=1 if RACE==3
+{txt}(2,418 real changes made)
+
+{com}. replace OTHER=0 if OTHER~=1
+{txt}(65,440 real changes made)
+
+{com}. 
+. 
+. **NHANES, MODEL 1, NO SVY**
+. 
+. gsem (_t <- zAGE_NHANES zGrimAgeMortEAA, family(weibull, failure(_d) ) link(log) nocapslatent) ///
+> (zhei2015_total_score <-zAGE_NHANES zses HISP, family(gaussian) link(identity)) ///
+> (zses <- zAGE_NHANES HISP NHB, family(gaussian) link(identity)) ///
+> (zHorvathAgeEAA <- SEX HISP NHB, family(gaussian) link(identity)) ///
+> (zHannumAgeEAA <- zDunedinPoAm zHorvathAgeEAA HISP, family(gaussian) link(identity)) ///
+> (zDunedinPoAm <- zses zHorvathAgeEAA SEX , family(gaussian) link(identity)) ///
+> (zPhenoAgeEAA <- zDunedinPoAm zHannumAgeEAA zHorvathAgeEAA , family(gaussian) link(identity)) ///
+> (zGrimAgeMortEAA <- zDunedinPoAm zPhenoAgeEAA SEX , family(gaussian) link(identity)) ///
+> if COHORT_COMP==1, nocapslatent method(ml) 
+{res}
+{txt}Iteration 0:{space 2}Log likelihood = {res:-497100.58}  
+Iteration 1:{space 2}Log likelihood = {res:-24638.535}  
+Iteration 2:{space 2}Log likelihood = {res:-22759.591}  
+Iteration 3:{space 2}Log likelihood = {res:-22647.756}  
+Iteration 4:{space 2}Log likelihood = {res: -22644.19}  
+Iteration 5:{space 2}Log likelihood = {res:-22644.176}  
+Iteration 6:{space 2}Log likelihood = {res:-22644.176}  
+{res}
+{txt}{col 1}Generalized structural equation model{col 52}{lalign 15:Number of obs}{col 67} = {res}{ralign 9:2,158}
+
+{txt}{col 1}{lalign 10:Response: }{col 11}{res}{lalign 20:_t}{txt}{col 52}{lalign 15:No. of failures}{col 67} = {res}{ralign 9:1,143}
+{txt}{col 1}{lalign 10:Family: }{col 11}{lalign 20:Weibull}{col 52}{lalign 15:Time at risk}{col 67} = {res}{ralign 9:30,252.92}
+{txt}{col 1}{lalign 10:Form: }{col 11}{lalign 20:Proportional hazards}
+{col 1}{lalign 10:Link: }{col 11}{lalign 20:Log}
+
+{col 1}{lalign 10:Response: }{col 11}{res}{lalign 20:zhei2015_total_score}
+{txt}{col 1}{lalign 10:Family: }{col 11}{lalign 20:Gaussian}
+{col 1}{lalign 10:Link: }{col 11}{lalign 20:Identity}
+
+{col 1}{lalign 10:Response: }{col 11}{res}{lalign 20:zses}
+{txt}{col 1}{lalign 10:Family: }{col 11}{lalign 20:Gaussian}
+{col 1}{lalign 10:Link: }{col 11}{lalign 20:Identity}
+
+{col 1}{lalign 10:Response: }{col 11}{res}{lalign 20:zHorvathAgeEAA}
+{txt}{col 1}{lalign 10:Family: }{col 11}{lalign 20:Gaussian}
+{col 1}{lalign 10:Link: }{col 11}{lalign 20:Identity}
+
+{col 1}{lalign 10:Response: }{col 11}{res}{lalign 20:zHannumAgeEAA}
+{txt}{col 1}{lalign 10:Family: }{col 11}{lalign 20:Gaussian}
+{col 1}{lalign 10:Link: }{col 11}{lalign 20:Identity}
+
+{col 1}{lalign 10:Response: }{col 11}{res}{lalign 20:zDunedinPoAm}
+{txt}{col 1}{lalign 10:Family: }{col 11}{lalign 20:Gaussian}
+{col 1}{lalign 10:Link: }{col 11}{lalign 20:Identity}
+
+{col 1}{lalign 10:Response: }{col 11}{res}{lalign 20:zPhenoAgeEAA}
+{txt}{col 1}{lalign 10:Family: }{col 11}{lalign 20:Gaussian}
+{col 1}{lalign 10:Link: }{col 11}{lalign 20:Identity}
+
+{col 1}{lalign 10:Response: }{col 11}{res}{lalign 20:zGrimAgeMortEAA}
+{txt}{col 1}{lalign 10:Family: }{col 11}{lalign 20:Gaussian}
+{col 1}{lalign 10:Link: }{col 11}{lalign 20:Identity}
+
+{col 1}{lalign 14:Log likelihood}{col 15} = {res}{ralign 10:-22644.176}
+
+{txt}{hline 28}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 29}{c |} Coefficient{col 41}  Std. err.{col 53}      z{col 61}   P>|z|{col 69}     [95% con{col 82}f. interval]
+{hline 28}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{res}_t                          {txt}{c |}
+{space 16}zAGE_NHANES {c |}{col 29}{res}{space 2} .9963067{col 41}{space 2} .0338957{col 52}{space 1}   29.39{col 61}{space 3}0.000{col 69}{space 4} .9298724{col 82}{space 3} 1.062741
+{txt}{space 12}zGrimAgeMortEAA {c |}{col 29}{res}{space 2} .4282596{col 41}{space 2} .0294282{col 52}{space 1}   14.55{col 61}{space 3}0.000{col 69}{space 4} .3705814{col 82}{space 3} .4859378
+{txt}{space 22}_cons {c |}{col 29}{res}{space 2}-5.198643{col 41}{space 2} .1223943{col 52}{space 1}  -42.47{col 61}{space 3}0.000{col 69}{space 4}-5.438532{col 82}{space 3}-4.958755
+{txt}{hline 28}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{res}zhei2015_total_score        {txt}{c |}
+{space 23}zses {c |}{col 29}{res}{space 2} .1946769{col 41}{space 2} .0235674{col 52}{space 1}    8.26{col 61}{space 3}0.000{col 69}{space 4} .1484856{col 82}{space 3} .2408681
+{txt}{space 16}zAGE_NHANES {c |}{col 29}{res}{space 2} .0934285{col 41}{space 2} .0218641{col 52}{space 1}    4.27{col 61}{space 3}0.000{col 69}{space 4} .0505757{col 82}{space 3} .1362813
+{txt}{space 23}HISP {c |}{col 29}{res}{space 2} .1488986{col 41}{space 2} .0489949{col 52}{space 1}    3.04{col 61}{space 3}0.002{col 69}{space 4} .0528704{col 82}{space 3} .2449268
+{txt}{space 22}_cons {c |}{col 29}{res}{space 2}-.0513348{col 41}{space 2} .0270751{col 52}{space 1}   -1.90{col 61}{space 3}0.058{col 69}{space 4} -.104401{col 82}{space 3} .0017314
+{txt}{hline 28}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{res}zses                        {txt}{c |}
+{space 16}zAGE_NHANES {c |}{col 29}{res}{space 2} -.243182{col 41}{space 2} .0188591{col 52}{space 1}  -12.89{col 61}{space 3}0.000{col 69}{space 4}-.2801451{col 82}{space 3}-.2062189
+{txt}{space 23}HISP {c |}{col 29}{res}{space 2}-1.052352{col 41}{space 2} .0425653{col 52}{space 1}  -24.72{col 61}{space 3}0.000{col 69}{space 4}-1.135778{col 82}{space 3} -.968925
+{txt}{space 24}NHB {c |}{col 29}{res}{space 2}-.6330142{col 41}{space 2} .0500217{col 52}{space 1}  -12.65{col 61}{space 3}0.000{col 69}{space 4}-.7310549{col 82}{space 3}-.5349735
+{txt}{space 22}_cons {c |}{col 29}{res}{space 2} .4924661{col 41}{space 2} .0279578{col 52}{space 1}   17.61{col 61}{space 3}0.000{col 69}{space 4} .4376698{col 82}{space 3} .5472624
+{txt}{hline 28}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{res}zHorvathAgeEAA              {txt}{c |}
+{space 24}SEX {c |}{col 29}{res}{space 2}-.1959853{col 41}{space 2} .0415438{col 52}{space 1}   -4.72{col 61}{space 3}0.000{col 69}{space 4}-.2774096{col 82}{space 3} -.114561
+{txt}{space 23}HISP {c |}{col 29}{res}{space 2}-.1157309{col 41}{space 2}  .046998{col 52}{space 1}   -2.46{col 61}{space 3}0.014{col 69}{space 4}-.2078454{col 82}{space 3}-.0236164
+{txt}{space 24}NHB {c |}{col 29}{res}{space 2}-.1424524{col 41}{space 2}  .055346{col 52}{space 1}   -2.57{col 61}{space 3}0.010{col 69}{space 4}-.2509286{col 82}{space 3}-.0339763
+{txt}{space 22}_cons {c |}{col 29}{res}{space 2} .1731279{col 41}{space 2} .0371978{col 52}{space 1}    4.65{col 61}{space 3}0.000{col 69}{space 4} .1002216{col 82}{space 3} .2460342
+{txt}{hline 28}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{res}zHannumAgeEAA               {txt}{c |}
+{space 13}zHorvathAgeEAA {c |}{col 29}{res}{space 2} .6281306{col 41}{space 2} .0158581{col 52}{space 1}   39.61{col 61}{space 3}0.000{col 69}{space 4} .5970493{col 82}{space 3}  .659212
+{txt}{space 15}zDunedinPoAm {c |}{col 29}{res}{space 2}  .122473{col 41}{space 2} .0156166{col 52}{space 1}    7.84{col 61}{space 3}0.000{col 69}{space 4} .0918651{col 82}{space 3} .1530809
+{txt}{space 23}HISP {c |}{col 29}{res}{space 2} .3318288{col 41}{space 2} .0320681{col 52}{space 1}   10.35{col 61}{space 3}0.000{col 69}{space 4} .2689766{col 82}{space 3} .3946811
+{txt}{space 22}_cons {c |}{col 29}{res}{space 2} -.105611{col 41}{space 2} .0188275{col 52}{space 1}   -5.61{col 61}{space 3}0.000{col 69}{space 4}-.1425123{col 82}{space 3}-.0687097
+{txt}{hline 28}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{res}zDunedinPoAm                {txt}{c |}
+{space 23}zses {c |}{col 29}{res}{space 2} -.144779{col 41}{space 2} .0202198{col 52}{space 1}   -7.16{col 61}{space 3}0.000{col 69}{space 4}-.1844091{col 82}{space 3} -.105149
+{txt}{space 13}zHorvathAgeEAA {c |}{col 29}{res}{space 2}  .131601{col 41}{space 2} .0213674{col 52}{space 1}    6.16{col 61}{space 3}0.000{col 69}{space 4} .0897216{col 82}{space 3} .1734803
+{txt}{space 24}SEX {c |}{col 29}{res}{space 2}-.2666778{col 41}{space 2} .0416344{col 52}{space 1}   -6.41{col 61}{space 3}0.000{col 69}{space 4}-.3482797{col 82}{space 3}-.1850759
+{txt}{space 22}_cons {c |}{col 29}{res}{space 2} .1143453{col 41}{space 2} .0290991{col 52}{space 1}    3.93{col 61}{space 3}0.000{col 69}{space 4} .0573121{col 82}{space 3} .1713784
+{txt}{hline 28}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{res}zPhenoAgeEAA                {txt}{c |}
+{space 13}zHorvathAgeEAA {c |}{col 29}{res}{space 2} .3845358{col 41}{space 2} .0192185{col 52}{space 1}   20.01{col 61}{space 3}0.000{col 69}{space 4} .3468683{col 82}{space 3} .4222033
+{txt}{space 14}zHannumAgeEAA {c |}{col 29}{res}{space 2} .3134994{col 41}{space 2} .0196587{col 52}{space 1}   15.95{col 61}{space 3}0.000{col 69}{space 4} .2749691{col 82}{space 3} .3520297
+{txt}{space 15}zDunedinPoAm {c |}{col 29}{res}{space 2}  .246016{col 41}{space 2} .0148206{col 52}{space 1}   16.60{col 61}{space 3}0.000{col 69}{space 4} .2169681{col 82}{space 3} .2750639
+{txt}{space 22}_cons {c |}{col 29}{res}{space 2}-.0015775{col 41}{space 2} .0142515{col 52}{space 1}   -0.11{col 61}{space 3}0.912{col 69}{space 4}  -.02951{col 82}{space 3}  .026355
+{txt}{hline 28}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{res}zGrimAgeMortEAA             {txt}{c |}
+{space 15}zDunedinPoAm {c |}{col 29}{res}{space 2} .6013372{col 41}{space 2} .0153257{col 52}{space 1}   39.24{col 61}{space 3}0.000{col 69}{space 4} .5712993{col 82}{space 3}  .631375
+{txt}{space 15}zPhenoAgeEAA {c |}{col 29}{res}{space 2} .1700472{col 41}{space 2}   .01549{col 52}{space 1}   10.98{col 61}{space 3}0.000{col 69}{space 4} .1396874{col 82}{space 3}  .200407
+{txt}{space 24}SEX {c |}{col 29}{res}{space 2}-.4911496{col 41}{space 2} .0279446{col 52}{space 1}  -17.58{col 61}{space 3}0.000{col 69}{space 4}-.5459201{col 82}{space 3}-.4363792
+{txt}{space 22}_cons {c |}{col 29}{res}{space 2} .2385582{col 41}{space 2} .0194876{col 52}{space 1}   12.24{col 61}{space 3}0.000{col 69}{space 4} .2003633{col 82}{space 3} .2767531
+{txt}{hline 28}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{res}/_t                         {txt}{c |}
+{space 23}ln_p {c |}{col 29}{res}{space 2} .5012846{col 41}{space 2} .0255345{col 69}{space 4} .4512379{col 82}{space 3} .5513314
+{txt}{hline 28}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{space 1}var(e.zhei2015_total_score){c |}{col 29}{res}{space 2} .9662078{col 41}{space 2} .0294215{col 69}{space 4} .9102298{col 82}{space 3} 1.025628
+{txt}{space 17}var(e.zses){c |}{col 29}{res}{space 2} .7507064{col 41}{space 2} .0228594{col 69}{space 4} .7072137{col 82}{space 3} .7968739
+{txt}{space 7}var(e.zHorvathAgeEAA){c |}{col 29}{res}{space 2} .9307035{col 41}{space 2} .0283531{col 69}{space 4}  .876759{col 82}{space 3}  .987967
+{txt}{space 8}var(e.zHannumAgeEAA){c |}{col 29}{res}{space 2} .5007493{col 41}{space 2} .0152471{col 69}{space 4} .4717398{col 82}{space 3} .5315428
+{txt}{space 9}var(e.zDunedinPoAm){c |}{col 29}{res}{space 2} .9198668{col 41}{space 2} .0280088{col 69}{space 4} .8665765{col 82}{space 3} .9764343
+{txt}{space 9}var(e.zPhenoAgeEAA){c |}{col 29}{res}{space 2}  .438079{col 41}{space 2} .0133377{col 69}{space 4} .4127023{col 82}{space 3}  .465016
+{txt}{space 6}var(e.zGrimAgeMortEAA){c |}{col 29}{res}{space 2}  .413205{col 41}{space 2} .0125831{col 69}{space 4} .3892642{col 82}{space 3} .4386183
+{txt}{hline 28}{c BT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+
+{com}. 
+. 
+. 
+. **NHANES, MODEL 2, WITH SVY**
+. 
+. svy: gsem (_t <- zAGE_NHANES zGrimAgeMortEAA, family(weibull, failure(_d) ) link(log) nocapslatent) ///
+> (zhei2015_total_score <-zAGE_NHANES zses HISP, family(gaussian) link(identity)) ///
+> (zses <- zAGE_NHANES HISP NHB, family(gaussian) link(identity)) ///
+> (zHorvathAgeEAA <- SEX HISP NHB, family(gaussian) link(identity)) ///
+> (zHannumAgeEAA <- zDunedinPoAm zHorvathAgeEAA HISP, family(gaussian) link(identity)) ///
+> (zDunedinPoAm <- zses zHorvathAgeEAA SEX , family(gaussian) link(identity)) ///
+> (zPhenoAgeEAA <- zDunedinPoAm zHannumAgeEAA zHorvathAgeEAA , family(gaussian) link(identity)) ///
+> (zGrimAgeMortEAA <- zDunedinPoAm zPhenoAgeEAA SEX , family(gaussian) link(identity)) ///
+> if COHORT_COMP==1, nocapslatent method(ml) 
+{res}{txt}(running {bf:gsem} on estimation sample)
+{res}
+{txt}Survey: Generalized structural equation model
+
+{col 1}{lalign 16:Number of strata}{col 17} = {res}{ralign 2:28}{txt}{col 51}{lalign 15:Number of obs}{col 66} = {res}{ralign 10:2,158}
+{txt}{col 1}{lalign 16:Number of PSUs}{col 17} = {res}{ralign 2:57}{txt}{col 51}{lalign 15:Population size}{col 66} = {res}{ralign 10:66,423,538}
+{txt}{col 51}{lalign 15:Design df}{col 66} = {res}{ralign 10:29}
+
+{txt}{col 1}{lalign 10:Response: }{col 11}{res}{lalign 20:_t}{txt}{col 52}{lalign 15:No. of failures}{col 67} = {res}{ralign 9:1,143}
+{txt}{col 1}{lalign 10:Family: }{col 11}{lalign 20:Weibull}{col 52}{lalign 15:Time at risk}{col 67} = {res}{ralign 9:30,252.92}
+{txt}{col 1}{lalign 10:Form: }{col 11}{lalign 20:Proportional hazards}
+{col 1}{lalign 10:Link: }{col 11}{lalign 20:Log}
+
+{col 1}{lalign 10:Response: }{col 11}{res}{lalign 20:zhei2015_total_score}
+{txt}{col 1}{lalign 10:Family: }{col 11}{lalign 20:Gaussian}
+{col 1}{lalign 10:Link: }{col 11}{lalign 20:Identity}
+
+{col 1}{lalign 10:Response: }{col 11}{res}{lalign 20:zses}
+{txt}{col 1}{lalign 10:Family: }{col 11}{lalign 20:Gaussian}
+{col 1}{lalign 10:Link: }{col 11}{lalign 20:Identity}
+
+{col 1}{lalign 10:Response: }{col 11}{res}{lalign 20:zHorvathAgeEAA}
+{txt}{col 1}{lalign 10:Family: }{col 11}{lalign 20:Gaussian}
+{col 1}{lalign 10:Link: }{col 11}{lalign 20:Identity}
+
+{col 1}{lalign 10:Response: }{col 11}{res}{lalign 20:zHannumAgeEAA}
+{txt}{col 1}{lalign 10:Family: }{col 11}{lalign 20:Gaussian}
+{col 1}{lalign 10:Link: }{col 11}{lalign 20:Identity}
+
+{col 1}{lalign 10:Response: }{col 11}{res}{lalign 20:zDunedinPoAm}
+{txt}{col 1}{lalign 10:Family: }{col 11}{lalign 20:Gaussian}
+{col 1}{lalign 10:Link: }{col 11}{lalign 20:Identity}
+
+{col 1}{lalign 10:Response: }{col 11}{res}{lalign 20:zPhenoAgeEAA}
+{txt}{col 1}{lalign 10:Family: }{col 11}{lalign 20:Gaussian}
+{col 1}{lalign 10:Link: }{col 11}{lalign 20:Identity}
+
+{col 1}{lalign 10:Response: }{col 11}{res}{lalign 20:zGrimAgeMortEAA}
+{txt}{col 1}{lalign 10:Family: }{col 11}{lalign 20:Gaussian}
+{col 1}{lalign 10:Link: }{col 11}{lalign 20:Identity}
+
+{res}{txt}{hline 28}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 29}{c |}{col 41}  Linearized
+{col 29}{c |} Coefficient{col 41}  std. err.{col 53}      t{col 61}   P>|t|{col 69}     [95% con{col 82}f. interval]
+{hline 28}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{res}_t                          {txt}{c |}
+{space 16}zAGE_NHANES {c |}{col 29}{res}{space 2} 1.087246{col 41}{space 2} .0491846{col 52}{space 1}   22.11{col 61}{space 3}0.000{col 69}{space 4} .9866518{col 82}{space 3} 1.187839
+{txt}{space 12}zGrimAgeMortEAA {c |}{col 29}{res}{space 2} .4854352{col 41}{space 2} .0424235{col 52}{space 1}   11.44{col 61}{space 3}0.000{col 69}{space 4} .3986694{col 82}{space 3} .5722009
+{txt}{space 22}_cons {c |}{col 29}{res}{space 2}-5.514426{col 41}{space 2} .2470039{col 52}{space 1}  -22.33{col 61}{space 3}0.000{col 69}{space 4}-6.019605{col 82}{space 3}-5.009246
+{txt}{hline 28}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{res}zhei2015_total_score        {txt}{c |}
+{space 23}zses {c |}{col 29}{res}{space 2} .2613301{col 41}{space 2} .0199151{col 52}{space 1}   13.12{col 61}{space 3}0.000{col 69}{space 4} .2205991{col 82}{space 3} .3020611
+{txt}{space 16}zAGE_NHANES {c |}{col 29}{res}{space 2} .1414206{col 41}{space 2} .0323907{col 52}{space 1}    4.37{col 61}{space 3}0.000{col 69}{space 4} .0751741{col 82}{space 3} .2076671
+{txt}{space 23}HISP {c |}{col 29}{res}{space 2}  .174947{col 41}{space 2} .0613943{col 52}{space 1}    2.85{col 61}{space 3}0.008{col 69}{space 4} .0493816{col 82}{space 3} .3005125
+{txt}{space 22}_cons {c |}{col 29}{res}{space 2}-.1056796{col 41}{space 2} .0409732{col 52}{space 1}   -2.58{col 61}{space 3}0.015{col 69}{space 4}-.1894792{col 82}{space 3}-.0218801
+{txt}{hline 28}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{res}zses                        {txt}{c |}
+{space 16}zAGE_NHANES {c |}{col 29}{res}{space 2}-.2717925{col 41}{space 2} .0214035{col 52}{space 1}  -12.70{col 61}{space 3}0.000{col 69}{space 4}-.3155676{col 82}{space 3}-.2280175
+{txt}{space 23}HISP {c |}{col 29}{res}{space 2}-.9793203{col 41}{space 2} .0731467{col 52}{space 1}  -13.39{col 61}{space 3}0.000{col 69}{space 4}-1.128922{col 82}{space 3}-.8297185
+{txt}{space 24}NHB {c |}{col 29}{res}{space 2}-.6331376{col 41}{space 2} .0855006{col 52}{space 1}   -7.41{col 61}{space 3}0.000{col 69}{space 4} -.808006{col 82}{space 3}-.4582692
+{txt}{space 22}_cons {c |}{col 29}{res}{space 2} .4844557{col 41}{space 2} .0575037{col 52}{space 1}    8.42{col 61}{space 3}0.000{col 69}{space 4} .3668474{col 82}{space 3}  .602064
+{txt}{hline 28}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{res}zHorvathAgeEAA              {txt}{c |}
+{space 24}SEX {c |}{col 29}{res}{space 2}-.2329643{col 41}{space 2} .0565216{col 52}{space 1}   -4.12{col 61}{space 3}0.000{col 69}{space 4} -.348564{col 82}{space 3}-.1173647
+{txt}{space 23}HISP {c |}{col 29}{res}{space 2}-.1350916{col 41}{space 2} .0854558{col 52}{space 1}   -1.58{col 61}{space 3}0.125{col 69}{space 4}-.3098683{col 82}{space 3} .0396851
+{txt}{space 24}NHB {c |}{col 29}{res}{space 2}-.1514177{col 41}{space 2} .0499036{col 52}{space 1}   -3.03{col 61}{space 3}0.005{col 69}{space 4} -.253482{col 82}{space 3}-.0493534
+{txt}{space 22}_cons {c |}{col 29}{res}{space 2} .1933312{col 41}{space 2} .0562465{col 52}{space 1}    3.44{col 61}{space 3}0.002{col 69}{space 4} .0782942{col 82}{space 3} .3083681
+{txt}{hline 28}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{res}zHannumAgeEAA               {txt}{c |}
+{space 13}zHorvathAgeEAA {c |}{col 29}{res}{space 2} .6258481{col 41}{space 2} .0426439{col 52}{space 1}   14.68{col 61}{space 3}0.000{col 69}{space 4} .5386315{col 82}{space 3} .7130646
+{txt}{space 15}zDunedinPoAm {c |}{col 29}{res}{space 2} .1512759{col 41}{space 2} .0274602{col 52}{space 1}    5.51{col 61}{space 3}0.000{col 69}{space 4} .0951135{col 82}{space 3} .2074383
+{txt}{space 23}HISP {c |}{col 29}{res}{space 2}  .216749{col 41}{space 2} .0459522{col 52}{space 1}    4.72{col 61}{space 3}0.000{col 69}{space 4} .1227663{col 82}{space 3} .3107318
+{txt}{space 22}_cons {c |}{col 29}{res}{space 2}-.0634188{col 41}{space 2} .0206176{col 52}{space 1}   -3.08{col 61}{space 3}0.005{col 69}{space 4}-.1055866{col 82}{space 3}-.0212511
+{txt}{hline 28}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{res}zDunedinPoAm                {txt}{c |}
+{space 23}zses {c |}{col 29}{res}{space 2}-.1998567{col 41}{space 2} .0317273{col 52}{space 1}   -6.30{col 61}{space 3}0.000{col 69}{space 4}-.2647462{col 82}{space 3}-.1349671
+{txt}{space 13}zHorvathAgeEAA {c |}{col 29}{res}{space 2} .0922595{col 41}{space 2}  .037063{col 52}{space 1}    2.49{col 61}{space 3}0.019{col 69}{space 4} .0164572{col 82}{space 3} .1680618
+{txt}{space 24}SEX {c |}{col 29}{res}{space 2}-.2455588{col 41}{space 2} .0534977{col 52}{space 1}   -4.59{col 61}{space 3}0.000{col 69}{space 4} -.354974{col 82}{space 3}-.1361437
+{txt}{space 22}_cons {c |}{col 29}{res}{space 2} .1288785{col 41}{space 2} .0554667{col 52}{space 1}    2.32{col 61}{space 3}0.027{col 69}{space 4} .0154364{col 82}{space 3} .2423205
+{txt}{hline 28}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{res}zPhenoAgeEAA                {txt}{c |}
+{space 13}zHorvathAgeEAA {c |}{col 29}{res}{space 2} .3891192{col 41}{space 2} .0267062{col 52}{space 1}   14.57{col 61}{space 3}0.000{col 69}{space 4} .3344989{col 82}{space 3} .4437395
+{txt}{space 14}zHannumAgeEAA {c |}{col 29}{res}{space 2} .2966468{col 41}{space 2} .0279557{col 52}{space 1}   10.61{col 61}{space 3}0.000{col 69}{space 4} .2394711{col 82}{space 3} .3538226
+{txt}{space 15}zDunedinPoAm {c |}{col 29}{res}{space 2} .2397616{col 41}{space 2} .0169954{col 52}{space 1}   14.11{col 61}{space 3}0.000{col 69}{space 4} .2050021{col 82}{space 3} .2745211
+{txt}{space 22}_cons {c |}{col 29}{res}{space 2}-.0214238{col 41}{space 2}   .02052{col 52}{space 1}   -1.04{col 61}{space 3}0.305{col 69}{space 4}-.0633919{col 82}{space 3} .0205442
+{txt}{hline 28}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{res}zGrimAgeMortEAA             {txt}{c |}
+{space 15}zDunedinPoAm {c |}{col 29}{res}{space 2} .6404844{col 41}{space 2} .0206949{col 52}{space 1}   30.95{col 61}{space 3}0.000{col 69}{space 4} .5981587{col 82}{space 3} .6828102
+{txt}{space 15}zPhenoAgeEAA {c |}{col 29}{res}{space 2} .1692998{col 41}{space 2} .0238029{col 52}{space 1}    7.11{col 61}{space 3}0.000{col 69}{space 4} .1206173{col 82}{space 3} .2179822
+{txt}{space 24}SEX {c |}{col 29}{res}{space 2}-.4201414{col 41}{space 2} .0336242{col 52}{space 1}  -12.50{col 61}{space 3}0.000{col 69}{space 4}-.4889105{col 82}{space 3}-.3513722
+{txt}{space 22}_cons {c |}{col 29}{res}{space 2} .2162399{col 41}{space 2} .0294723{col 52}{space 1}    7.34{col 61}{space 3}0.000{col 69}{space 4} .1559623{col 82}{space 3} .2765174
+{txt}{hline 28}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{res}/_t                         {txt}{c |}
+{space 23}ln_p {c |}{col 29}{res}{space 2} .5663227{col 41}{space 2} .0486112{col 69}{space 4} .4669017{col 82}{space 3} .6657437
+{txt}{hline 28}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{space 1}var(e.zhei2015_total_score){c |}{col 29}{res}{space 2} .9895212{col 41}{space 2} .0350731{col 69}{space 4}  .920327{col 82}{space 3} 1.063918
+{txt}{space 17}var(e.zses){c |}{col 29}{res}{space 2} .7359529{col 41}{space 2} .0280385{col 69}{space 4} .6807849{col 82}{space 3} .7955914
+{txt}{space 7}var(e.zHorvathAgeEAA){c |}{col 29}{res}{space 2} .8497636{col 41}{space 2} .0798696{col 69}{space 4} .7011531{col 82}{space 3} 1.029872
+{txt}{space 8}var(e.zHannumAgeEAA){c |}{col 29}{res}{space 2}  .484878{col 41}{space 2} .0289767{col 69}{space 4} .4290926{col 82}{space 3} .5479159
+{txt}{space 9}var(e.zDunedinPoAm){c |}{col 29}{res}{space 2} .9997675{col 41}{space 2} .0648747{col 69}{space 4} .8755114{col 82}{space 3} 1.141659
+{txt}{space 9}var(e.zPhenoAgeEAA){c |}{col 29}{res}{space 2} .4247802{col 41}{space 2} .0167195{col 69}{space 4} .3919252{col 82}{space 3} .4603895
+{txt}{space 6}var(e.zGrimAgeMortEAA){c |}{col 29}{res}{space 2} .4039444{col 41}{space 2} .0183879{col 69}{space 4} .3680344{col 82}{space 3} .4433582
+{txt}{hline 28}{c BT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+
+{com}. 
+. 
+. ************************************
+. 
+. 
+. **HRS, MODEL 1, WITHOUT SVY**
+. 
+. gsem (_t <- zAGE_HRS zGrimAgeMortEAA, family(weibull, failure(_d) ) link(log) nocapslatent) ///
+> (zhei2015_total_score <-SEX zses HISP, family(gaussian) link(identity)) ///
+> (zses <- zAGE_HRS HISP NHB , family(gaussian) link(identity)) ///
+> (zHorvathAgeEAA <- SEX HISP, family(gaussian) link(identity)) ///
+> (zHannumAgeEAA <- zPhenoAgeEAA zHorvathAgeEAA NHB, family(gaussian) link(identity)) ///
+> (zDunedinPoAm <- zHorvathAgeEAA zses zhei2015_total_score , family(gaussian) link(identity)) ///
+> (zPhenoAgeEAA <- zDunedinPoAm zHorvathAgeEAA , family(gaussian) link(identity)) ///
+> (zGrimAgeMortEAA <- zPhenoAgeEAA zDunedinPoAm SEX , family(gaussian) link(identity)) ///
+> if COHORT_COMP==2, nocapslatent method(ml)
+{res}
+{txt}Iteration 0:{space 2}Log likelihood = {res:-87251.523}  
+Iteration 1:{space 2}Log likelihood = {res:-18018.089}  
+Iteration 2:{space 2}Log likelihood = {res:-17787.573}  
+Iteration 3:{space 2}Log likelihood = {res:-17735.741}  
+Iteration 4:{space 2}Log likelihood = {res:-17733.969}  
+Iteration 5:{space 2}Log likelihood = {res:-17733.914}  
+Iteration 6:{space 2}Log likelihood = {res:-17733.913}  
+{res}
+{txt}{col 1}Generalized structural equation model{col 52}{lalign 15:Number of obs}{col 67} = {res}{ralign 9:1,792}
+
+{txt}{col 1}{lalign 10:Response: }{col 11}{res}{lalign 20:_t}{txt}{col 52}{lalign 15:Number of obs}{col 67} = {res}{ralign 9:1,751}
+{txt}{col 1}{lalign 10:Family: }{col 11}{lalign 20:Weibull}{col 52}{lalign 15:No. of failures}{col 67} = {res}{ralign 9:328}
+{txt}{col 1}{lalign 10:Form: }{col 11}{lalign 20:Proportional hazards}{col 52}{lalign 15:Time at risk}{col 67} = {res}{ralign 9:11,008.90}
+{txt}{col 1}{lalign 10:Link: }{col 11}{lalign 20:Log}
+
+{col 1}{lalign 10:Response: }{col 11}{res}{lalign 20:zhei2015_total_score}{txt}{col 52}{lalign 15:Number of obs}{col 67} = {res}{ralign 9:1,792}
+{txt}{col 1}{lalign 10:Family: }{col 11}{lalign 20:Gaussian}
+{col 1}{lalign 10:Link: }{col 11}{lalign 20:Identity}
+
+{col 1}{lalign 10:Response: }{col 11}{res}{lalign 20:zses}{txt}{col 52}{lalign 15:Number of obs}{col 67} = {res}{ralign 9:1,792}
+{txt}{col 1}{lalign 10:Family: }{col 11}{lalign 20:Gaussian}
+{col 1}{lalign 10:Link: }{col 11}{lalign 20:Identity}
+
+{col 1}{lalign 10:Response: }{col 11}{res}{lalign 20:zHorvathAgeEAA}{txt}{col 52}{lalign 15:Number of obs}{col 67} = {res}{ralign 9:1,792}
+{txt}{col 1}{lalign 10:Family: }{col 11}{lalign 20:Gaussian}
+{col 1}{lalign 10:Link: }{col 11}{lalign 20:Identity}
+
+{col 1}{lalign 10:Response: }{col 11}{res}{lalign 20:zHannumAgeEAA}{txt}{col 52}{lalign 15:Number of obs}{col 67} = {res}{ralign 9:1,792}
+{txt}{col 1}{lalign 10:Family: }{col 11}{lalign 20:Gaussian}
+{col 1}{lalign 10:Link: }{col 11}{lalign 20:Identity}
+
+{col 1}{lalign 10:Response: }{col 11}{res}{lalign 20:zDunedinPoAm}{txt}{col 52}{lalign 15:Number of obs}{col 67} = {res}{ralign 9:1,792}
+{txt}{col 1}{lalign 10:Family: }{col 11}{lalign 20:Gaussian}
+{col 1}{lalign 10:Link: }{col 11}{lalign 20:Identity}
+
+{col 1}{lalign 10:Response: }{col 11}{res}{lalign 20:zPhenoAgeEAA}{txt}{col 52}{lalign 15:Number of obs}{col 67} = {res}{ralign 9:1,792}
+{txt}{col 1}{lalign 10:Family: }{col 11}{lalign 20:Gaussian}
+{col 1}{lalign 10:Link: }{col 11}{lalign 20:Identity}
+
+{col 1}{lalign 10:Response: }{col 11}{res}{lalign 20:zGrimAgeMortEAA}{txt}{col 52}{lalign 15:Number of obs}{col 67} = {res}{ralign 9:1,792}
+{txt}{col 1}{lalign 10:Family: }{col 11}{lalign 20:Gaussian}
+{col 1}{lalign 10:Link: }{col 11}{lalign 20:Identity}
+
+{col 1}{lalign 14:Log likelihood}{col 15} = {res}{ralign 10:-17733.913}
+
+{txt}{hline 28}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 29}{c |} Coefficient{col 41}  Std. err.{col 53}      z{col 61}   P>|z|{col 69}     [95% con{col 82}f. interval]
+{hline 28}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{res}_t                          {txt}{c |}
+{space 19}zAGE_HRS {c |}{col 29}{res}{space 2} 1.023377{col 41}{space 2} .0612237{col 52}{space 1}   16.72{col 61}{space 3}0.000{col 69}{space 4}  .903381{col 82}{space 3} 1.143373
+{txt}{space 12}zGrimAgeMortEAA {c |}{col 29}{res}{space 2} .5609884{col 41}{space 2} .0534823{col 52}{space 1}   10.49{col 61}{space 3}0.000{col 69}{space 4} .4561651{col 82}{space 3} .6658118
+{txt}{space 22}_cons {c |}{col 29}{res}{space 2}-5.371867{col 41}{space 2} .1866735{col 52}{space 1}  -28.78{col 61}{space 3}0.000{col 69}{space 4}-5.737741{col 82}{space 3}-5.005994
+{txt}{hline 28}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{res}zhei2015_total_score        {txt}{c |}
+{space 23}zses {c |}{col 29}{res}{space 2} .1743109{col 41}{space 2} .0243582{col 52}{space 1}    7.16{col 61}{space 3}0.000{col 69}{space 4} .1265698{col 82}{space 3}  .222052
+{txt}{space 24}SEX {c |}{col 29}{res}{space 2}  .281373{col 41}{space 2} .0472555{col 52}{space 1}    5.95{col 61}{space 3}0.000{col 69}{space 4} .1887538{col 82}{space 3} .3739921
+{txt}{space 23}HISP {c |}{col 29}{res}{space 2} .2504521{col 41}{space 2} .0734669{col 52}{space 1}    3.41{col 61}{space 3}0.001{col 69}{space 4} .1064596{col 82}{space 3} .3944446
+{txt}{space 22}_cons {c |}{col 29}{res}{space 2}-.1980749{col 41}{space 2} .0377107{col 52}{space 1}   -5.25{col 61}{space 3}0.000{col 69}{space 4}-.2719865{col 82}{space 3}-.1241634
+{txt}{hline 28}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{res}zses                        {txt}{c |}
+{space 19}zAGE_HRS {c |}{col 29}{res}{space 2}-.2315473{col 41}{space 2} .0219817{col 52}{space 1}  -10.53{col 61}{space 3}0.000{col 69}{space 4}-.2746307{col 82}{space 3} -.188464
+{txt}{space 23}HISP {c |}{col 29}{res}{space 2}-1.111321{col 41}{space 2} .0668392{col 52}{space 1}  -16.63{col 61}{space 3}0.000{col 69}{space 4}-1.242324{col 82}{space 3}-.9803188
+{txt}{space 24}NHB {c |}{col 29}{res}{space 2} -.586246{col 41}{space 2} .0620738{col 52}{space 1}   -9.44{col 61}{space 3}0.000{col 69}{space 4}-.7079085{col 82}{space 3}-.4645836
+{txt}{space 22}_cons {c |}{col 29}{res}{space 2} .2249887{col 41}{space 2} .0253539{col 52}{space 1}    8.87{col 61}{space 3}0.000{col 69}{space 4}  .175296{col 82}{space 3} .2746814
+{txt}{hline 28}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{res}zHorvathAgeEAA              {txt}{c |}
+{space 24}SEX {c |}{col 29}{res}{space 2}-.2631011{col 41}{space 2} .0476032{col 52}{space 1}   -5.53{col 61}{space 3}0.000{col 69}{space 4}-.3564017{col 82}{space 3}-.1698006
+{txt}{space 23}HISP {c |}{col 29}{res}{space 2} -.165352{col 41}{space 2} .0708439{col 52}{space 1}   -2.33{col 61}{space 3}0.020{col 69}{space 4}-.3042035{col 82}{space 3}-.0265005
+{txt}{space 22}_cons {c |}{col 29}{res}{space 2} .1766462{col 41}{space 2} .0377599{col 52}{space 1}    4.68{col 61}{space 3}0.000{col 69}{space 4} .1026382{col 82}{space 3} .2506542
+{txt}{hline 28}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{res}zHannumAgeEAA               {txt}{c |}
+{space 13}zHorvathAgeEAA {c |}{col 29}{res}{space 2} .3512963{col 41}{space 2} .0205627{col 52}{space 1}   17.08{col 61}{space 3}0.000{col 69}{space 4} .3109941{col 82}{space 3} .3915985
+{txt}{space 15}zPhenoAgeEAA {c |}{col 29}{res}{space 2} .3122848{col 41}{space 2} .0206719{col 52}{space 1}   15.11{col 61}{space 3}0.000{col 69}{space 4} .2717686{col 82}{space 3}  .352801
+{txt}{space 24}NHB {c |}{col 29}{res}{space 2}-.4428279{col 41}{space 2} .0556591{col 52}{space 1}   -7.96{col 61}{space 3}0.000{col 69}{space 4}-.5519177{col 82}{space 3}-.3337381
+{txt}{space 22}_cons {c |}{col 29}{res}{space 2} .0654852{col 41}{space 2} .0213987{col 52}{space 1}    3.06{col 61}{space 3}0.002{col 69}{space 4} .0235445{col 82}{space 3} .1074258
+{txt}{hline 28}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{res}zDunedinPoAm                {txt}{c |}
+{space 7}zhei2015_total_score {c |}{col 29}{res}{space 2}-.1219071{col 41}{space 2}  .023616{col 52}{space 1}   -5.16{col 61}{space 3}0.000{col 69}{space 4}-.1681936{col 82}{space 3}-.0756206
+{txt}{space 23}zses {c |}{col 29}{res}{space 2}-.1204316{col 41}{space 2}  .023829{col 52}{space 1}   -5.05{col 61}{space 3}0.000{col 69}{space 4}-.1671355{col 82}{space 3}-.0737277
+{txt}{space 13}zHorvathAgeEAA {c |}{col 29}{res}{space 2} .1117827{col 41}{space 2}  .023291{col 52}{space 1}    4.80{col 61}{space 3}0.000{col 69}{space 4} .0661331{col 82}{space 3} .1574322
+{txt}{space 22}_cons {c |}{col 29}{res}{space 2} 7.73e-10{col 41}{space 2} .0230594{col 52}{space 1}    0.00{col 61}{space 3}1.000{col 69}{space 4}-.0451955{col 82}{space 3} .0451955
+{txt}{hline 28}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{res}zPhenoAgeEAA                {txt}{c |}
+{space 13}zHorvathAgeEAA {c |}{col 29}{res}{space 2} .2460425{col 41}{space 2} .0225149{col 52}{space 1}   10.93{col 61}{space 3}0.000{col 69}{space 4} .2019141{col 82}{space 3} .2901709
+{txt}{space 15}zDunedinPoAm {c |}{col 29}{res}{space 2} .1860866{col 41}{space 2} .0227096{col 52}{space 1}    8.19{col 61}{space 3}0.000{col 69}{space 4} .1415766{col 82}{space 3} .2305967
+{txt}{space 22}_cons {c |}{col 29}{res}{space 2}-3.55e-10{col 41}{space 2} .0223333{col 52}{space 1}   -0.00{col 61}{space 3}1.000{col 69}{space 4}-.0437724{col 82}{space 3} .0437724
+{txt}{hline 28}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{res}zGrimAgeMortEAA             {txt}{c |}
+{space 15}zDunedinPoAm {c |}{col 29}{res}{space 2}  .564494{col 41}{space 2} .0179119{col 52}{space 1}   31.51{col 61}{space 3}0.000{col 69}{space 4} .5293873{col 82}{space 3} .5996008
+{txt}{space 15}zPhenoAgeEAA {c |}{col 29}{res}{space 2} .2033638{col 41}{space 2} .0171743{col 52}{space 1}   11.84{col 61}{space 3}0.000{col 69}{space 4} .1697029{col 82}{space 3} .2370248
+{txt}{space 24}SEX {c |}{col 29}{res}{space 2}-.5127391{col 41}{space 2} .0339772{col 52}{space 1}  -15.09{col 61}{space 3}0.000{col 69}{space 4}-.5793332{col 82}{space 3} -.446145
+{txt}{space 22}_cons {c |}{col 29}{res}{space 2} .3041527{col 41}{space 2} .0260969{col 52}{space 1}   11.65{col 61}{space 3}0.000{col 69}{space 4} .2530037{col 82}{space 3} .3553018
+{txt}{hline 28}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{res}/_t                         {txt}{c |}
+{space 23}ln_p {c |}{col 29}{res}{space 2} .5370298{col 41}{space 2} .0513176{col 69}{space 4} .4364492{col 82}{space 3} .6376105
+{txt}{hline 28}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{space 1}var(e.zhei2015_total_score){c |}{col 29}{res}{space 2} .9563889{col 41}{space 2} .0319579{col 69}{space 4} .8957596{col 82}{space 3} 1.021122
+{txt}{space 17}var(e.zses){c |}{col 29}{res}{space 2} .8281411{col 41}{space 2} .0276854{col 69}{space 4} .7756183{col 82}{space 3} .8842206
+{txt}{space 7}var(e.zHorvathAgeEAA){c |}{col 29}{res}{space 2} .9798694{col 41}{space 2} .0327456{col 69}{space 4}  .917746{col 82}{space 3} 1.046198
+{txt}{space 8}var(e.zHannumAgeEAA){c |}{col 29}{res}{space 2} .6991609{col 41}{space 2} .0233912{col 69}{space 4} .6547858{col 82}{space 3} .7465433
+{txt}{space 9}var(e.zDunedinPoAm){c |}{col 29}{res}{space 2}  .952868{col 41}{space 2} .0318447{col 69}{space 4} .8924537{col 82}{space 3} 1.017372
+{txt}{space 9}var(e.zPhenoAgeEAA){c |}{col 29}{res}{space 2} .8938036{col 41}{space 2} .0298609{col 69}{space 4} .8371524{col 82}{space 3} .9542886
+{txt}{space 6}var(e.zGrimAgeMortEAA){c |}{col 29}{res}{space 2} .4924878{col 41}{space 2} .0164584{col 69}{space 4} .4612635{col 82}{space 3} .5258256
+{txt}{hline 28}{c BT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+
+{com}. 
+. **HRS, MODEL 1, WITH SVY**
+. 
+. svy: gsem (_t <- zAGE_HRS zGrimAgeMortEAA, family(weibull, failure(_d) ) link(log) nocapslatent) ///
+> (zhei2015_total_score <-SEX zses HISP, family(gaussian) link(identity)) ///
+> (zses <- zAGE_HRS HISP NHB , family(gaussian) link(identity)) ///
+> (zHorvathAgeEAA <- SEX HISP, family(gaussian) link(identity)) ///
+> (zHannumAgeEAA <- zPhenoAgeEAA zHorvathAgeEAA NHB, family(gaussian) link(identity)) ///
+> (zDunedinPoAm <- zHorvathAgeEAA zses zhei2015_total_score , family(gaussian) link(identity)) ///
+> (zPhenoAgeEAA <- zDunedinPoAm zHorvathAgeEAA , family(gaussian) link(identity)) ///
+> (zGrimAgeMortEAA <- zPhenoAgeEAA zDunedinPoAm SEX , family(gaussian) link(identity)) ///
+> if COHORT_COMP==2, nocapslatent method(ml) 
+{res}{txt}(running {bf:gsem} on estimation sample)
+{res}
+{txt}Survey: Generalized structural equation model
+
+{col 1}{lalign 16:Number of strata}{col 17} = {res}{ralign 3:56}{txt}{col 51}{lalign 15:Number of obs}{col 66} = {res}{ralign 10:1,752}
+{txt}{col 1}{lalign 16:Number of PSUs}{col 17} = {res}{ralign 3:112}{txt}{col 51}{lalign 15:Population size}{col 66} = {res}{ralign 10:36,346,726}
+{txt}{col 51}{lalign 15:Design df}{col 66} = {res}{ralign 10:56}
+
+{txt}{col 1}{lalign 10:Response: }{col 11}{res}{lalign 20:_t}{txt}{col 52}{lalign 15:Number of obs}{col 67} = {res}{ralign 9:1,751}
+{txt}{col 1}{lalign 10:Family: }{col 11}{lalign 20:Weibull}{col 52}{lalign 15:No. of failures}{col 67} = {res}{ralign 9:328}
+{txt}{col 1}{lalign 10:Form: }{col 11}{lalign 20:Proportional hazards}{col 52}{lalign 15:Time at risk}{col 67} = {res}{ralign 9:11,008.90}
+{txt}{col 1}{lalign 10:Link: }{col 11}{lalign 20:Log}
+
+{col 1}{lalign 10:Response: }{col 11}{res}{lalign 20:zhei2015_total_score}{txt}{col 52}{lalign 15:Number of obs}{col 67} = {res}{ralign 9:1,752}
+{txt}{col 1}{lalign 10:Family: }{col 11}{lalign 20:Gaussian}
+{col 1}{lalign 10:Link: }{col 11}{lalign 20:Identity}
+
+{col 1}{lalign 10:Response: }{col 11}{res}{lalign 20:zses}{txt}{col 52}{lalign 15:Number of obs}{col 67} = {res}{ralign 9:1,752}
+{txt}{col 1}{lalign 10:Family: }{col 11}{lalign 20:Gaussian}
+{col 1}{lalign 10:Link: }{col 11}{lalign 20:Identity}
+
+{col 1}{lalign 10:Response: }{col 11}{res}{lalign 20:zHorvathAgeEAA}{txt}{col 52}{lalign 15:Number of obs}{col 67} = {res}{ralign 9:1,752}
+{txt}{col 1}{lalign 10:Family: }{col 11}{lalign 20:Gaussian}
+{col 1}{lalign 10:Link: }{col 11}{lalign 20:Identity}
+
+{col 1}{lalign 10:Response: }{col 11}{res}{lalign 20:zHannumAgeEAA}{txt}{col 52}{lalign 15:Number of obs}{col 67} = {res}{ralign 9:1,752}
+{txt}{col 1}{lalign 10:Family: }{col 11}{lalign 20:Gaussian}
+{col 1}{lalign 10:Link: }{col 11}{lalign 20:Identity}
+
+{col 1}{lalign 10:Response: }{col 11}{res}{lalign 20:zDunedinPoAm}{txt}{col 52}{lalign 15:Number of obs}{col 67} = {res}{ralign 9:1,752}
+{txt}{col 1}{lalign 10:Family: }{col 11}{lalign 20:Gaussian}
+{col 1}{lalign 10:Link: }{col 11}{lalign 20:Identity}
+
+{col 1}{lalign 10:Response: }{col 11}{res}{lalign 20:zPhenoAgeEAA}{txt}{col 52}{lalign 15:Number of obs}{col 67} = {res}{ralign 9:1,752}
+{txt}{col 1}{lalign 10:Family: }{col 11}{lalign 20:Gaussian}
+{col 1}{lalign 10:Link: }{col 11}{lalign 20:Identity}
+
+{col 1}{lalign 10:Response: }{col 11}{res}{lalign 20:zGrimAgeMortEAA}{txt}{col 52}{lalign 15:Number of obs}{col 67} = {res}{ralign 9:1,752}
+{txt}{col 1}{lalign 10:Family: }{col 11}{lalign 20:Gaussian}
+{col 1}{lalign 10:Link: }{col 11}{lalign 20:Identity}
+
+{res}{txt}{hline 28}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 29}{c |}{col 41}  Linearized
+{col 29}{c |} Coefficient{col 41}  std. err.{col 53}      t{col 61}   P>|t|{col 69}     [95% con{col 82}f. interval]
+{hline 28}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{res}_t                          {txt}{c |}
+{space 19}zAGE_HRS {c |}{col 29}{res}{space 2} 1.066433{col 41}{space 2} .0748732{col 52}{space 1}   14.24{col 61}{space 3}0.000{col 69}{space 4} .9164442{col 82}{space 3} 1.216422
+{txt}{space 12}zGrimAgeMortEAA {c |}{col 29}{res}{space 2} .5265797{col 41}{space 2} .0603461{col 52}{space 1}    8.73{col 61}{space 3}0.000{col 69}{space 4}  .405692{col 82}{space 3} .6474674
+{txt}{space 22}_cons {c |}{col 29}{res}{space 2} -5.41696{col 41}{space 2} .2054431{col 52}{space 1}  -26.37{col 61}{space 3}0.000{col 69}{space 4}-5.828512{col 82}{space 3}-5.005408
+{txt}{hline 28}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{res}zhei2015_total_score        {txt}{c |}
+{space 23}zses {c |}{col 29}{res}{space 2}  .179328{col 41}{space 2} .0229342{col 52}{space 1}    7.82{col 61}{space 3}0.000{col 69}{space 4} .1333853{col 82}{space 3} .2252707
+{txt}{space 24}SEX {c |}{col 29}{res}{space 2} .3419399{col 41}{space 2} .0544982{col 52}{space 1}    6.27{col 61}{space 3}0.000{col 69}{space 4} .2327669{col 82}{space 3}  .451113
+{txt}{space 23}HISP {c |}{col 29}{res}{space 2} .1764448{col 41}{space 2} .0811424{col 52}{space 1}    2.17{col 61}{space 3}0.034{col 69}{space 4} .0138971{col 82}{space 3} .3389925
+{txt}{space 22}_cons {c |}{col 29}{res}{space 2}-.2561067{col 41}{space 2} .0375094{col 52}{space 1}   -6.83{col 61}{space 3}0.000{col 69}{space 4}-.3312471{col 82}{space 3}-.1809663
+{txt}{hline 28}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{res}zses                        {txt}{c |}
+{space 19}zAGE_HRS {c |}{col 29}{res}{space 2}-.2526674{col 41}{space 2} .0294493{col 52}{space 1}   -8.58{col 61}{space 3}0.000{col 69}{space 4}-.3116615{col 82}{space 3}-.1936734
+{txt}{space 23}HISP {c |}{col 29}{res}{space 2}-1.167761{col 41}{space 2} .1191361{col 52}{space 1}   -9.80{col 61}{space 3}0.000{col 69}{space 4}-1.406419{col 82}{space 3}-.9291025
+{txt}{space 24}NHB {c |}{col 29}{res}{space 2}-.6084874{col 41}{space 2} .0837374{col 52}{space 1}   -7.27{col 61}{space 3}0.000{col 69}{space 4}-.7762336{col 82}{space 3}-.4407412
+{txt}{space 22}_cons {c |}{col 29}{res}{space 2} .2957177{col 41}{space 2} .0366628{col 52}{space 1}    8.07{col 61}{space 3}0.000{col 69}{space 4} .2222733{col 82}{space 3}  .369162
+{txt}{hline 28}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{res}zHorvathAgeEAA              {txt}{c |}
+{space 24}SEX {c |}{col 29}{res}{space 2} -.214578{col 41}{space 2} .0576993{col 52}{space 1}   -3.72{col 61}{space 3}0.000{col 69}{space 4}-.3301636{col 82}{space 3}-.0989924
+{txt}{space 23}HISP {c |}{col 29}{res}{space 2}-.2375879{col 41}{space 2} .0730877{col 52}{space 1}   -3.25{col 61}{space 3}0.002{col 69}{space 4}-.3840001{col 82}{space 3}-.0911757
+{txt}{space 22}_cons {c |}{col 29}{res}{space 2} .1318511{col 41}{space 2} .0386671{col 52}{space 1}    3.41{col 61}{space 3}0.001{col 69}{space 4} .0543916{col 82}{space 3} .2093106
+{txt}{hline 28}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{res}zHannumAgeEAA               {txt}{c |}
+{space 13}zHorvathAgeEAA {c |}{col 29}{res}{space 2} .3507384{col 41}{space 2} .0393029{col 52}{space 1}    8.92{col 61}{space 3}0.000{col 69}{space 4} .2720052{col 82}{space 3} .4294716
+{txt}{space 15}zPhenoAgeEAA {c |}{col 29}{res}{space 2} .3030398{col 41}{space 2} .0365823{col 52}{space 1}    8.28{col 61}{space 3}0.000{col 69}{space 4} .2297567{col 82}{space 3} .3763229
+{txt}{space 24}NHB {c |}{col 29}{res}{space 2}-.3810227{col 41}{space 2} .0685644{col 52}{space 1}   -5.56{col 61}{space 3}0.000{col 69}{space 4}-.5183738{col 82}{space 3}-.2436716
+{txt}{space 22}_cons {c |}{col 29}{res}{space 2} .0483351{col 41}{space 2} .0264868{col 52}{space 1}    1.82{col 61}{space 3}0.073{col 69}{space 4}-.0047242{col 82}{space 3} .1013945
+{txt}{hline 28}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{res}zDunedinPoAm                {txt}{c |}
+{space 7}zhei2015_total_score {c |}{col 29}{res}{space 2}-.1542898{col 41}{space 2} .0297953{col 52}{space 1}   -5.18{col 61}{space 3}0.000{col 69}{space 4} -.213977{col 82}{space 3}-.0946026
+{txt}{space 23}zses {c |}{col 29}{res}{space 2}-.1442585{col 41}{space 2} .0298102{col 52}{space 1}   -4.84{col 61}{space 3}0.000{col 69}{space 4}-.2039754{col 82}{space 3}-.0845415
+{txt}{space 13}zHorvathAgeEAA {c |}{col 29}{res}{space 2} .0985096{col 41}{space 2} .0325264{col 52}{space 1}    3.03{col 61}{space 3}0.004{col 69}{space 4} .0333513{col 82}{space 3} .1636679
+{txt}{space 22}_cons {c |}{col 29}{res}{space 2}-.0401882{col 41}{space 2} .0289723{col 52}{space 1}   -1.39{col 61}{space 3}0.171{col 69}{space 4}-.0982266{col 82}{space 3} .0178502
+{txt}{hline 28}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{res}zPhenoAgeEAA                {txt}{c |}
+{space 13}zHorvathAgeEAA {c |}{col 29}{res}{space 2} .2366384{col 41}{space 2} .0426937{col 52}{space 1}    5.54{col 61}{space 3}0.000{col 69}{space 4} .1511127{col 82}{space 3} .3221641
+{txt}{space 15}zDunedinPoAm {c |}{col 29}{res}{space 2} .1645098{col 41}{space 2} .0289385{col 52}{space 1}    5.68{col 61}{space 3}0.000{col 69}{space 4} .1065389{col 82}{space 3} .2224806
+{txt}{space 22}_cons {c |}{col 29}{res}{space 2} .0009049{col 41}{space 2} .0296658{col 52}{space 1}    0.03{col 61}{space 3}0.976{col 69}{space 4}-.0585227{col 82}{space 3} .0603326
+{txt}{hline 28}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{res}zGrimAgeMortEAA             {txt}{c |}
+{space 15}zDunedinPoAm {c |}{col 29}{res}{space 2} .5823527{col 41}{space 2} .0219666{col 52}{space 1}   26.51{col 61}{space 3}0.000{col 69}{space 4} .5383483{col 82}{space 3}  .626357
+{txt}{space 15}zPhenoAgeEAA {c |}{col 29}{res}{space 2} .2103269{col 41}{space 2} .0244371{col 52}{space 1}    8.61{col 61}{space 3}0.000{col 69}{space 4} .1613735{col 82}{space 3} .2592804
+{txt}{space 24}SEX {c |}{col 29}{res}{space 2}-.5328625{col 41}{space 2} .0392923{col 52}{space 1}  -13.56{col 61}{space 3}0.000{col 69}{space 4}-.6115745{col 82}{space 3}-.4541505
+{txt}{space 22}_cons {c |}{col 29}{res}{space 2} .2961005{col 41}{space 2} .0362477{col 52}{space 1}    8.17{col 61}{space 3}0.000{col 69}{space 4} .2234877{col 82}{space 3} .3687134
+{txt}{hline 28}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{res}/_t                         {txt}{c |}
+{space 23}ln_p {c |}{col 29}{res}{space 2} .5414649{col 41}{space 2} .0531261{col 69}{space 4} .4350405{col 82}{space 3} .6478894
+{txt}{hline 28}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{space 1}var(e.zhei2015_total_score){c |}{col 29}{res}{space 2} .9852299{col 41}{space 2} .0449654{col 69}{space 4} .8991485{col 82}{space 3} 1.079552
+{txt}{space 17}var(e.zses){c |}{col 29}{res}{space 2} .8496408{col 41}{space 2} .0466386{col 69}{space 4} .7611661{col 82}{space 3} .9483995
+{txt}{space 7}var(e.zHorvathAgeEAA){c |}{col 29}{res}{space 2}  .940376{col 41}{space 2} .0623435{col 69}{space 4} .8234247{col 82}{space 3} 1.073938
+{txt}{space 8}var(e.zHannumAgeEAA){c |}{col 29}{res}{space 2} .6795246{col 41}{space 2} .0301315{col 69}{space 4} .6217672{col 82}{space 3} .7426473
+{txt}{space 9}var(e.zDunedinPoAm){c |}{col 29}{res}{space 2} .9280303{col 41}{space 2} .0434042{col 69}{space 4} .8450303{col 82}{space 3} 1.019183
+{txt}{space 9}var(e.zPhenoAgeEAA){c |}{col 29}{res}{space 2} .9377803{col 41}{space 2} .0610955{col 69}{space 4} .8230413{col 82}{space 3} 1.068515
+{txt}{space 6}var(e.zGrimAgeMortEAA){c |}{col 29}{res}{space 2} .4866329{col 41}{space 2} .0293027{col 69}{space 4} .4313347{col 82}{space 3} .5490204
+{txt}{hline 28}{c BT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+
+{com}. 
+. save  "E:\16GBBACKUPUSB\BACKUP_USB_SEPTEMBER2014\SUMMER_STUDENT_2025\HRS_NHANES_HEI_EPICLOCKS_MORT\FINAL_DATA\COMBINED\NHANES_HRS_HANDLS_DATACOMBINEDfin", replace
+{txt}{p 0 4 2}
+(file {bf}
+E:\16GBBACKUPUSB\BACKUP_USB_SEPTEMBER2014\SUMMER_STUDENT_2025\HRS_NHANES_HEI_EPICLOCKS_MORT\FINAL_DATA\COMBINED\NHANES_HRS_HANDLS_DATACOMBINEDfin.dta{rm}
+not found)
+{p_end}
+{p 0 4 2}
+file {bf}
+E:\16GBBACKUPUSB\BACKUP_USB_SEPTEMBER2014\SUMMER_STUDENT_2025\HRS_NHANES_HEI_EPICLOCKS_MORT\FINAL_DATA\COMBINED\NHANES_HRS_HANDLS_DATACOMBINEDfin.dta{rm}
+saved
+{p_end}
+
+{com}. 
+. 
+. capture log close
+{smcl}
+{com}{sf}{ul off}
