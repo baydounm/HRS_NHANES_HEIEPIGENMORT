@@ -1,0 +1,90 @@
+
+. 
+. ********************SENSITIVITY 2B: DATA MANAGEMENT: HRS********************
+. 
+. use "${DAT}\FLOCYT2016", clear
+
+. keep hhid pn ptcell_pct pbcell_pct pnk_pct pmono_pct pdc_pct
+
+. save "${DAT}\WBC_HRS", replace
+(file E:\16GBBACKUPUSB\BACKUP_USB_SEPTEMBER2014\SUMMER_STUDENT_2025\HRS_NHANES_HEI_EPICLOCKS_MORT\FINAL_DATA\COMBINED\WBC_HRS.dta not
+    found)
+file E:\16GBBACKUPUSB\BACKUP_USB_SEPTEMBER2014\SUMMER_STUDENT_2025\HRS_NHANES_HEI_EPICLOCKS_MORT\FINAL_DATA\COMBINED\WBC_HRS.dta saved
+
+. 
+. capture drop HHID PN
+
+. gen HHID=hhid
+
+. gen PN=pn
+
+. destring HHID, replace
+HHID: all characters numeric; replaced as long
+
+. destring PN, replace
+PN: all characters numeric; replaced as byte
+
+. 
+. capture drop HHIDPN
+
+. egen HHIDPN = concat(HHID PN)
+
+. destring HHIDPN, replace
+HHIDPN: all characters numeric; replaced as long
+
+. sort HHIDPN
+
+. save "${DAT}\WBC_HRS", replace
+file E:\16GBBACKUPUSB\BACKUP_USB_SEPTEMBER2014\SUMMER_STUDENT_2025\HRS_NHANES_HEI_EPICLOCKS_MORT\FINAL_DATA\COMBINED\WBC_HRS.dta saved
+
+. 
+. use "${DAT}\NHANES_HRS_HANDLS_DATACOMBINEDfin", clear
+
+. keep if COHORT==2
+(21,005 observations deleted)
+
+. gen HHIDPN=ID
+
+. sort HHIDPN
+
+. capture drop _merge
+
+. save "${DAT}\HRS_DATACOMBINEDfin", replace
+(file
+    E:\16GBBACKUPUSB\BACKUP_USB_SEPTEMBER2014\SUMMER_STUDENT_2025\HRS_NHANES_HEI_EPICLOCKS_MORT\FINAL_DATA\COMBINED\HRS_DATACOMBINEDfi
+    > n.dta not found)
+file
+    E:\16GBBACKUPUSB\BACKUP_USB_SEPTEMBER2014\SUMMER_STUDENT_2025\HRS_NHANES_HEI_EPICLOCKS_MORT\FINAL_DATA\COMBINED\HRS_DATACOMBINEDfi
+    > n.dta saved
+
+. 
+. merge HHIDPN using "${DAT}\WBC_HRS"
+(you are using old merge syntax; see [D] merge for new syntax)
+variable HHIDPN does not uniquely identify observations in the master data
+(variable HHIDPN was float, now double to accommodate using data's values)
+
+. sort HHIDPN
+
+. tab _merge
+
+     _merge |      Freq.     Percent        Cum.
+------------+-----------------------------------
+          1 |     40,229       80.01       80.01
+          2 |      3,426        6.81       86.83
+          3 |      6,624       13.17      100.00
+------------+-----------------------------------
+      Total |     50,279      100.00
+
+. capture drop _merge
+
+. capture drop HHIDPN
+
+. save "${DAT}\HRS_DATACOMBINEDfinalized", replace
+(file
+    E:\16GBBACKUPUSB\BACKUP_USB_SEPTEMBER2014\SUMMER_STUDENT_2025\HRS_NHANES_HEI_EPICLOCKS_MORT\FINAL_DATA\COMBINED\HRS_DATACOMBINEDfi
+    > nalized.dta not found)
+file
+    E:\16GBBACKUPUSB\BACKUP_USB_SEPTEMBER2014\SUMMER_STUDENT_2025\HRS_NHANES_HEI_EPICLOCKS_MORT\FINAL_DATA\COMBINED\HRS_DATACOMBINEDfi
+    > nalized.dta saved
+
+. capture log close

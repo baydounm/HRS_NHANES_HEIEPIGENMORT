@@ -1,0 +1,1198 @@
+
+. 
+. use "${DAT}\NHANES_HRS_HANDLS_DATACOMBINEDfin", clear
+
+. 
+. * (Recreate covariates if this do-file is run standalone)
+. capture drop zAGE_NHANES
+
+. egen zAGE_NHANES = std(AGE) if COHORT==1 & sample_final==1
+(65,700 missing values generated)
+
+. capture drop zAGE_HRS
+
+. egen zAGE_HRS = std(AGE) if COHORT==2 & sample_final==1
+(66,066 missing values generated)
+
+. 
+. capture drop NHB
+
+. gen NHB=.
+(67,858 missing values generated)
+
+. replace NHB=1 if RACE==1
+(12,832 real changes made)
+
+. replace NHB=0 if NHB~=1
+(55,026 real changes made)
+
+. 
+. capture drop HISP
+
+. gen HISP=.
+(67,858 missing values generated)
+
+. replace HISP=1 if RACE==2
+(12,529 real changes made)
+
+. replace HISP=0 if HISP~=1
+(55,329 real changes made)
+
+. 
+. capture drop OTHER
+
+. gen OTHER=.
+(67,858 missing values generated)
+
+. replace OTHER=1 if RACE==3
+(2,418 real changes made)
+
+. replace OTHER=0 if OTHER~=1
+(65,440 real changes made)
+
+. 
+. foreach m of varlist zHorvathAgeEAA zHannumAgeEAA zDunedinPoAm zPhenoAgeEAA zGrimAgeMortEAA {
+  2.     med4way `m' zhei2015_total_score zAGE_NHANES SEX NHB HISP OTHER zses ///
+>         if sample_final==1 & COHORT==1, a0(0) a1(1) m(0) yreg(cox) mreg(linear) fulloutput
+  3. }
+Warning: this analysis assumes a rare outcome.
+Warning: fixed values for the covariates zAGE_NHANES SEX NHB HISP OTHER zses were not provided. All covariates are fixed at their respec
+> tive mean.
+
+-> Summary
+
+   Outcome    (yvar):  TIMEyears
+   Exposure   (avar):  zHorvathAgeEAA
+   Mediator   (mvar):  zhei2015_total_score
+   Covariates (cvars): zAGE_NHANES SEX NHB HISP OTHER zses
+
+   Model for the outcome  (yreg): cox
+   Model for the mediator (mreg): linear
+
+   Referent exposure level (a0):             0
+   Actual exposure level   (a1):             1
+   Mediator level for the decomposition (m): 0
+   Fixed values of the covariates (c):       -6.9e-11 .4921 .2048 .3448 .03244 3.1e-09
+
+
+-> Model for the outcome
+
+        Failure _d: DIED==1
+  Analysis time _t: TIMEyears
+       ID variable: ID
+            Weight: [pweight=sampling_weight]
+
+(sum of wgt is 66,423,538.185433)
+Iteration 0:  Log pseudolikelihood = -7382.5507
+Iteration 1:  Log pseudolikelihood = -6836.0359
+Iteration 2:  Log pseudolikelihood = -6825.7347
+Iteration 3:  Log pseudolikelihood = -6825.7261
+Refining estimates:
+Iteration 0:  Log pseudolikelihood = -6825.7261
+
+Cox regression with Breslow method for ties
+
+No. of subjects =  66,423,538                           Number of obs =  2,158
+No. of failures =  30,933,064
+Time at risk    = 970462514.3
+                                                        Wald chi2(9)  = 624.83
+Log pseudolikelihood = -6825.7261                       Prob > chi2   = 0.0000
+
+                                                   (Std. err. adjusted for 2,158 clusters in ID)
+------------------------------------------------------------------------------------------------
+                               |               Robust
+                            _t | Haz. ratio   std. err.      z    P>|z|     [95% conf. interval]
+-------------------------------+----------------------------------------------------------------
+                zHorvathAgeEAA |   1.112157    .045293     2.61   0.009     1.026835    1.204569
+          zhei2015_total_score |   .9750785   .0394271    -0.62   0.533     .9007856    1.055499
+_zHorvathAgeEXzhei2015_tot_000 |   1.026262   .0450326     0.59   0.555     .9416882     1.11843
+                   zAGE_NHANES |   2.657843   .1300634    19.98   0.000     2.414766    2.925388
+                           SEX |   .6352458   .0525567    -5.48   0.000     .5401546    .7470773
+                           NHB |   1.090316   .1073878     0.88   0.380     .8989084     1.32248
+                          HISP |   .6586369   .0834999    -3.29   0.001     .5137283    .8444204
+                         OTHER |   .7394155    .175971    -1.27   0.205     .4637821    1.178863
+                          zses |   .6905074   .0350011    -7.31   0.000     .6252041    .7626317
+------------------------------------------------------------------------------------------------
+
+
+-> Model for the mediator
+
+Iteration 0:  Log likelihood = -3020.6603  
+Iteration 1:  Log likelihood = -3020.6603  
+
+Linear regression (Maximum Likelihood)                  Number of obs =  2,158
+                                                        Wald chi2(7)  =  83.39
+Log likelihood = -3020.6603                             Prob > chi2   = 0.0000
+
+--------------------------------------------------------------------------------
+zhei2015_tot~e | Coefficient  Std. err.      z    P>|z|     [95% conf. interval]
+---------------+----------------------------------------------------------------
+mu             |
+zHorvathAgeEAA |  -.0231959     .02191    -1.06   0.290    -.0661387    .0197469
+   zAGE_NHANES |   .0945939   .0222813     4.25   0.000     .0509233    .1382645
+           SEX |   .0785261   .0426711     1.84   0.066    -.0051078    .1621599
+           NHB |  -.0227429   .0597626    -0.38   0.704    -.1398756    .0943897
+          HISP |   .1540681   .0559057     2.76   0.006     .0444949    .2636413
+         OTHER |   .2116208   .1225759     1.73   0.084    -.0286235     .451865
+          zses |   .1971643   .0245462     8.03   0.000     .1490547    .2452739
+         _cons |  -.0937914   .0418083    -2.24   0.025    -.1757342   -.0118486
+---------------+----------------------------------------------------------------
+sigma2         |
+         _cons |   .9623498   .0292969    32.85   0.000     .9049289    1.019771
+--------------------------------------------------------------------------------
+
+
+-> 4-way decomposition: delta method
+
+------------------------------------------------------------------------------
+             | Coefficient  Std. err.      z    P>|z|     [95% conf. interval]
+-------------+----------------------------------------------------------------
+      tereri |   .1118043   .0454834     2.46   0.014     .0226586    .2009501
+   ereri_cde |   .1121236   .0452731     2.48   0.013       .02339    .2008572
+ereri_intref |  -.0003016   .0011537    -0.26   0.794    -.0025628    .0019596
+ereri_intmed |  -.0006032   .0012751    -0.47   0.636    -.0031024    .0018959
+   ereri_pie |   .0005856   .0010894     0.54   0.591    -.0015496    .0027208
+      terira |   1.111804   .0454834    24.44   0.000     1.022659     1.20095
+       p_cde |   1.002856   .0112089    89.47   0.000     .9808864    1.024825
+    p_intref |  -.0026975   .0103209    -0.26   0.794    -.0229261    .0175312
+    p_intmed |  -.0053956   .0119986    -0.45   0.653    -.0289124    .0181213
+       p_pie |   .0052375   .0098707     0.53   0.596    -.0141087    .0245837
+        op_m |  -.0001581   .0140562    -0.01   0.991    -.0277078    .0273916
+      op_ati |   -.008093   .0150088    -0.54   0.590    -.0375097    .0213236
+        op_e |  -.0028555   .0112089    -0.25   0.799    -.0248246    .0191135
+------------------------------------------------------------------------------
+
+   tereri=total excess relative risk; ereri_cde=excess relative risk due to controlled direct effect; ereri_intref=excess relative
+   risk due to reference interaction; ereri_intmed=excess relative risk due to mediated interaction; ereri_pie=excess relative risk
+   due to pure indirect effect; terira=total effect risk ratio; p_cde=proportion controlled direct effect; p_intref=proportion
+   reference interaction; p_intmed=proportion mediated interaction; p_pie=proportion pure indirect effect; op_m=overall proportion
+   mediated; op_ati=overall proportion attributable to interaction; op_e=overall proportion eliminated.
+Warning: this analysis assumes a rare outcome.
+Warning: fixed values for the covariates zAGE_NHANES SEX NHB HISP OTHER zses were not provided. All covariates are fixed at their respec
+> tive mean.
+
+-> Summary
+
+   Outcome    (yvar):  TIMEyears
+   Exposure   (avar):  zHannumAgeEAA
+   Mediator   (mvar):  zhei2015_total_score
+   Covariates (cvars): zAGE_NHANES SEX NHB HISP OTHER zses
+
+   Model for the outcome  (yreg): cox
+   Model for the mediator (mreg): linear
+
+   Referent exposure level (a0):             0
+   Actual exposure level   (a1):             1
+   Mediator level for the decomposition (m): 0
+   Fixed values of the covariates (c):       -6.9e-11 .4921 .2048 .3448 .03244 3.1e-09
+
+
+-> Model for the outcome
+
+        Failure _d: DIED==1
+  Analysis time _t: TIMEyears
+       ID variable: ID
+            Weight: [pweight=sampling_weight]
+
+(sum of wgt is 66,423,538.185433)
+Iteration 0:  Log pseudolikelihood = -7382.5507
+Iteration 1:  Log pseudolikelihood = -6824.2486
+Iteration 2:  Log pseudolikelihood = -6815.5451
+Iteration 3:  Log pseudolikelihood = -6815.5376
+Refining estimates:
+Iteration 0:  Log pseudolikelihood = -6815.5376
+
+Cox regression with Breslow method for ties
+
+No. of subjects =  66,423,538                           Number of obs =  2,158
+No. of failures =  30,933,064
+Time at risk    = 970462514.3
+                                                        Wald chi2(9)  = 637.52
+Log pseudolikelihood = -6815.5376                       Prob > chi2   = 0.0000
+
+                                                   (Std. err. adjusted for 2,158 clusters in ID)
+------------------------------------------------------------------------------------------------
+                               |               Robust
+                            _t | Haz. ratio   std. err.      z    P>|z|     [95% conf. interval]
+-------------------------------+----------------------------------------------------------------
+                 zHannumAgeEAA |   1.214632   .0482145     4.90   0.000     1.123716    1.312904
+          zhei2015_total_score |    .978179   .0396042    -0.54   0.586     .9035562    1.058965
+_zHannumAgeEAXzhei2015_tot_000 |   1.029882   .0434405     0.70   0.485     .9481646    1.118642
+                   zAGE_NHANES |   2.664751   .1315729    19.85   0.000     2.418958     2.93552
+                           SEX |   .6665077    .055718    -4.85   0.000     .5657796    .7851689
+                           NHB |   1.151476   .1159173     1.40   0.161     .9452913    1.402633
+                          HISP |   .6434855   .0805691    -3.52   0.000     .5034567    .8224613
+                         OTHER |   .7131945   .1661637    -1.45   0.147     .4517423    1.125966
+                          zses |   .6972997   .0348899    -7.21   0.000     .6321629     .769148
+------------------------------------------------------------------------------------------------
+
+
+-> Model for the mediator
+
+Iteration 0:  Log likelihood =  -3017.124  
+Iteration 1:  Log likelihood =  -3017.124  
+
+Linear regression (Maximum Likelihood)                  Number of obs =  2,158
+                                                        Wald chi2(7)  =  90.75
+Log likelihood = -3017.124                              Prob > chi2   = 0.0000
+
+-------------------------------------------------------------------------------
+zhei2015_to~e | Coefficient  Std. err.      z    P>|z|     [95% conf. interval]
+--------------+----------------------------------------------------------------
+mu            |
+zHannumAgeEAA |  -.0649996    .022687    -2.87   0.004    -.1094654   -.0205338
+  zAGE_NHANES |   .0943069   .0222428     4.24   0.000     .0507118    .1379019
+          SEX |   .0640382   .0428997     1.49   0.136    -.0200437    .1481201
+          NHB |  -.0461613   .0603089    -0.77   0.444    -.1643646    .0720419
+         HISP |   .1625722   .0557217     2.92   0.004     .0533597    .2717848
+        OTHER |   .2123797   .1223086     1.74   0.082    -.0273407    .4521001
+         zses |   .1918195   .0245878     7.80   0.000     .1436283    .2400107
+        _cons |  -.0842426   .0417973    -2.02   0.044    -.1661638   -.0023215
+--------------+----------------------------------------------------------------
+sigma2        |
+        _cons |    .959201   .0292011    32.85   0.000      .901968    1.016434
+-------------------------------------------------------------------------------
+
+
+-> 4-way decomposition: delta method
+
+------------------------------------------------------------------------------
+             | Coefficient  Std. err.      z    P>|z|     [95% conf. interval]
+-------------+----------------------------------------------------------------
+      tereri |   .2138251   .0483142     4.43   0.000     .1191311    .3085192
+   ereri_cde |   .2145859   .0481907     4.45   0.000      .120134    .3090379
+ereri_intref |  -.0001783   .0014835    -0.12   0.904    -.0030859    .0027294
+ereri_intmed |  -.0020176    .003528    -0.57   0.567    -.0089324    .0048971
+   ereri_pie |   .0014351   .0026827     0.53   0.593    -.0038229    .0066931
+      terira |   1.213825   .0483142    25.12   0.000     1.119131    1.308519
+       p_cde |   1.003558   .0180029    55.74   0.000     .9682729    1.038843
+    p_intref |  -.0008337   .0069222    -0.12   0.904     -.014401    .0127337
+    p_intmed |  -.0094359   .0166929    -0.57   0.572    -.0421533    .0232816
+       p_pie |   .0067115   .0124535     0.54   0.590    -.0176969    .0311199
+        op_m |  -.0027243   .0232028    -0.12   0.907    -.0482011    .0427524
+      op_ati |  -.0102695   .0144457    -0.71   0.477    -.0385826    .0180436
+        op_e |   -.003558    .018003    -0.20   0.843    -.0388431    .0317271
+------------------------------------------------------------------------------
+
+   tereri=total excess relative risk; ereri_cde=excess relative risk due to controlled direct effect; ereri_intref=excess relative
+   risk due to reference interaction; ereri_intmed=excess relative risk due to mediated interaction; ereri_pie=excess relative risk
+   due to pure indirect effect; terira=total effect risk ratio; p_cde=proportion controlled direct effect; p_intref=proportion
+   reference interaction; p_intmed=proportion mediated interaction; p_pie=proportion pure indirect effect; op_m=overall proportion
+   mediated; op_ati=overall proportion attributable to interaction; op_e=overall proportion eliminated.
+Warning: this analysis assumes a rare outcome.
+Warning: fixed values for the covariates zAGE_NHANES SEX NHB HISP OTHER zses were not provided. All covariates are fixed at their respec
+> tive mean.
+
+-> Summary
+
+   Outcome    (yvar):  TIMEyears
+   Exposure   (avar):  zDunedinPoAm
+   Mediator   (mvar):  zhei2015_total_score
+   Covariates (cvars): zAGE_NHANES SEX NHB HISP OTHER zses
+
+   Model for the outcome  (yreg): cox
+   Model for the mediator (mreg): linear
+
+   Referent exposure level (a0):             0
+   Actual exposure level   (a1):             1
+   Mediator level for the decomposition (m): 0
+   Fixed values of the covariates (c):       -6.9e-11 .4921 .2048 .3448 .03244 3.1e-09
+
+
+-> Model for the outcome
+
+        Failure _d: DIED==1
+  Analysis time _t: TIMEyears
+       ID variable: ID
+            Weight: [pweight=sampling_weight]
+
+(sum of wgt is 66,423,538.185433)
+Iteration 0:  Log pseudolikelihood = -7382.5507
+Iteration 1:  Log pseudolikelihood = -6796.4383
+Iteration 2:  Log pseudolikelihood = -6787.2867
+Iteration 3:  Log pseudolikelihood = -6787.2776
+Iteration 4:  Log pseudolikelihood = -6787.2776
+Refining estimates:
+Iteration 0:  Log pseudolikelihood = -6787.2776
+
+Cox regression with Breslow method for ties
+
+No. of subjects =  66,423,538                           Number of obs =  2,158
+No. of failures =  30,933,064
+Time at risk    = 970462514.3
+                                                        Wald chi2(9)  = 623.71
+Log pseudolikelihood = -6787.2776                       Prob > chi2   = 0.0000
+
+                                                   (Std. err. adjusted for 2,158 clusters in ID)
+------------------------------------------------------------------------------------------------
+                               |               Robust
+                            _t | Haz. ratio   std. err.      z    P>|z|     [95% conf. interval]
+-------------------------------+----------------------------------------------------------------
+                  zDunedinPoAm |   1.334237   .0526075     7.31   0.000     1.235011    1.441434
+          zhei2015_total_score |   .9956875   .0422755    -0.10   0.919      .916183    1.082091
+_zDunedinPoAmXzhei2015_tot_000 |   .9764854   .0414054    -0.56   0.575     .8986131    1.061106
+                   zAGE_NHANES |   2.679716    .131224    20.13   0.000     2.434479    2.949657
+                           SEX |   .6561656   .0542046    -5.10   0.000     .5580812    .7714887
+                           NHB |      1.016   .0992776     0.16   0.871     .8389178    1.230462
+                          HISP |   .6481452   .0816018    -3.44   0.001     .5064138    .8295433
+                         OTHER |   .7396668   .1696179    -1.32   0.189     .4718907    1.159393
+                          zses |   .7052747   .0354331    -6.95   0.000     .6391369    .7782566
+------------------------------------------------------------------------------------------------
+
+
+-> Model for the mediator
+
+Iteration 0:  Log likelihood = -3013.4516  
+Iteration 1:  Log likelihood = -3013.4516  
+
+Linear regression (Maximum Likelihood)                  Number of obs =  2,158
+                                                        Wald chi2(7)  =  98.41
+Log likelihood = -3013.4516                             Prob > chi2   = 0.0000
+
+------------------------------------------------------------------------------
+zhei2015_t~e | Coefficient  Std. err.      z    P>|z|     [95% conf. interval]
+-------------+----------------------------------------------------------------
+mu           |
+zDunedinPoAm |  -.0861933   .0218271    -3.95   0.000    -.1289737   -.0434129
+ zAGE_NHANES |   .0969689   .0222092     4.37   0.000     .0534397    .1404981
+         SEX |    .057615   .0427974     1.35   0.178    -.0262663    .1414963
+         NHB |  -.0075881   .0595007    -0.13   0.899    -.1242073    .1090311
+        HISP |     .15064   .0556333     2.71   0.007     .0416007    .2596793
+       OTHER |   .2137372   .1220952     1.75   0.080    -.0255649    .4530393
+        zses |   .1847282   .0246807     7.48   0.000     .1363549    .2331014
+       _cons |  -.0870375   .0415297    -2.10   0.036    -.1684343   -.0056407
+-------------+----------------------------------------------------------------
+sigma2       |
+       _cons |   .9559419   .0291019    32.85   0.000     .8989033    1.012981
+------------------------------------------------------------------------------
+
+
+-> 4-way decomposition: delta method
+
+------------------------------------------------------------------------------
+             | Coefficient  Std. err.      z    P>|z|     [95% conf. interval]
+-------------+----------------------------------------------------------------
+      tereri |   .3380114     .05376     6.29   0.000     .2326438     .443379
+   ereri_cde |   .3342318   .0526081     6.35   0.000     .2311219    .4373417
+ereri_intref |   .0005408   .0020927     0.26   0.796    -.0035608    .0046425
+ereri_intmed |   .0028662   .0049613     0.58   0.563    -.0068578    .0125902
+   ereri_pie |   .0003726   .0036622     0.10   0.919    -.0068053    .0075504
+      terira |   1.338011     .05376    24.89   0.000     1.232644    1.443379
+       p_cde |   .9888181   .0249085    39.70   0.000     .9399984    1.037638
+    p_intref |      .0016   .0061452     0.26   0.795    -.0104443    .0136443
+    p_intmed |   .0084796   .0144433     0.59   0.557    -.0198288    .0367879
+       p_pie |   .0011023   .0108211     0.10   0.919    -.0201068    .0223113
+        op_m |   .0095818   .0190886     0.50   0.616    -.0278312    .0469948
+      op_ati |   .0100796    .019761     0.51   0.610    -.0286512    .0488103
+        op_e |   .0111819   .0249085     0.45   0.653    -.0376379    .0600016
+------------------------------------------------------------------------------
+
+   tereri=total excess relative risk; ereri_cde=excess relative risk due to controlled direct effect; ereri_intref=excess relative
+   risk due to reference interaction; ereri_intmed=excess relative risk due to mediated interaction; ereri_pie=excess relative risk
+   due to pure indirect effect; terira=total effect risk ratio; p_cde=proportion controlled direct effect; p_intref=proportion
+   reference interaction; p_intmed=proportion mediated interaction; p_pie=proportion pure indirect effect; op_m=overall proportion
+   mediated; op_ati=overall proportion attributable to interaction; op_e=overall proportion eliminated.
+Warning: this analysis assumes a rare outcome.
+Warning: fixed values for the covariates zAGE_NHANES SEX NHB HISP OTHER zses were not provided. All covariates are fixed at their respec
+> tive mean.
+
+-> Summary
+
+   Outcome    (yvar):  TIMEyears
+   Exposure   (avar):  zPhenoAgeEAA
+   Mediator   (mvar):  zhei2015_total_score
+   Covariates (cvars): zAGE_NHANES SEX NHB HISP OTHER zses
+
+   Model for the outcome  (yreg): cox
+   Model for the mediator (mreg): linear
+
+   Referent exposure level (a0):             0
+   Actual exposure level   (a1):             1
+   Mediator level for the decomposition (m): 0
+   Fixed values of the covariates (c):       -6.9e-11 .4921 .2048 .3448 .03244 3.1e-09
+
+
+-> Model for the outcome
+
+        Failure _d: DIED==1
+  Analysis time _t: TIMEyears
+       ID variable: ID
+            Weight: [pweight=sampling_weight]
+
+(sum of wgt is 66,423,538.185433)
+Iteration 0:  Log pseudolikelihood = -7382.5507
+Iteration 1:  Log pseudolikelihood = -6819.2042
+Iteration 2:  Log pseudolikelihood = -6809.6794
+Iteration 3:  Log pseudolikelihood = -6809.6708
+Refining estimates:
+Iteration 0:  Log pseudolikelihood = -6809.6708
+
+Cox regression with Breslow method for ties
+
+No. of subjects =  66,423,538                           Number of obs =  2,158
+No. of failures =  30,933,064
+Time at risk    = 970462514.3
+                                                        Wald chi2(9)  = 636.47
+Log pseudolikelihood = -6809.6708                       Prob > chi2   = 0.0000
+
+                                                   (Std. err. adjusted for 2,158 clusters in ID)
+------------------------------------------------------------------------------------------------
+                               |               Robust
+                            _t | Haz. ratio   std. err.      z    P>|z|     [95% conf. interval]
+-------------------------------+----------------------------------------------------------------
+                  zPhenoAgeEAA |   1.261871   .0562438     5.22   0.000     1.156312    1.377065
+          zhei2015_total_score |   .9831591   .0402325    -0.42   0.678     .9073842    1.065262
+_zPhenoAgeEAAXzhei2015_tot_000 |    1.01118     .05546     0.20   0.839     .9081189    1.125937
+                   zAGE_NHANES |   2.679989   .1302403    20.29   0.000     2.436503    2.947808
+                           SEX |   .6378577   .0519056    -5.53   0.000     .5438227    .7481527
+                           NHB |   1.098046   .1098815     0.93   0.350     .9024868    1.335981
+                          HISP |   .6590984   .0825136    -3.33   0.001     .5156879    .8423907
+                         OTHER |   .7488313   .1742735    -1.24   0.214     .4745545    1.181631
+                          zses |   .7050714   .0355298    -6.93   0.000     .6387627    .7782636
+------------------------------------------------------------------------------------------------
+
+
+-> Model for the mediator
+
+Iteration 0:  Log likelihood = -3018.9166  
+Iteration 1:  Log likelihood = -3018.9166  
+
+Linear regression (Maximum Likelihood)                  Number of obs =  2,158
+                                                        Wald chi2(7)  =  87.01
+Log likelihood = -3018.9166                             Prob > chi2   = 0.0000
+
+------------------------------------------------------------------------------
+zhei2015_t~e | Coefficient  Std. err.      z    P>|z|     [95% conf. interval]
+-------------+----------------------------------------------------------------
+mu           |
+zPhenoAgeEAA |  -.0474037   .0220714    -2.15   0.032    -.0906628   -.0041446
+ zAGE_NHANES |   .0939845    .022265     4.22   0.000     .0503459    .1376231
+         SEX |   .0790666   .0424561     1.86   0.063    -.0041458    .1622789
+         NHB |  -.0262202   .0596917    -0.44   0.660    -.1432137    .0907733
+        HISP |   .1579905    .055744     2.83   0.005     .0487342    .2672468
+       OTHER |   .2082662   .1224578     1.70   0.089    -.0317467    .4482792
+        zses |   .1927201   .0246342     7.82   0.000     .1444378    .2410023
+       _cons |  -.0947139   .0415707    -2.28   0.023     -.176191   -.0132368
+-------------+----------------------------------------------------------------
+sigma2       |
+       _cons |   .9607959   .0292496    32.85   0.000     .9034677    1.018124
+------------------------------------------------------------------------------
+
+
+-> 4-way decomposition: delta method
+
+------------------------------------------------------------------------------
+             | Coefficient  Std. err.      z    P>|z|     [95% conf. interval]
+-------------+----------------------------------------------------------------
+      tereri |   .2620682    .056538     4.64   0.000     .1512557    .3728807
+   ereri_cde |   .2618345   .0562367     4.66   0.000     .1516126    .3720564
+ereri_intref |  -.0001172   .0006197    -0.19   0.850    -.0013318    .0010973
+ereri_intmed |  -.0004545   .0032385    -0.14   0.888    -.0068019    .0058928
+   ereri_pie |   .0008054   .0019773     0.41   0.684      -.00307    .0046809
+      terira |   1.262068    .056538    22.32   0.000     1.151256    1.372881
+       p_cde |   .9991082   .0148259    67.39   0.000     .9700501    1.028166
+    p_intref |  -.0004473   .0023718    -0.19   0.850    -.0050958    .0042013
+    p_intmed |  -.0017344   .0124046    -0.14   0.889    -.0260469    .0225781
+       p_pie |   .0030734   .0075604     0.41   0.684    -.0117447    .0178915
+        op_m |    .001339   .0142289     0.09   0.925    -.0265492    .0292273
+      op_ati |  -.0021816   .0140235    -0.16   0.876    -.0296672    .0253039
+        op_e |   .0008918   .0148259     0.06   0.952    -.0281664    .0299499
+------------------------------------------------------------------------------
+
+   tereri=total excess relative risk; ereri_cde=excess relative risk due to controlled direct effect; ereri_intref=excess relative
+   risk due to reference interaction; ereri_intmed=excess relative risk due to mediated interaction; ereri_pie=excess relative risk
+   due to pure indirect effect; terira=total effect risk ratio; p_cde=proportion controlled direct effect; p_intref=proportion
+   reference interaction; p_intmed=proportion mediated interaction; p_pie=proportion pure indirect effect; op_m=overall proportion
+   mediated; op_ati=overall proportion attributable to interaction; op_e=overall proportion eliminated.
+Warning: this analysis assumes a rare outcome.
+Warning: fixed values for the covariates zAGE_NHANES SEX NHB HISP OTHER zses were not provided. All covariates are fixed at their respec
+> tive mean.
+
+-> Summary
+
+   Outcome    (yvar):  TIMEyears
+   Exposure   (avar):  zGrimAgeMortEAA
+   Mediator   (mvar):  zhei2015_total_score
+   Covariates (cvars): zAGE_NHANES SEX NHB HISP OTHER zses
+
+   Model for the outcome  (yreg): cox
+   Model for the mediator (mreg): linear
+
+   Referent exposure level (a0):             0
+   Actual exposure level   (a1):             1
+   Mediator level for the decomposition (m): 0
+   Fixed values of the covariates (c):       -6.9e-11 .4921 .2048 .3448 .03244 3.1e-09
+
+
+-> Model for the outcome
+
+        Failure _d: DIED==1
+  Analysis time _t: TIMEyears
+       ID variable: ID
+            Weight: [pweight=sampling_weight]
+
+(sum of wgt is 66,423,538.185433)
+Iteration 0:  Log pseudolikelihood = -7382.5507
+Iteration 1:  Log pseudolikelihood = -6762.9922
+Iteration 2:  Log pseudolikelihood = -6754.8209
+Iteration 3:  Log pseudolikelihood = -6754.8102
+Iteration 4:  Log pseudolikelihood = -6754.8102
+Refining estimates:
+Iteration 0:  Log pseudolikelihood = -6754.8102
+
+Cox regression with Breslow method for ties
+
+No. of subjects =  66,423,538                           Number of obs =  2,158
+No. of failures =  30,933,064
+Time at risk    = 970462514.3
+                                                        Wald chi2(9)  = 662.05
+Log pseudolikelihood = -6754.8102                       Prob > chi2   = 0.0000
+
+                                                   (Std. err. adjusted for 2,158 clusters in ID)
+------------------------------------------------------------------------------------------------
+                               |               Robust
+                            _t | Haz. ratio   std. err.      z    P>|z|     [95% conf. interval]
+-------------------------------+----------------------------------------------------------------
+               zGrimAgeMortEAA |   1.555893   .0678464    10.14   0.000      1.42844    1.694717
+          zhei2015_total_score |   1.015505   .0431173     0.36   0.717     .9344171    1.103629
+_zGrimAgeMortXzhei2015_tot_000 |   1.032394   .0461572     0.71   0.476     .9457776    1.126942
+                   zAGE_NHANES |   2.824267   .1411567    20.77   0.000     2.560724    3.114933
+                           SEX |   .8177906   .0709501    -2.32   0.020     .6899114    .9693729
+                           NHB |   1.025099    .100551     0.25   0.800     .8458089    1.242394
+                          HISP |   .6952529   .0886319    -2.85   0.004     .5415397    .8925967
+                         OTHER |   .7758306   .1857476    -1.06   0.289     .4852597    1.240394
+                          zses |    .729293    .036994    -6.22   0.000     .6602738    .8055267
+------------------------------------------------------------------------------------------------
+
+
+-> Model for the mediator
+
+Iteration 0:  Log likelihood =  -3007.795  
+Iteration 1:  Log likelihood =  -3007.795  
+
+Linear regression (Maximum Likelihood)                  Number of obs =  2,158
+                                                        Wald chi2(7)  = 110.27
+Log likelihood = -3007.795                              Prob > chi2   = 0.0000
+
+---------------------------------------------------------------------------------
+zhei2015_tota~e | Coefficient  Std. err.      z    P>|z|     [95% conf. interval]
+----------------+----------------------------------------------------------------
+mu              |
+zGrimAgeMortEAA |  -.1202691   .0231377    -5.20   0.000    -.1656182   -.0749199
+    zAGE_NHANES |   .0915094   .0221557     4.13   0.000      .048085    .1349338
+            SEX |  -.0004285   .0451547    -0.01   0.992    -.0889301    .0880732
+            NHB |  -.0050754   .0593368    -0.09   0.932    -.1213734    .1112226
+           HISP |   .1305005   .0557072     2.34   0.019     .0213164    .2396847
+          OTHER |   .1952307   .1218403     1.60   0.109    -.0435719    .4340334
+           zses |    .176261    .024743     7.12   0.000     .1277657    .2247564
+          _cons |  -.0515801   .0422954    -1.22   0.223    -.1344776    .0313174
+----------------+----------------------------------------------------------------
+sigma2          |
+          _cons |   .9509435   .0289497    32.85   0.000     .8942032    1.007684
+---------------------------------------------------------------------------------
+
+
+-> 4-way decomposition: delta method
+
+------------------------------------------------------------------------------
+             | Coefficient  Std. err.      z    P>|z|     [95% conf. interval]
+-------------+----------------------------------------------------------------
+      tereri |   .5484688   .0670344     8.18   0.000     .4170838    .6798539
+   ereri_cde |   .5558431   .0678018     8.20   0.000      .422954    .6887323
+ereri_intref |   .0014532   .0040544     0.36   0.720    -.0064933    .0093998
+ereri_intmed |  -.0069788   .0090194    -0.77   0.439    -.0246565    .0106989
+   ereri_pie |  -.0018487   .0051094    -0.36   0.717     -.011863    .0081656
+      terira |   1.548469   .0670344    23.10   0.000     1.417084    1.679854
+       p_cde |   1.013445   .0148938    68.04   0.000     .9842539    1.042637
+    p_intref |   .0026496    .007394     0.36   0.720    -.0118424    .0171416
+    p_intmed |  -.0127241   .0164907    -0.77   0.440    -.0450453     .019597
+       p_pie |  -.0033707   .0093101    -0.36   0.717    -.0216182    .0148768
+        op_m |  -.0160948   .0216023    -0.75   0.456    -.0584345    .0262448
+      op_ati |  -.0100745   .0104159    -0.97   0.333    -.0304894    .0103403
+        op_e |  -.0134452   .0148938    -0.90   0.367    -.0426366    .0157461
+------------------------------------------------------------------------------
+
+   tereri=total excess relative risk; ereri_cde=excess relative risk due to controlled direct effect; ereri_intref=excess relative
+   risk due to reference interaction; ereri_intmed=excess relative risk due to mediated interaction; ereri_pie=excess relative risk
+   due to pure indirect effect; terira=total effect risk ratio; p_cde=proportion controlled direct effect; p_intref=proportion
+   reference interaction; p_intmed=proportion mediated interaction; p_pie=proportion pure indirect effect; op_m=overall proportion
+   mediated; op_ati=overall proportion attributable to interaction; op_e=overall proportion eliminated.
+
+. 
+. foreach m of varlist zHorvathAgeEAA zHannumAgeEAA zDunedinPoAm zPhenoAgeEAA zGrimAgeMortEAA {
+  2.     med4way `m' zhei2015_total_score zAGE_HRS SEX NHB HISP OTHER zses ///
+>         if sample_final==1 & COHORT==2, a0(0) a1(1) m(0) yreg(cox) mreg(linear) fulloutput
+  3. }
+Warning: this analysis assumes a rare outcome.
+Warning: fixed values for the covariates zAGE_HRS SEX NHB HISP OTHER zses were not provided. All covariates are fixed at their respectiv
+> e mean.
+
+-> Summary
+
+   Outcome    (yvar):  TIMEyears
+   Exposure   (avar):  zHorvathAgeEAA
+   Mediator   (mvar):  zhei2015_total_score
+   Covariates (cvars): zAGE_HRS SEX NHB HISP OTHER zses
+
+   Model for the outcome  (yreg): cox
+   Model for the mediator (mreg): linear
+
+   Referent exposure level (a0):             0
+   Actual exposure level   (a1):             1
+   Mediator level for the decomposition (m): 0
+   Fixed values of the covariates (c):       1.2e-08 .5932 .1479 .1244 .03125 -9.0e-10
+
+
+-> Model for the outcome
+
+        Failure _d: DIED==1
+  Analysis time _t: TIMEyears
+       ID variable: ID
+            Weight: [pweight=sampling_weight]
+
+(sum of wgt is 36,335,540)
+Iteration 0:  Log pseudolikelihood = -2060.2765
+Iteration 1:  Log pseudolikelihood = -1882.5757
+Iteration 2:  Log pseudolikelihood = -1874.4681
+Iteration 3:  Log pseudolikelihood = -1874.4475
+Iteration 4:  Log pseudolikelihood = -1874.4475
+Refining estimates:
+Iteration 0:  Log pseudolikelihood = -1874.4475
+
+Cox regression with Breslow method for ties
+
+No. of subjects =  36,335,540                           Number of obs =  1,751
+No. of failures =   5,818,889
+Time at risk    = 230945467.6
+                                                        Wald chi2(9)  = 292.89
+Log pseudolikelihood = -1874.4475                       Prob > chi2   = 0.0000
+
+                                                   (Std. err. adjusted for 1,751 clusters in ID)
+------------------------------------------------------------------------------------------------
+                               |               Robust
+                            _t | Haz. ratio   std. err.      z    P>|z|     [95% conf. interval]
+-------------------------------+----------------------------------------------------------------
+                zHorvathAgeEAA |   .9777228   .0644498    -0.34   0.733     .8592232    1.112565
+          zhei2015_total_score |   .8250638     .05789    -2.74   0.006     .7190575    .9466981
+_zHorvathAgeEXzhei2015_tot_000 |   .9833639    .070684    -0.23   0.815      .854142    1.132136
+                      zAGE_HRS |    2.60544   .2093281    11.92   0.000     2.225837    3.049783
+                           SEX |   .8225315   .1084121    -1.48   0.138     .6352748    1.064985
+                           NHB |   1.084498   .2073444     0.42   0.671     .7455697      1.5775
+                          HISP |   .3466835   .1170079    -3.14   0.002     .1789152    .6717676
+                         OTHER |   .8011371   .3739239    -0.48   0.635      .320934    1.999852
+                          zses |   .6307149    .047585    -6.11   0.000      .544018    .7312281
+------------------------------------------------------------------------------------------------
+
+
+-> Model for the mediator
+
+Iteration 0:  Log likelihood = -2487.0503  
+Iteration 1:  Log likelihood = -2487.0503  
+
+Linear regression (Maximum Likelihood)                  Number of obs =  1,792
+                                                        Wald chi2(7)  = 113.84
+Log likelihood = -2487.0503                             Prob > chi2   = 0.0000
+
+--------------------------------------------------------------------------------
+zhei2015_tot~e | Coefficient  Std. err.      z    P>|z|     [95% conf. interval]
+---------------+----------------------------------------------------------------
+mu             |
+zHorvathAgeEAA |  -.0147721   .0231443    -0.64   0.523    -.0601341    .0305899
+      zAGE_HRS |   .1111934   .0243117     4.57   0.000     .0635434    .1588435
+           SEX |    .280916   .0475001     5.91   0.000     .1878176    .3740144
+           NHB |   .2758146   .0682635     4.04   0.000     .1420207    .4096085
+          HISP |   .3872066   .0771558     5.02   0.000     .2359839    .5384292
+         OTHER |   .1818183   .1334116     1.36   0.173    -.0796637    .4433003
+          zses |    .217165   .0253519     8.57   0.000     .1674761    .2668538
+         _cons |   -.261291   .0397622    -6.57   0.000    -.3392235   -.1833585
+---------------+----------------------------------------------------------------
+sigma2         |
+         _cons |   .9397407   .0313945    29.93   0.000     .8782086    1.001273
+--------------------------------------------------------------------------------
+
+
+-> 4-way decomposition: delta method
+
+------------------------------------------------------------------------------
+             | Coefficient  Std. err.      z    P>|z|     [95% conf. interval]
+-------------+----------------------------------------------------------------
+      tereri |  -.0161451   .0692155    -0.23   0.816     -.151805    .1195147
+   ereri_cde |  -.0218935   .0633604    -0.35   0.730    -.1460775    .1022906
+ereri_intref |   .0027145   .0140354     0.19   0.847    -.0247943    .0302233
+ereri_intmed |   .0001892   .0011788     0.16   0.872    -.0021212    .0024997
+   ereri_pie |   .0028446   .0045826     0.62   0.535    -.0061371    .0118264
+      terira |   .9838549   .0692155    14.21   0.000      .848195    1.119515
+       p_cde |   1.356043   2.166718     0.63   0.531    -2.890646    5.602732
+    p_intref |  -.1681313   1.359978    -0.12   0.902     -2.83364    2.497377
+    p_intmed |  -.0117205   .1080816    -0.11   0.914    -.2235566    .2001155
+       p_pie |  -.1761915   .8282426    -0.21   0.832    -1.799517    1.447134
+        op_m |   -.187912   .9177077    -0.20   0.838    -1.986586    1.610762
+      op_ati |  -.1798518   1.466542    -0.12   0.902    -3.054221    2.694518
+        op_e |  -.3560433   2.166718    -0.16   0.869    -4.602732    3.890646
+------------------------------------------------------------------------------
+
+   tereri=total excess relative risk; ereri_cde=excess relative risk due to controlled direct effect; ereri_intref=excess relative
+   risk due to reference interaction; ereri_intmed=excess relative risk due to mediated interaction; ereri_pie=excess relative risk
+   due to pure indirect effect; terira=total effect risk ratio; p_cde=proportion controlled direct effect; p_intref=proportion
+   reference interaction; p_intmed=proportion mediated interaction; p_pie=proportion pure indirect effect; op_m=overall proportion
+   mediated; op_ati=overall proportion attributable to interaction; op_e=overall proportion eliminated.
+Warning: this analysis assumes a rare outcome.
+Warning: fixed values for the covariates zAGE_HRS SEX NHB HISP OTHER zses were not provided. All covariates are fixed at their respectiv
+> e mean.
+
+-> Summary
+
+   Outcome    (yvar):  TIMEyears
+   Exposure   (avar):  zHannumAgeEAA
+   Mediator   (mvar):  zhei2015_total_score
+   Covariates (cvars): zAGE_HRS SEX NHB HISP OTHER zses
+
+   Model for the outcome  (yreg): cox
+   Model for the mediator (mreg): linear
+
+   Referent exposure level (a0):             0
+   Actual exposure level   (a1):             1
+   Mediator level for the decomposition (m): 0
+   Fixed values of the covariates (c):       1.2e-08 .5932 .1479 .1244 .03125 -9.0e-10
+
+
+-> Model for the outcome
+
+        Failure _d: DIED==1
+  Analysis time _t: TIMEyears
+       ID variable: ID
+            Weight: [pweight=sampling_weight]
+
+(sum of wgt is 36,335,540)
+Iteration 0:  Log pseudolikelihood = -2060.2765
+Iteration 1:  Log pseudolikelihood = -1876.9006
+Iteration 2:  Log pseudolikelihood = -1869.2642
+Iteration 3:  Log pseudolikelihood = -1869.2539
+Iteration 4:  Log pseudolikelihood = -1869.2539
+Refining estimates:
+Iteration 0:  Log pseudolikelihood = -1869.2539
+
+Cox regression with Breslow method for ties
+
+No. of subjects =  36,335,540                           Number of obs =  1,751
+No. of failures =   5,818,889
+Time at risk    = 230945467.6
+                                                        Wald chi2(9)  = 290.98
+Log pseudolikelihood = -1869.2539                       Prob > chi2   = 0.0000
+
+                                                   (Std. err. adjusted for 1,751 clusters in ID)
+------------------------------------------------------------------------------------------------
+                               |               Robust
+                            _t | Haz. ratio   std. err.      z    P>|z|     [95% conf. interval]
+-------------------------------+----------------------------------------------------------------
+                 zHannumAgeEAA |    1.18803   .0615453     3.33   0.001     1.073325    1.314993
+          zhei2015_total_score |   .8353803    .057662    -2.61   0.009     .7296762    .9563972
+_zHannumAgeEAXzhei2015_tot_000 |   .9665488   .0655738    -0.50   0.616     .8462048    1.104008
+                      zAGE_HRS |   2.645209   .2095281    12.28   0.000     2.264832    3.089471
+                           SEX |    .858095   .1139429    -1.15   0.249     .6614665    1.113174
+                           NHB |   1.157624   .2112123     0.80   0.422     .8095861    1.655282
+                          HISP |   .3753158   .1231142    -2.99   0.003     .1973234    .7138632
+                         OTHER |   .8295707   .3870182    -0.40   0.689     .3324634    2.069965
+                          zses |   .6296361   .0471078    -6.18   0.000      .543757    .7290787
+------------------------------------------------------------------------------------------------
+
+
+-> Model for the mediator
+
+Iteration 0:  Log likelihood = -2482.4202  
+Iteration 1:  Log likelihood = -2482.4202  
+
+Linear regression (Maximum Likelihood)                  Number of obs =  1,792
+                                                        Wald chi2(7)  = 123.72
+Log likelihood = -2482.4202                             Prob > chi2   = 0.0000
+
+-------------------------------------------------------------------------------
+zhei2015_to~e | Coefficient  Std. err.      z    P>|z|     [95% conf. interval]
+--------------+----------------------------------------------------------------
+mu            |
+zHannumAgeEAA |  -.0733352   .0235541    -3.11   0.002    -.1195003   -.0271701
+     zAGE_HRS |   .1082047   .0242686     4.46   0.000     .0606391    .1557703
+          SEX |   .2561354   .0478631     5.35   0.000     .1623254    .3499454
+          NHB |   .2451204   .0687634     3.56   0.000     .1103465    .3798942
+         HISP |   .3867803   .0768472     5.03   0.000     .2361627     .537398
+        OTHER |   .1782067   .1330696     1.34   0.181    -.0826049    .4390184
+         zses |   .2135467   .0253131     8.44   0.000     .1639339    .2631596
+        _cons |  -.2418864   .0400777    -6.04   0.000    -.3204373   -.1633355
+--------------+----------------------------------------------------------------
+sigma2        |
+        _cons |   .9348971   .0312327    29.93   0.000     .8736821    .9961121
+-------------------------------------------------------------------------------
+
+
+-> 4-way decomposition: delta method
+
+------------------------------------------------------------------------------
+             | Coefficient  Std. err.      z    P>|z|     [95% conf. interval]
+-------------+----------------------------------------------------------------
+      tereri |   .2143932   .0645501     3.32   0.001     .0878774     .340909
+   ereri_cde |   .1852076   .0607851     3.05   0.002     .0660709    .3043443
+ereri_intref |   .0102855   .0165939     0.62   0.535     -.022238    .0428091
+ereri_intmed |    .005622   .0065359     0.86   0.390     -.007188    .0184321
+   ereri_pie |    .013278   .0066886     1.99   0.047     .0001687    .0263874
+      terira |   1.214393   .0645501    18.81   0.000     1.087877    1.340909
+       p_cde |   .8638687   .1099076     7.86   0.000     .6484537    1.079284
+    p_intref |   .0479751   .0741324     0.65   0.518    -.0973218     .193272
+    p_intmed |   .0262231    .028315     0.93   0.354    -.0292733    .0817194
+       p_pie |   .0619331   .0345904     1.79   0.073    -.0058629    .1297292
+        op_m |   .0881562   .0476416     1.85   0.064    -.0052197    .1815321
+      op_ati |   .0741982   .1012526     0.73   0.464    -.1242533    .2726497
+        op_e |   .1361313   .1099076     1.24   0.215    -.0792837    .3515463
+------------------------------------------------------------------------------
+
+   tereri=total excess relative risk; ereri_cde=excess relative risk due to controlled direct effect; ereri_intref=excess relative
+   risk due to reference interaction; ereri_intmed=excess relative risk due to mediated interaction; ereri_pie=excess relative risk
+   due to pure indirect effect; terira=total effect risk ratio; p_cde=proportion controlled direct effect; p_intref=proportion
+   reference interaction; p_intmed=proportion mediated interaction; p_pie=proportion pure indirect effect; op_m=overall proportion
+   mediated; op_ati=overall proportion attributable to interaction; op_e=overall proportion eliminated.
+Warning: this analysis assumes a rare outcome.
+Warning: fixed values for the covariates zAGE_HRS SEX NHB HISP OTHER zses were not provided. All covariates are fixed at their respectiv
+> e mean.
+
+-> Summary
+
+   Outcome    (yvar):  TIMEyears
+   Exposure   (avar):  zDunedinPoAm
+   Mediator   (mvar):  zhei2015_total_score
+   Covariates (cvars): zAGE_HRS SEX NHB HISP OTHER zses
+
+   Model for the outcome  (yreg): cox
+   Model for the mediator (mreg): linear
+
+   Referent exposure level (a0):             0
+   Actual exposure level   (a1):             1
+   Mediator level for the decomposition (m): 0
+   Fixed values of the covariates (c):       1.2e-08 .5932 .1479 .1244 .03125 -9.0e-10
+
+
+-> Model for the outcome
+
+        Failure _d: DIED==1
+  Analysis time _t: TIMEyears
+       ID variable: ID
+            Weight: [pweight=sampling_weight]
+
+(sum of wgt is 36,335,540)
+Iteration 0:  Log pseudolikelihood = -2060.2765
+Iteration 1:  Log pseudolikelihood = -1874.8906
+Iteration 2:  Log pseudolikelihood = -1860.9563
+Iteration 3:  Log pseudolikelihood = -1860.8061
+Iteration 4:  Log pseudolikelihood = -1860.8058
+Refining estimates:
+Iteration 0:  Log pseudolikelihood = -1860.8058
+
+Cox regression with Breslow method for ties
+
+No. of subjects =  36,335,540                           Number of obs =  1,751
+No. of failures =   5,818,889
+Time at risk    = 230945467.6
+                                                        Wald chi2(9)  = 297.81
+Log pseudolikelihood = -1860.8058                       Prob > chi2   = 0.0000
+
+                                                   (Std. err. adjusted for 1,751 clusters in ID)
+------------------------------------------------------------------------------------------------
+                               |               Robust
+                            _t | Haz. ratio   std. err.      z    P>|z|     [95% conf. interval]
+-------------------------------+----------------------------------------------------------------
+                  zDunedinPoAm |   1.291719   .0855166     3.87   0.000     1.134529    1.470689
+          zhei2015_total_score |    .883193   .0604831    -1.81   0.070     .7722597    1.010062
+_zDunedinPoAmXzhei2015_tot_000 |   .9088474   .0551487    -1.58   0.115     .8069381    1.023627
+                      zAGE_HRS |   2.581106    .196349    12.46   0.000     2.223584    2.996113
+                           SEX |   .8521552   .1126209    -1.21   0.226     .6576938    1.104113
+                           NHB |   1.065889    .193264     0.35   0.725     .7470923     1.52072
+                          HISP |   .3449562   .1175022    -3.12   0.002     .1769374    .6725247
+                         OTHER |   .6889577   .3345927    -0.77   0.443     .2659537    1.784757
+                          zses |    .633845   .0475609    -6.08   0.000      .547158     .734266
+------------------------------------------------------------------------------------------------
+
+
+-> Model for the mediator
+
+Iteration 0:  Log likelihood = -2474.7794  
+Iteration 1:  Log likelihood = -2474.7794  
+
+Linear regression (Maximum Likelihood)                  Number of obs =  1,792
+                                                        Wald chi2(7)  = 140.13
+Log likelihood = -2474.7794                             Prob > chi2   = 0.0000
+
+------------------------------------------------------------------------------
+zhei2015_t~e | Coefficient  Std. err.      z    P>|z|     [95% conf. interval]
+-------------+----------------------------------------------------------------
+mu           |
+zDunedinPoAm |   -.116379   .0232184    -5.01   0.000    -.1618863   -.0708717
+    zAGE_HRS |   .1127714   .0241454     4.67   0.000     .0654472    .1600956
+         SEX |   .2581559   .0470656     5.49   0.000      .165909    .3504028
+         NHB |   .2980949   .0679447     4.39   0.000     .1649257     .431264
+        HISP |   .3764832   .0765605     4.92   0.000     .2264273    .5265391
+       OTHER |   .2222331   .1327498     1.67   0.094    -.0379518    .4824179
+        zses |   .2003611   .0254047     7.89   0.000     .1505687    .2501534
+       _cons |  -.2510132   .0393652    -6.38   0.000    -.3281675   -.1738589
+-------------+----------------------------------------------------------------
+sigma2       |
+       _cons |   .9269585   .0309675    29.93   0.000     .8662633    .9876537
+------------------------------------------------------------------------------
+
+
+-> 4-way decomposition: delta method
+
+------------------------------------------------------------------------------
+             | Coefficient  Std. err.      z    P>|z|     [95% conf. interval]
+-------------+----------------------------------------------------------------
+      tereri |   .3455352    .086072     4.01   0.000     .1768372    .5142332
+   ereri_cde |   .2896409   .0852033     3.40   0.001     .1226456    .4566362
+ereri_intref |   .0219135   .0177255     1.24   0.216    -.0128279    .0566549
+ereri_intmed |   .0194203   .0103153     1.88   0.060    -.0007974    .0396379
+   ereri_pie |   .0145606   .0085991     1.69   0.090    -.0022933    .0314145
+      terira |   1.345535    .086072    15.63   0.000     1.176837    1.514233
+       p_cde |   .8382384   .0905483     9.26   0.000     .6607669     1.01571
+    p_intref |    .063419   .0511067     1.24   0.215    -.0367483    .1635862
+    p_intmed |   .0562034   .0292405     1.92   0.055    -.0011069    .1135136
+       p_pie |   .0421393   .0262546     1.61   0.108    -.0093188    .0935973
+        op_m |   .0983427   .0440711     2.23   0.026     .0119648    .1847205
+      op_ati |   .1196223   .0775115     1.54   0.123    -.0322974     .271542
+        op_e |   .1617616   .0905483     1.79   0.074    -.0157099    .3392331
+------------------------------------------------------------------------------
+
+   tereri=total excess relative risk; ereri_cde=excess relative risk due to controlled direct effect; ereri_intref=excess relative
+   risk due to reference interaction; ereri_intmed=excess relative risk due to mediated interaction; ereri_pie=excess relative risk
+   due to pure indirect effect; terira=total effect risk ratio; p_cde=proportion controlled direct effect; p_intref=proportion
+   reference interaction; p_intmed=proportion mediated interaction; p_pie=proportion pure indirect effect; op_m=overall proportion
+   mediated; op_ati=overall proportion attributable to interaction; op_e=overall proportion eliminated.
+Warning: this analysis assumes a rare outcome.
+Warning: fixed values for the covariates zAGE_HRS SEX NHB HISP OTHER zses were not provided. All covariates are fixed at their respectiv
+> e mean.
+
+-> Summary
+
+   Outcome    (yvar):  TIMEyears
+   Exposure   (avar):  zPhenoAgeEAA
+   Mediator   (mvar):  zhei2015_total_score
+   Covariates (cvars): zAGE_HRS SEX NHB HISP OTHER zses
+
+   Model for the outcome  (yreg): cox
+   Model for the mediator (mreg): linear
+
+   Referent exposure level (a0):             0
+   Actual exposure level   (a1):             1
+   Mediator level for the decomposition (m): 0
+   Fixed values of the covariates (c):       1.2e-08 .5932 .1479 .1244 .03125 -9.0e-10
+
+
+-> Model for the outcome
+
+        Failure _d: DIED==1
+  Analysis time _t: TIMEyears
+       ID variable: ID
+            Weight: [pweight=sampling_weight]
+
+(sum of wgt is 36,335,540)
+Iteration 0:  Log pseudolikelihood = -2060.2765
+Iteration 1:  Log pseudolikelihood = -1871.4289
+Iteration 2:  Log pseudolikelihood = -1862.5916
+Iteration 3:  Log pseudolikelihood = -1862.5405
+Iteration 4:  Log pseudolikelihood = -1862.5404
+Refining estimates:
+Iteration 0:  Log pseudolikelihood = -1862.5404
+
+Cox regression with Breslow method for ties
+
+No. of subjects =  36,335,540                           Number of obs =  1,751
+No. of failures =   5,818,889
+Time at risk    = 230945467.6
+                                                        Wald chi2(9)  = 281.57
+Log pseudolikelihood = -1862.5404                       Prob > chi2   = 0.0000
+
+                                                   (Std. err. adjusted for 1,751 clusters in ID)
+------------------------------------------------------------------------------------------------
+                               |               Robust
+                            _t | Haz. ratio   std. err.      z    P>|z|     [95% conf. interval]
+-------------------------------+----------------------------------------------------------------
+                  zPhenoAgeEAA |   1.211143   .0616758     3.76   0.000     1.096098    1.338264
+          zhei2015_total_score |   .8493573   .0588703    -2.36   0.018     .7414678    .9729456
+_zPhenoAgeEAAXzhei2015_tot_000 |   .8540312   .0478945    -2.81   0.005     .7651348    .9532561
+                      zAGE_HRS |   2.665557   .2136797    12.23   0.000     2.277995    3.119055
+                           SEX |   .8316187   .1105353    -1.39   0.165     .6408939    1.079102
+                           NHB |   1.078649   .2005979     0.41   0.684     .7491707    1.553028
+                          HISP |   .3089251   .1124237    -3.23   0.001     .1513857    .6304079
+                         OTHER |   .7153266   .3546319    -0.68   0.499      .270714    1.890157
+                          zses |   .6245912   .0470815    -6.24   0.000     .5388062    .7240344
+------------------------------------------------------------------------------------------------
+
+
+-> Model for the mediator
+
+Iteration 0:  Log likelihood = -2484.1559  
+Iteration 1:  Log likelihood = -2484.1559  
+
+Linear regression (Maximum Likelihood)                  Number of obs =  1,792
+                                                        Wald chi2(7)  = 120.01
+Log likelihood = -2484.1559                             Prob > chi2   = 0.0000
+
+------------------------------------------------------------------------------
+zhei2015_t~e | Coefficient  Std. err.      z    P>|z|     [95% conf. interval]
+-------------+----------------------------------------------------------------
+mu           |
+zPhenoAgeEAA |  -.0573719   .0230285    -2.49   0.013    -.1025069    -.012237
+    zAGE_HRS |   .1094588   .0242829     4.51   0.000     .0618652    .1570524
+         SEX |   .2741267   .0472064     5.81   0.000     .1816039    .3666494
+         NHB |   .2769984   .0681506     4.06   0.000     .1434258    .4105711
+        HISP |   .3887813   .0769164     5.05   0.000      .238028    .5395347
+       OTHER |   .1833698    .133197     1.38   0.169    -.0776916    .4444311
+        zses |   .2128009   .0253758     8.39   0.000     .1630652    .2625365
+       _cons |  -.2576831    .039566    -6.51   0.000    -.3352311   -.1801352
+-------------+----------------------------------------------------------------
+sigma2       |
+       _cons |   .9367099   .0312933    29.93   0.000     .8753762    .9980437
+------------------------------------------------------------------------------
+
+
+-> 4-way decomposition: delta method
+
+------------------------------------------------------------------------------
+             | Coefficient  Std. err.      z    P>|z|     [95% conf. interval]
+-------------+----------------------------------------------------------------
+      tereri |   .2786152   .0748571     3.72   0.000     .1318979    .4253324
+   ereri_cde |   .2085233    .060964     3.42   0.001      .089036    .3280106
+ereri_intref |   .0467553   .0248715     1.88   0.060    -.0019918    .0955025
+ereri_intmed |   .0139251   .0074002     1.88   0.060    -.0005791    .0284292
+   ereri_pie |   .0094114   .0055242     1.70   0.088    -.0014158    .0202387
+      terira |   1.278615   .0748571    17.08   0.000     1.131898    1.425332
+       p_cde |   .7484278   .0929402     8.05   0.000     .5662683    .9305872
+    p_intref |   .1678133   .0727305     2.31   0.021     .0252642    .3103624
+    p_intmed |   .0499796   .0225733     2.21   0.027     .0057367    .0942225
+       p_pie |   .0337793   .0199363     1.69   0.090    -.0052951    .0728537
+        op_m |   .0837589   .0372411     2.25   0.025     .0107678      .15675
+      op_ati |   .2177929    .084308     2.58   0.010     .0525521    .3830336
+        op_e |   .2515722   .0929402     2.71   0.007     .0694128    .4337316
+------------------------------------------------------------------------------
+
+   tereri=total excess relative risk; ereri_cde=excess relative risk due to controlled direct effect; ereri_intref=excess relative
+   risk due to reference interaction; ereri_intmed=excess relative risk due to mediated interaction; ereri_pie=excess relative risk
+   due to pure indirect effect; terira=total effect risk ratio; p_cde=proportion controlled direct effect; p_intref=proportion
+   reference interaction; p_intmed=proportion mediated interaction; p_pie=proportion pure indirect effect; op_m=overall proportion
+   mediated; op_ati=overall proportion attributable to interaction; op_e=overall proportion eliminated.
+Warning: this analysis assumes a rare outcome.
+Warning: fixed values for the covariates zAGE_HRS SEX NHB HISP OTHER zses were not provided. All covariates are fixed at their respectiv
+> e mean.
+
+-> Summary
+
+   Outcome    (yvar):  TIMEyears
+   Exposure   (avar):  zGrimAgeMortEAA
+   Mediator   (mvar):  zhei2015_total_score
+   Covariates (cvars): zAGE_HRS SEX NHB HISP OTHER zses
+
+   Model for the outcome  (yreg): cox
+   Model for the mediator (mreg): linear
+
+   Referent exposure level (a0):             0
+   Actual exposure level   (a1):             1
+   Mediator level for the decomposition (m): 0
+   Fixed values of the covariates (c):       1.2e-08 .5932 .1479 .1244 .03125 -9.0e-10
+
+
+-> Model for the outcome
+
+        Failure _d: DIED==1
+  Analysis time _t: TIMEyears
+       ID variable: ID
+            Weight: [pweight=sampling_weight]
+
+(sum of wgt is 36,335,540)
+Iteration 0:  Log pseudolikelihood = -2060.2765
+Iteration 1:  Log pseudolikelihood = -1855.7019
+Iteration 2:  Log pseudolikelihood = -1848.1064
+Iteration 3:  Log pseudolikelihood = -1848.0832
+Iteration 4:  Log pseudolikelihood = -1848.0832
+Refining estimates:
+Iteration 0:  Log pseudolikelihood = -1848.0832
+
+Cox regression with Breslow method for ties
+
+No. of subjects =  36,335,540                           Number of obs =  1,751
+No. of failures =   5,818,889
+Time at risk    = 230945467.6
+                                                        Wald chi2(9)  = 287.45
+Log pseudolikelihood = -1848.0832                       Prob > chi2   = 0.0000
+
+                                                   (Std. err. adjusted for 1,751 clusters in ID)
+------------------------------------------------------------------------------------------------
+                               |               Robust
+                            _t | Haz. ratio   std. err.      z    P>|z|     [95% conf. interval]
+-------------------------------+----------------------------------------------------------------
+               zGrimAgeMortEAA |   1.579909    .110281     6.55   0.000     1.377896    1.811539
+          zhei2015_total_score |    .913283   .0657636    -1.26   0.208     .7930711    1.051716
+_zGrimAgeMortXzhei2015_tot_000 |   .9477874   .0549886    -0.92   0.355     .8459136     1.06193
+                      zAGE_HRS |   2.729877   .2120154    12.93   0.000     2.344416    3.178715
+                           SEX |   1.155565   .1657103     1.01   0.313     .8724298    1.530589
+                           NHB |   .9079324   .1778392    -0.49   0.622     .6184809    1.332848
+                          HISP |    .380001   .1285403    -2.86   0.004     .1958189    .7374199
+                         OTHER |   .8114667    .389193    -0.44   0.663     .3169715    2.077405
+                          zses |   .6703201   .0506929    -5.29   0.000     .5779766    .7774173
+------------------------------------------------------------------------------------------------
+
+
+-> Model for the mediator
+
+Iteration 0:  Log likelihood = -2461.2004  
+Iteration 1:  Log likelihood = -2461.2004  
+
+Linear regression (Maximum Likelihood)                  Number of obs =  1,792
+                                                        Wald chi2(7)  = 169.63
+Log likelihood = -2461.2004                             Prob > chi2   = 0.0000
+
+---------------------------------------------------------------------------------
+zhei2015_tota~e | Coefficient  Std. err.      z    P>|z|     [95% conf. interval]
+----------------+----------------------------------------------------------------
+mu              |
+zGrimAgeMortEAA |  -.1800281   .0247586    -7.27   0.000    -.2285541    -.131502
+       zAGE_HRS |   .1009279   .0240048     4.20   0.000     .0538795    .1479764
+            SEX |   .1557258   .0496938     3.13   0.002     .0583277    .2531239
+            NHB |   .3132549   .0674825     4.64   0.000     .1809917    .4455182
+           HISP |   .3400588   .0762449     4.46   0.000     .1906214    .4894961
+          OTHER |   .1880809   .1315025     1.43   0.153    -.0696593    .4458211
+           zses |   .1730289   .0257212     6.73   0.000     .1226164    .2234414
+          _cons |  -.1868944   .0403975    -4.63   0.000    -.2660721   -.1077167
+----------------+----------------------------------------------------------------
+sigma2          |
+          _cons |   .9130162   .0305017    29.93   0.000     .8532339    .9727985
+---------------------------------------------------------------------------------
+
+
+-> 4-way decomposition: delta method
+
+------------------------------------------------------------------------------
+             | Coefficient  Std. err.      z    P>|z|     [95% conf. interval]
+-------------+----------------------------------------------------------------
+      tereri |   .6308569   .1120324     5.63   0.000     .4112773    .8504364
+   ereri_cde |    .577735   .1102676     5.24   0.000     .3616144    .7938555
+ereri_intref |   .0112911   .0129225     0.87   0.382    -.0140365    .0366187
+ereri_intmed |   .0253665    .016798     1.51   0.131     -.007557      .05829
+   ereri_pie |   .0164643   .0133732     1.23   0.218    -.0097466    .0426752
+      terira |   1.630857   .1120324    14.56   0.000     1.411277    1.850436
+       p_cde |    .915794   .0547378    16.73   0.000     .8085099    1.023078
+    p_intref |   .0178981   .0201999     0.89   0.376    -.0216929    .0574891
+    p_intmed |   .0402096   .0257629     1.56   0.119    -.0102849     .090704
+       p_pie |   .0260984   .0213968     1.22   0.223    -.0158385    .0680352
+        op_m |   .0663079   .0361799     1.83   0.067    -.0046035    .1372193
+      op_ati |   .0581076    .044925     1.29   0.196    -.0299437     .146159
+        op_e |    .084206   .0547378     1.54   0.124    -.0230782    .1914901
+------------------------------------------------------------------------------
+
+   tereri=total excess relative risk; ereri_cde=excess relative risk due to controlled direct effect; ereri_intref=excess relative
+   risk due to reference interaction; ereri_intmed=excess relative risk due to mediated interaction; ereri_pie=excess relative risk
+   due to pure indirect effect; terira=total effect risk ratio; p_cde=proportion controlled direct effect; p_intref=proportion
+   reference interaction; p_intmed=proportion mediated interaction; p_pie=proportion pure indirect effect; op_m=overall proportion
+   mediated; op_ati=overall proportion attributable to interaction; op_e=overall proportion eliminated.
+
+. 
+. save "${DAT}\NHANES_HRS_HANDLS_DATACOMBINEDfin", replace
+file
+    E:\16GBBACKUPUSB\BACKUP_USB_SEPTEMBER2014\SUMMER_STUDENT_2025\HRS_NHANES_HEI_EPICLOCKS_MORT\FINAL_DATA\COMBINED\NHANES_HRS_HANDLS_
+    > DATACOMBINEDfin.dta saved
+
+. capture log close
