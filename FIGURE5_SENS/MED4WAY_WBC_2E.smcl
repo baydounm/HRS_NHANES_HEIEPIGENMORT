@@ -1,0 +1,1202 @@
+{smcl}
+{com}{sf}{ul off}{txt}
+{com}. 
+. use "${c -(}DAT{c )-}\NHANES_HRS_HANDLS_DATACOMBINEDfinalized_SENS", clear
+{txt}
+{com}. 
+. foreach m of varlist zHorvathAgeEAA zHannumAgeEAA zDunedinPoAm zPhenoAgeEAA zGrimAgeMortEAA {c -(}
+{txt}  2{com}.     med4way `m' zhei2015_total_score zAGE_NHANES SEX NHB HISP OTHER zses ///
+>         LYMPHOCYTES_PCT MONOCYTES_PCT NEUTROPHIL_PCT ///
+>         if sample_final==1 & COHORT==1, a0(0) a1(1) m(0) yreg(cox) mreg(linear) fulloutput
+{txt}  3{com}. {c )-}
+{res}{err}Warning: this analysis assumes a rare outcome.
+Warning: fixed values for the covariates zAGE_NHANES SEX NHB HISP OTHER zses LYMPHOCYTES_PCT MONOCYTES_PCT NEUTROPHIL_PCT were not provided. All covariates are fixed at their respective mean.
+
+{txt}-> Summary
+
+{col 4}Outcome    (yvar):{col 24}{res}TIMEyears
+{col 4}{txt}Exposure   (avar):{col 24}{res}zHorvathAgeEAA
+{col 4}{txt}Mediator   (mvar):{col 24}{res}zhei2015_total_score
+{col 4}{txt}Covariates (cvars):{col 24}{res}zAGE_NHANES SEX NHB HISP OTHER zses LYMPHOCYTES_PCT MONOCYTES_PCT NEUTROPHIL_PCT
+
+{col 4}{txt}Model for the outcome  (yreg):{col 35}{res}cox
+{col 4}{txt}Model for the mediator (mreg):{col 35}{res}linear
+
+{col 4}{txt}Referent exposure level (a0):{col 46}{res}0
+{col 4}{txt}Actual exposure level   (a1):{col 46}{res}1
+{col 4}{txt}Mediator level for the decomposition (m):{col 46}{res}0
+{col 4}{txt}Fixed values of the covariates (c):{col 46}{res}-.001251 .4916 .2053 .3436 .03259 .003348 29.91 8.43 58.07
+
+
+{txt}-> Model for the outcome
+
+{col 9}Failure {bf:_d}: {res}DIED==1
+{col 3}{txt}Analysis time {bf:_t}: {res}TIMEyears
+{col 8}{txt}ID variable: {res}ID
+{col 13}{txt}Weight: {res}[pweight=sampling_weight]
+
+{txt}(sum of wgt is 66,248,158.990167)
+Iteration 0:  Log pseudolikelihood = {res}-7340.3286
+{txt}Iteration 1:  Log pseudolikelihood = {res}-6787.6038
+{txt}Iteration 2:  Log pseudolikelihood = {res}-6776.1665
+{txt}Iteration 3:  Log pseudolikelihood = {res}-6776.1569
+{txt}Iteration 4:  Log pseudolikelihood = {res}-6776.1569
+{txt}Refining estimates:
+Iteration 0:  Log pseudolikelihood = {res}-6776.1569
+
+{txt}Cox regression with Breslow method for ties
+
+No. of subjects = {res}{ralign 11:66,248,159}{col 57}{txt}{lalign 13:Number of obs} = {res}{ralign 6:2,148}
+{txt}No. of failures = {res}{ralign 11:30,837,028}
+{txt}Time at risk    = {res}{ralign 11:967907301.2}
+{col 57}{txt}{lalign 13:Wald chi2({res:12})} = {res}{ralign 6:648.94}
+{txt}Log pseudolikelihood = {res}-6776.1569{col 57}{txt}{lalign 13:Prob > chi2} = {res}{ralign 6:0.0000}
+
+{txt}{ralign 96:(Std. err. adjusted for {res:2,148} clusters in {res:ID})}
+{hline 31}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 32}{c |}{col 44}    Robust
+{col 1}                            _t{col 32}{c |} Haz. ratio{col 44}   std. err.{col 56}      z{col 64}   P>|z|{col 72}     [95% con{col 85}f. interval]
+{hline 31}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{space 16}zHorvathAgeEAA {c |}{col 32}{res}{space 2}   1.1241{col 44}{space 2} .0454161{col 55}{space 1}    2.90{col 64}{space 3}0.004{col 72}{space 4} 1.038519{col 85}{space 3} 1.216733
+{txt}{space 10}zhei2015_total_score {c |}{col 32}{res}{space 2} .9676473{col 44}{space 2} .0396135{col 55}{space 1}   -0.80{col 64}{space 3}0.422{col 72}{space 4} .8930393{col 85}{space 3} 1.048488
+{txt}_zHorvathAgeEXzhei2015_tot_000 {c |}{col 32}{res}{space 2} 1.024019{col 44}{space 2} .0461883{col 55}{space 1}    0.53{col 64}{space 3}0.599{col 72}{space 4} .9373781{col 85}{space 3} 1.118669
+{txt}{space 19}zAGE_NHANES {c |}{col 32}{res}{space 2} 2.600713{col 44}{space 2} .1310806{col 55}{space 1}   18.96{col 64}{space 3}0.000{col 72}{space 4} 2.356081{col 85}{space 3} 2.870744
+{txt}{space 27}SEX {c |}{col 32}{res}{space 2} .6754558{col 44}{space 2} .0571542{col 55}{space 1}   -4.64{col 64}{space 3}0.000{col 72}{space 4} .5722316{col 85}{space 3} .7973004
+{txt}{space 27}NHB {c |}{col 32}{res}{space 2} 1.174155{col 44}{space 2} .1249311{col 55}{space 1}    1.51{col 64}{space 3}0.131{col 72}{space 4} .9531402{col 85}{space 3} 1.446418
+{txt}{space 26}HISP {c |}{col 32}{res}{space 2} .6820622{col 44}{space 2} .0871591{col 55}{space 1}   -2.99{col 64}{space 3}0.003{col 72}{space 4} .5309468{col 85}{space 3} .8761873
+{txt}{space 25}OTHER {c |}{col 32}{res}{space 2} .8031215{col 44}{space 2} .1897415{col 55}{space 1}   -0.93{col 64}{space 3}0.353{col 72}{space 4} .5054528{col 85}{space 3} 1.276092
+{txt}{space 26}zses {c |}{col 32}{res}{space 2} .6876682{col 44}{space 2} .0347566{col 55}{space 1}   -7.41{col 64}{space 3}0.000{col 72}{space 4}  .622812{col 85}{space 3} .7592781
+{txt}{space 15}LYMPHOCYTES_PCT {c |}{col 32}{res}{space 2}  .956005{col 44}{space 2}   .01706{col 55}{space 1}   -2.52{col 64}{space 3}0.012{col 72}{space 4}  .923146{col 85}{space 3} .9900335
+{txt}{space 17}MONOCYTES_PCT {c |}{col 32}{res}{space 2} .9872642{col 44}{space 2}  .025494{col 55}{space 1}   -0.50{col 64}{space 3}0.620{col 72}{space 4} .9385402{col 85}{space 3} 1.038518
+{txt}{space 16}NEUTROPHIL_PCT {c |}{col 32}{res}{space 2} .9712609{col 44}{space 2} .0161286{col 55}{space 1}   -1.76{col 64}{space 3}0.079{col 72}{space 4} .9401583{col 85}{space 3} 1.003392
+{txt}{hline 31}{c BT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+
+
+-> Model for the mediator
+{res}
+{txt}Iteration 0:{space 2}Log likelihood = {res:-3004.8499}  
+Iteration 1:{space 2}Log likelihood = {res:-3004.8499}  
+{res}
+{txt}{col 1}Linear regression (Maximum Likelihood){col 57}{lalign 13:Number of obs}{col 70} = {res}{ralign 6:2,148}
+{txt}{col 57}{lalign 13:Wald chi2({res:10})}{col 70} = {res}{ralign 6:85.34}
+{txt}{col 1}{lalign 14:Log likelihood}{col 15} = {res}{ralign 10:-3004.8499}{txt}{col 57}{lalign 13:Prob > chi2}{col 70} = {res}{ralign 6:0.0000}
+
+{txt}{hline 16}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 1}zhei2015_tota~e{col 17}{c |} Coefficient{col 29}  Std. err.{col 41}      z{col 49}   P>|z|{col 57}     [95% con{col 70}f. interval]
+{hline 16}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{res}mu              {txt}{c |}
+{space 1}zHorvathAgeEAA {c |}{col 17}{res}{space 2}-.0242226{col 29}{space 2} .0219523{col 40}{space 1}   -1.10{col 49}{space 3}0.270{col 57}{space 4}-.0672484{col 70}{space 3} .0188032
+{txt}{space 4}zAGE_NHANES {c |}{col 17}{res}{space 2} .0957326{col 29}{space 2} .0228386{col 40}{space 1}    4.19{col 49}{space 3}0.000{col 57}{space 4} .0509697{col 70}{space 3} .1404956
+{txt}{space 12}SEX {c |}{col 17}{res}{space 2} .0783023{col 29}{space 2} .0443929{col 40}{space 1}    1.76{col 49}{space 3}0.078{col 57}{space 4}-.0087062{col 70}{space 3} .1653108
+{txt}{space 12}NHB {c |}{col 17}{res}{space 2} -.038187{col 29}{space 2} .0624242{col 40}{space 1}   -0.61{col 49}{space 3}0.541{col 57}{space 4}-.1605362{col 70}{space 3} .0841621
+{txt}{space 11}HISP {c |}{col 17}{res}{space 2} .1472459{col 29}{space 2} .0564655{col 40}{space 1}    2.61{col 49}{space 3}0.009{col 57}{space 4} .0365756{col 70}{space 3} .2579162
+{txt}{space 10}OTHER {c |}{col 17}{res}{space 2} .2011013{col 29}{space 2} .1232288{col 40}{space 1}    1.63{col 49}{space 3}0.103{col 57}{space 4}-.0404227{col 70}{space 3} .4426253
+{txt}{space 11}zses {c |}{col 17}{res}{space 2} .1966238{col 29}{space 2} .0245674{col 40}{space 1}    8.00{col 49}{space 3}0.000{col 57}{space 4} .1484726{col 70}{space 3} .2447751
+{txt}LYMPHOCYTES_PCT {c |}{col 17}{res}{space 2}-.0064502{col 29}{space 2} .0090634{col 40}{space 1}   -0.71{col 49}{space 3}0.477{col 57}{space 4}-.0242142{col 70}{space 3} .0113137
+{txt}{space 2}MONOCYTES_PCT {c |}{col 17}{res}{space 2}-.0096451{col 29}{space 2} .0136899{col 40}{space 1}   -0.70{col 49}{space 3}0.481{col 57}{space 4}-.0364768{col 70}{space 3} .0171866
+{txt}{space 1}NEUTROPHIL_PCT {c |}{col 17}{res}{space 2}-.0084935{col 29}{space 2} .0086719{col 40}{space 1}   -0.98{col 49}{space 3}0.327{col 57}{space 4}  -.02549{col 70}{space 3} .0085031
+{txt}{space 10}_cons {c |}{col 17}{res}{space 2} .6776328{col 29}{space 2} .8504284{col 40}{space 1}    0.80{col 49}{space 3}0.426{col 57}{space 4}-.9891763{col 70}{space 3} 2.344442
+{txt}{hline 16}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{res}sigma2          {txt}{c |}
+{space 10}_cons {c |}{col 17}{res}{space 2} .9607268{col 29}{space 2} .0293155{col 40}{space 1}   32.77{col 49}{space 3}0.000{col 57}{space 4} .9032694{col 70}{space 3} 1.018184
+{txt}{hline 16}{c BT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{res}
+
+{txt}-> 4-way decomposition: delta method
+
+{res}{txt}{hline 13}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 14}{c |} Coefficient{col 26}  Std. err.{col 38}      z{col 46}   P>|z|{col 54}     [95% con{col 67}f. interval]
+{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{space 6}tereri {c |}{col 14}{res}{space 2} .1237707{col 26}{space 2} .0455978{col 37}{space 1}    2.71{col 46}{space 3}0.007{col 54}{space 4} .0344007{col 67}{space 3} .2131408
+{txt}{space 3}ereri_cde {c |}{col 14}{res}{space 2} .1240296{col 26}{space 2} .0453853{col 37}{space 1}    2.73{col 46}{space 3}0.006{col 54}{space 4} .0350761{col 67}{space 3} .2129831
+{txt}ereri_intref {c |}{col 14}{res}{space 2}-.0005079{col 26}{space 2} .0011201{col 37}{space 1}   -0.45{col 46}{space 3}0.650{col 54}{space 4}-.0027033{col 67}{space 3} .0016875
+{txt}ereri_intmed {c |}{col 14}{res}{space 2}-.0005478{col 26}{space 2} .0013337{col 37}{space 1}   -0.41{col 46}{space 3}0.681{col 54}{space 4}-.0031618{col 67}{space 3} .0020661
+{txt}{space 3}ereri_pie {c |}{col 14}{res}{space 2} .0007969{col 26}{space 2} .0012276{col 37}{space 1}    0.65{col 46}{space 3}0.516{col 54}{space 4}-.0016091{col 67}{space 3}  .003203
+{txt}{space 6}terira {c |}{col 14}{res}{space 2} 1.123771{col 26}{space 2} .0455978{col 37}{space 1}   24.65{col 46}{space 3}0.000{col 54}{space 4} 1.034401{col 67}{space 3} 1.213141
+{txt}{space 7}p_cde {c |}{col 14}{res}{space 2} 1.002091{col 26}{space 2} .0150604{col 37}{space 1}   66.54{col 46}{space 3}0.000{col 54}{space 4} .9725734{col 67}{space 3} 1.031609
+{txt}{space 4}p_intref {c |}{col 14}{res}{space 2}-.0041039{col 26}{space 2} .0092344{col 37}{space 1}   -0.44{col 46}{space 3}0.657{col 54}{space 4}-.0222029{col 67}{space 3} .0139951
+{txt}{space 4}p_intmed {c |}{col 14}{res}{space 2}-.0044262{col 26}{space 2} .0110987{col 37}{space 1}   -0.40{col 46}{space 3}0.690{col 54}{space 4}-.0261792{col 67}{space 3} .0173268
+{txt}{space 7}p_pie {c |}{col 14}{res}{space 2} .0064389{col 26}{space 2} .0101271{col 37}{space 1}    0.64{col 46}{space 3}0.525{col 54}{space 4}-.0134099{col 67}{space 3} .0262877
+{txt}{space 8}op_m {c |}{col 14}{res}{space 2} .0020126{col 26}{space 2} .0136098{col 37}{space 1}    0.15{col 46}{space 3}0.882{col 54}{space 4} -.024662{col 67}{space 3} .0286873
+{txt}{space 6}op_ati {c |}{col 14}{res}{space 2}-.0085302{col 26}{space 2} .0168824{col 37}{space 1}   -0.51{col 46}{space 3}0.613{col 54}{space 4} -.041619{col 67}{space 3} .0245586
+{txt}{space 8}op_e {c |}{col 14}{res}{space 2}-.0020913{col 26}{space 2} .0150605{col 37}{space 1}   -0.14{col 46}{space 3}0.890{col 54}{space 4}-.0316093{col 67}{space 3} .0274267
+{txt}{hline 13}{c BT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+
+{p 3 3 5 0}
+tereri=total excess relative risk; ereri_cde=excess relative risk due to controlled direct effect; ereri_intref=excess relative risk due to reference interaction; ereri_intmed=excess relative risk due to mediated interaction; ereri_pie=excess relative risk due to pure indirect effect; terira=total effect risk ratio; p_cde=proportion controlled direct effect; p_intref=proportion reference interaction; p_intmed=proportion mediated interaction; p_pie=proportion pure indirect effect; op_m=overall proportion mediated; op_ati=overall proportion attributable to interaction; op_e=overall proportion eliminated.
+{p_end}
+{res}{err}Warning: this analysis assumes a rare outcome.
+Warning: fixed values for the covariates zAGE_NHANES SEX NHB HISP OTHER zses LYMPHOCYTES_PCT MONOCYTES_PCT NEUTROPHIL_PCT were not provided. All covariates are fixed at their respective mean.
+
+{txt}-> Summary
+
+{col 4}Outcome    (yvar):{col 24}{res}TIMEyears
+{col 4}{txt}Exposure   (avar):{col 24}{res}zHannumAgeEAA
+{col 4}{txt}Mediator   (mvar):{col 24}{res}zhei2015_total_score
+{col 4}{txt}Covariates (cvars):{col 24}{res}zAGE_NHANES SEX NHB HISP OTHER zses LYMPHOCYTES_PCT MONOCYTES_PCT NEUTROPHIL_PCT
+
+{col 4}{txt}Model for the outcome  (yreg):{col 35}{res}cox
+{col 4}{txt}Model for the mediator (mreg):{col 35}{res}linear
+
+{col 4}{txt}Referent exposure level (a0):{col 46}{res}0
+{col 4}{txt}Actual exposure level   (a1):{col 46}{res}1
+{col 4}{txt}Mediator level for the decomposition (m):{col 46}{res}0
+{col 4}{txt}Fixed values of the covariates (c):{col 46}{res}-.001251 .4916 .2053 .3436 .03259 .003348 29.91 8.43 58.07
+
+
+{txt}-> Model for the outcome
+
+{col 9}Failure {bf:_d}: {res}DIED==1
+{col 3}{txt}Analysis time {bf:_t}: {res}TIMEyears
+{col 8}{txt}ID variable: {res}ID
+{col 13}{txt}Weight: {res}[pweight=sampling_weight]
+
+{txt}(sum of wgt is 66,248,158.990167)
+Iteration 0:  Log pseudolikelihood = {res}-7340.3286
+{txt}Iteration 1:  Log pseudolikelihood = {res}-6778.2485
+{txt}Iteration 2:  Log pseudolikelihood = {res}-6768.3058
+{txt}Iteration 3:  Log pseudolikelihood = {res}-6768.2972
+{txt}Iteration 4:  Log pseudolikelihood = {res}-6768.2972
+{txt}Refining estimates:
+Iteration 0:  Log pseudolikelihood = {res}-6768.2972
+
+{txt}Cox regression with Breslow method for ties
+
+No. of subjects = {res}{ralign 11:66,248,159}{col 57}{txt}{lalign 13:Number of obs} = {res}{ralign 6:2,148}
+{txt}No. of failures = {res}{ralign 11:30,837,028}
+{txt}Time at risk    = {res}{ralign 11:967907301.2}
+{col 57}{txt}{lalign 13:Wald chi2({res:12})} = {res}{ralign 6:652.92}
+{txt}Log pseudolikelihood = {res}-6768.2972{col 57}{txt}{lalign 13:Prob > chi2} = {res}{ralign 6:0.0000}
+
+{txt}{ralign 96:(Std. err. adjusted for {res:2,148} clusters in {res:ID})}
+{hline 31}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 32}{c |}{col 44}    Robust
+{col 1}                            _t{col 32}{c |} Haz. ratio{col 44}   std. err.{col 56}      z{col 64}   P>|z|{col 72}     [95% con{col 85}f. interval]
+{hline 31}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{space 17}zHannumAgeEAA {c |}{col 32}{res}{space 2} 1.206202{col 44}{space 2} .0499512{col 55}{space 1}    4.53{col 64}{space 3}0.000{col 72}{space 4} 1.112168{col 85}{space 3} 1.308188
+{txt}{space 10}zhei2015_total_score {c |}{col 32}{res}{space 2} .9701625{col 44}{space 2} .0396889{col 55}{space 1}   -0.74{col 64}{space 3}0.459{col 72}{space 4} .8954105{col 85}{space 3} 1.051155
+{txt}_zHannumAgeEAXzhei2015_tot_000 {c |}{col 32}{res}{space 2}  1.01988{col 44}{space 2} .0429548{col 55}{space 1}    0.47{col 64}{space 3}0.640{col 72}{space 4} .9390717{col 85}{space 3} 1.107643
+{txt}{space 19}zAGE_NHANES {c |}{col 32}{res}{space 2} 2.612795{col 44}{space 2} .1321875{col 55}{space 1}   18.98{col 64}{space 3}0.000{col 72}{space 4} 2.366143{col 85}{space 3} 2.885158
+{txt}{space 27}SEX {c |}{col 32}{res}{space 2} .7008856{col 44}{space 2} .0598658{col 55}{space 1}   -4.16{col 64}{space 3}0.000{col 72}{space 4} .5928464{col 85}{space 3} .8286137
+{txt}{space 27}NHB {c |}{col 32}{res}{space 2} 1.206454{col 44}{space 2}  .129504{col 55}{space 1}    1.75{col 64}{space 3}0.080{col 72}{space 4}  .977553{col 85}{space 3} 1.488953
+{txt}{space 26}HISP {c |}{col 32}{res}{space 2} .6591865{col 44}{space 2} .0832544{col 55}{space 1}   -3.30{col 64}{space 3}0.001{col 72}{space 4} .5146389{col 85}{space 3} .8443334
+{txt}{space 25}OTHER {c |}{col 32}{res}{space 2} .7634457{col 44}{space 2} .1769771{col 55}{space 1}   -1.16{col 64}{space 3}0.244{col 72}{space 4} .4846834{col 85}{space 3} 1.202536
+{txt}{space 26}zses {c |}{col 32}{res}{space 2} .6927496{col 44}{space 2} .0345255{col 55}{space 1}   -7.37{col 64}{space 3}0.000{col 72}{space 4} .6282808{col 85}{space 3} .7638336
+{txt}{space 15}LYMPHOCYTES_PCT {c |}{col 32}{res}{space 2} .9584091{col 44}{space 2} .0164964{col 55}{space 1}   -2.47{col 64}{space 3}0.014{col 72}{space 4}  .926616{col 85}{space 3}  .991293
+{txt}{space 17}MONOCYTES_PCT {c |}{col 32}{res}{space 2} .9905356{col 44}{space 2} .0244311{col 55}{space 1}   -0.39{col 64}{space 3}0.700{col 72}{space 4} .9437904{col 85}{space 3} 1.039596
+{txt}{space 16}NEUTROPHIL_PCT {c |}{col 32}{res}{space 2} .9703631{col 44}{space 2} .0155889{col 55}{space 1}   -1.87{col 64}{space 3}0.061{col 72}{space 4} .9402854{col 85}{space 3} 1.001403
+{txt}{hline 31}{c BT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+
+
+-> Model for the mediator
+{res}
+{txt}Iteration 0:{space 2}Log likelihood = {res:-3001.5179}  
+Iteration 1:{space 2}Log likelihood = {res:-3001.5179}  
+{res}
+{txt}{col 1}Linear regression (Maximum Likelihood){col 57}{lalign 13:Number of obs}{col 70} = {res}{ralign 6:2,148}
+{txt}{col 57}{lalign 13:Wald chi2({res:10})}{col 70} = {res}{ralign 6:92.28}
+{txt}{col 1}{lalign 14:Log likelihood}{col 15} = {res}{ralign 10:-3001.5179}{txt}{col 57}{lalign 13:Prob > chi2}{col 70} = {res}{ralign 6:0.0000}
+
+{txt}{hline 16}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 1}zhei2015_tota~e{col 17}{c |} Coefficient{col 29}  Std. err.{col 41}      z{col 49}   P>|z|{col 57}     [95% con{col 70}f. interval]
+{hline 16}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{res}mu              {txt}{c |}
+{space 2}zHannumAgeEAA {c |}{col 17}{res}{space 2}-.0643032{col 29}{space 2} .0228842{col 40}{space 1}   -2.81{col 49}{space 3}0.005{col 57}{space 4}-.1091554{col 70}{space 3}-.0194509
+{txt}{space 4}zAGE_NHANES {c |}{col 17}{res}{space 2} .0943534{col 29}{space 2} .0228095{col 40}{space 1}    4.14{col 49}{space 3}0.000{col 57}{space 4} .0496477{col 70}{space 3} .1390592
+{txt}{space 12}SEX {c |}{col 17}{res}{space 2} .0655711{col 29}{space 2} .0445295{col 40}{space 1}    1.47{col 49}{space 3}0.141{col 57}{space 4}-.0217052{col 70}{space 3} .1528473
+{txt}{space 12}NHB {c |}{col 17}{res}{space 2}-.0548647{col 29}{space 2} .0626541{col 40}{space 1}   -0.88{col 49}{space 3}0.381{col 57}{space 4}-.1776644{col 70}{space 3}  .067935
+{txt}{space 11}HISP {c |}{col 17}{res}{space 2} .1574243{col 29}{space 2} .0562984{col 40}{space 1}    2.80{col 49}{space 3}0.005{col 57}{space 4} .0470815{col 70}{space 3} .2677671
+{txt}{space 10}OTHER {c |}{col 17}{res}{space 2} .2060636{col 29}{space 2} .1229618{col 40}{space 1}    1.68{col 49}{space 3}0.094{col 57}{space 4}-.0349371{col 70}{space 3} .4470644
+{txt}{space 11}zses {c |}{col 17}{res}{space 2} .1916722{col 29}{space 2} .0246034{col 40}{space 1}    7.79{col 49}{space 3}0.000{col 57}{space 4} .1434505{col 70}{space 3}  .239894
+{txt}LYMPHOCYTES_PCT {c |}{col 17}{res}{space 2}-.0073353{col 29}{space 2} .0090512{col 40}{space 1}   -0.81{col 49}{space 3}0.418{col 57}{space 4}-.0250753{col 70}{space 3} .0104048
+{txt}{space 2}MONOCYTES_PCT {c |}{col 17}{res}{space 2}-.0105151{col 29}{space 2} .0136728{col 40}{space 1}   -0.77{col 49}{space 3}0.442{col 57}{space 4}-.0373134{col 70}{space 3} .0162831
+{txt}{space 1}NEUTROPHIL_PCT {c |}{col 17}{res}{space 2}-.0085106{col 29}{space 2} .0086573{col 40}{space 1}   -0.98{col 49}{space 3}0.326{col 57}{space 4}-.0254786{col 70}{space 3} .0084573
+{txt}{space 10}_cons {c |}{col 17}{res}{space 2} .7189974{col 29}{space 2} .8491524{col 40}{space 1}    0.85{col 49}{space 3}0.397{col 57}{space 4}-.9453107{col 70}{space 3} 2.383306
+{txt}{hline 16}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{res}sigma2          {txt}{c |}
+{space 10}_cons {c |}{col 17}{res}{space 2} .9577508{col 29}{space 2} .0292247{col 40}{space 1}   32.77{col 49}{space 3}0.000{col 57}{space 4} .9004714{col 70}{space 3}  1.01503
+{txt}{hline 16}{c BT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{res}
+
+{txt}-> 4-way decomposition: delta method
+
+{res}{txt}{hline 13}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 14}{c |} Coefficient{col 26}  Std. err.{col 38}      z{col 46}   P>|z|{col 54}     [95% con{col 67}f. interval]
+{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{space 6}tereri {c |}{col 14}{res}{space 2}  .206537{col 26}{space 2} .0501468{col 37}{space 1}    4.12{col 46}{space 3}0.000{col 54}{space 4} .1082511{col 67}{space 3}  .304823
+{txt}{space 3}ereri_cde {c |}{col 14}{res}{space 2} .2061058{col 26}{space 2} .0499107{col 37}{space 1}    4.13{col 46}{space 3}0.000{col 54}{space 4} .1082826{col 67}{space 3}  .303929
+{txt}ereri_intref {c |}{col 14}{res}{space 2}-.0003914{col 26}{space 2} .0008917{col 37}{space 1}   -0.44{col 46}{space 3}0.661{col 54}{space 4}-.0021391{col 67}{space 3} .0013564
+{txt}ereri_intmed {c |}{col 14}{res}{space 2}-.0011271{col 26}{space 2} .0034159{col 37}{space 1}   -0.33{col 46}{space 3}0.741{col 54}{space 4}-.0078221{col 67}{space 3} .0055678
+{txt}{space 3}ereri_pie {c |}{col 14}{res}{space 2} .0019497{col 26}{space 2} .0027257{col 37}{space 1}    0.72{col 46}{space 3}0.474{col 54}{space 4}-.0033926{col 67}{space 3} .0072921
+{txt}{space 6}terira {c |}{col 14}{res}{space 2} 1.206537{col 26}{space 2} .0501468{col 37}{space 1}   24.06{col 46}{space 3}0.000{col 54}{space 4} 1.108251{col 67}{space 3} 1.304823
+{txt}{space 7}p_cde {c |}{col 14}{res}{space 2} .9979121{col 26}{space 2} .0237361{col 37}{space 1}   42.04{col 46}{space 3}0.000{col 54}{space 4} .9513901{col 67}{space 3} 1.044434
+{txt}{space 4}p_intref {c |}{col 14}{res}{space 2}-.0018949{col 26}{space 2}   .00431{col 37}{space 1}   -0.44{col 46}{space 3}0.660{col 54}{space 4}-.0103424{col 67}{space 3} .0065525
+{txt}{space 4}p_intmed {c |}{col 14}{res}{space 2}-.0054573{col 26}{space 2} .0166684{col 37}{space 1}   -0.33{col 46}{space 3}0.743{col 54}{space 4}-.0381268{col 67}{space 3} .0272122
+{txt}{space 7}p_pie {c |}{col 14}{res}{space 2} .0094402{col 26}{space 2} .0131107{col 37}{space 1}    0.72{col 46}{space 3}0.472{col 54}{space 4}-.0162563{col 67}{space 3} .0351367
+{txt}{space 8}op_m {c |}{col 14}{res}{space 2} .0039828{col 26}{space 2} .0236638{col 37}{space 1}    0.17{col 46}{space 3}0.866{col 54}{space 4}-.0423974{col 67}{space 3} .0503631
+{txt}{space 6}op_ati {c |}{col 14}{res}{space 2}-.0073523{col 26}{space 2} .0187923{col 37}{space 1}   -0.39{col 46}{space 3}0.696{col 54}{space 4}-.0441845{col 67}{space 3} .0294799
+{txt}{space 8}op_e {c |}{col 14}{res}{space 2} .0020879{col 26}{space 2}  .023736{col 37}{space 1}    0.09{col 46}{space 3}0.930{col 54}{space 4}-.0444339{col 67}{space 3} .0486097
+{txt}{hline 13}{c BT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+
+{p 3 3 5 0}
+tereri=total excess relative risk; ereri_cde=excess relative risk due to controlled direct effect; ereri_intref=excess relative risk due to reference interaction; ereri_intmed=excess relative risk due to mediated interaction; ereri_pie=excess relative risk due to pure indirect effect; terira=total effect risk ratio; p_cde=proportion controlled direct effect; p_intref=proportion reference interaction; p_intmed=proportion mediated interaction; p_pie=proportion pure indirect effect; op_m=overall proportion mediated; op_ati=overall proportion attributable to interaction; op_e=overall proportion eliminated.
+{p_end}
+{res}{err}Warning: this analysis assumes a rare outcome.
+Warning: fixed values for the covariates zAGE_NHANES SEX NHB HISP OTHER zses LYMPHOCYTES_PCT MONOCYTES_PCT NEUTROPHIL_PCT were not provided. All covariates are fixed at their respective mean.
+
+{txt}-> Summary
+
+{col 4}Outcome    (yvar):{col 24}{res}TIMEyears
+{col 4}{txt}Exposure   (avar):{col 24}{res}zDunedinPoAm
+{col 4}{txt}Mediator   (mvar):{col 24}{res}zhei2015_total_score
+{col 4}{txt}Covariates (cvars):{col 24}{res}zAGE_NHANES SEX NHB HISP OTHER zses LYMPHOCYTES_PCT MONOCYTES_PCT NEUTROPHIL_PCT
+
+{col 4}{txt}Model for the outcome  (yreg):{col 35}{res}cox
+{col 4}{txt}Model for the mediator (mreg):{col 35}{res}linear
+
+{col 4}{txt}Referent exposure level (a0):{col 46}{res}0
+{col 4}{txt}Actual exposure level   (a1):{col 46}{res}1
+{col 4}{txt}Mediator level for the decomposition (m):{col 46}{res}0
+{col 4}{txt}Fixed values of the covariates (c):{col 46}{res}-.001251 .4916 .2053 .3436 .03259 .003348 29.91 8.43 58.07
+
+
+{txt}-> Model for the outcome
+
+{col 9}Failure {bf:_d}: {res}DIED==1
+{col 3}{txt}Analysis time {bf:_t}: {res}TIMEyears
+{col 8}{txt}ID variable: {res}ID
+{col 13}{txt}Weight: {res}[pweight=sampling_weight]
+
+{txt}(sum of wgt is 66,248,158.990167)
+Iteration 0:  Log pseudolikelihood = {res}-7340.3286
+{txt}Iteration 1:  Log pseudolikelihood = {res}-6758.3406
+{txt}Iteration 2:  Log pseudolikelihood = {res}-6746.8279
+{txt}Iteration 3:  Log pseudolikelihood = {res}-6746.8136
+{txt}Iteration 4:  Log pseudolikelihood = {res}-6746.8136
+{txt}Refining estimates:
+Iteration 0:  Log pseudolikelihood = {res}-6746.8136
+
+{txt}Cox regression with Breslow method for ties
+
+No. of subjects = {res}{ralign 11:66,248,159}{col 57}{txt}{lalign 13:Number of obs} = {res}{ralign 6:2,148}
+{txt}No. of failures = {res}{ralign 11:30,837,028}
+{txt}Time at risk    = {res}{ralign 11:967907301.2}
+{col 57}{txt}{lalign 13:Wald chi2({res:12})} = {res}{ralign 6:626.90}
+{txt}Log pseudolikelihood = {res}-6746.8136{col 57}{txt}{lalign 13:Prob > chi2} = {res}{ralign 6:0.0000}
+
+{txt}{ralign 96:(Std. err. adjusted for {res:2,148} clusters in {res:ID})}
+{hline 31}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 32}{c |}{col 44}    Robust
+{col 1}                            _t{col 32}{c |} Haz. ratio{col 44}   std. err.{col 56}      z{col 64}   P>|z|{col 72}     [95% con{col 85}f. interval]
+{hline 31}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{space 18}zDunedinPoAm {c |}{col 32}{res}{space 2} 1.326826{col 44}{space 2} .0561321{col 55}{space 1}    6.68{col 64}{space 3}0.000{col 72}{space 4} 1.221247{col 85}{space 3} 1.441533
+{txt}{space 10}zhei2015_total_score {c |}{col 32}{res}{space 2} .9937137{col 44}{space 2} .0422376{col 55}{space 1}   -0.15{col 64}{space 3}0.882{col 72}{space 4}  .914284{col 85}{space 3} 1.080044
+{txt}_zDunedinPoAmXzhei2015_tot_000 {c |}{col 32}{res}{space 2} .9742446{col 44}{space 2} .0417725{col 55}{space 1}   -0.61{col 64}{space 3}0.543{col 72}{space 4} .8957178{col 85}{space 3} 1.059656
+{txt}{space 19}zAGE_NHANES {c |}{col 32}{res}{space 2} 2.658319{col 44}{space 2} .1348043{col 55}{space 1}   19.28{col 64}{space 3}0.000{col 72}{space 4} 2.406813{col 85}{space 3} 2.936106
+{txt}{space 27}SEX {c |}{col 32}{res}{space 2} .6677024{col 44}{space 2} .0570179{col 55}{space 1}   -4.73{col 64}{space 3}0.000{col 72}{space 4} .5648008{col 85}{space 3} .7893518
+{txt}{space 27}NHB {c |}{col 32}{res}{space 2} 1.004954{col 44}{space 2} .1073454{col 55}{space 1}    0.05{col 64}{space 3}0.963{col 72}{space 4} .8151249{col 85}{space 3} 1.238992
+{txt}{space 26}HISP {c |}{col 32}{res}{space 2}  .646542{col 44}{space 2}  .082384{col 55}{space 1}   -3.42{col 64}{space 3}0.001{col 72}{space 4} .5036566{col 85}{space 3} .8299634
+{txt}{space 25}OTHER {c |}{col 32}{res}{space 2} .7472568{col 44}{space 2} .1716833{col 55}{space 1}   -1.27{col 64}{space 3}0.205{col 72}{space 4} .4763269{col 85}{space 3} 1.172289
+{txt}{space 26}zses {c |}{col 32}{res}{space 2} .7017731{col 44}{space 2} .0352828{col 55}{space 1}   -7.04{col 64}{space 3}0.000{col 72}{space 4}  .635918{col 85}{space 3} .7744479
+{txt}{space 15}LYMPHOCYTES_PCT {c |}{col 32}{res}{space 2} .9821592{col 44}{space 2}   .01942{col 55}{space 1}   -0.91{col 64}{space 3}0.363{col 72}{space 4} .9448248{col 85}{space 3} 1.020969
+{txt}{space 17}MONOCYTES_PCT {c |}{col 32}{res}{space 2} .9991874{col 44}{space 2} .0264727{col 55}{space 1}   -0.03{col 64}{space 3}0.976{col 72}{space 4} .9486259{col 85}{space 3} 1.052444
+{txt}{space 16}NEUTROPHIL_PCT {c |}{col 32}{res}{space 2} .9828223{col 44}{space 2} .0177733{col 55}{space 1}   -0.96{col 64}{space 3}0.338{col 72}{space 4} .9485974{col 85}{space 3} 1.018282
+{txt}{hline 31}{c BT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+
+
+-> Model for the mediator
+{res}
+{txt}Iteration 0:{space 2}Log likelihood = {res:-2996.9903}  
+Iteration 1:{space 2}Log likelihood = {res:-2996.9903}  
+{res}
+{txt}{col 1}Linear regression (Maximum Likelihood){col 57}{lalign 13:Number of obs}{col 70} = {res}{ralign 6:2,148}
+{txt}{col 57}{lalign 13:Wald chi2({res:10})}{col 70} = {res}{ralign 6:101.74}
+{txt}{col 1}{lalign 14:Log likelihood}{col 15} = {res}{ralign 10:-2996.9903}{txt}{col 57}{lalign 13:Prob > chi2}{col 70} = {res}{ralign 6:0.0000}
+
+{txt}{hline 16}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 1}zhei2015_tota~e{col 17}{c |} Coefficient{col 29}  Std. err.{col 41}      z{col 49}   P>|z|{col 57}     [95% con{col 70}f. interval]
+{hline 16}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{res}mu              {txt}{c |}
+{space 3}zDunedinPoAm {c |}{col 17}{res}{space 2}-.0990568{col 29}{space 2} .0240225{col 40}{space 1}   -4.12{col 49}{space 3}0.000{col 57}{space 4}  -.14614{col 70}{space 3}-.0519737
+{txt}{space 4}zAGE_NHANES {c |}{col 17}{res}{space 2}  .091448{col 29}{space 2} .0227807{col 40}{space 1}    4.01{col 49}{space 3}0.000{col 57}{space 4} .0467987{col 70}{space 3} .1360974
+{txt}{space 12}SEX {c |}{col 17}{res}{space 2} .0659263{col 29}{space 2} .0441809{col 40}{space 1}    1.49{col 49}{space 3}0.136{col 57}{space 4}-.0206666{col 70}{space 3} .1525192
+{txt}{space 12}NHB {c |}{col 17}{res}{space 2} .0099398{col 29}{space 2} .0629916{col 40}{space 1}    0.16{col 49}{space 3}0.875{col 57}{space 4}-.1135214{col 70}{space 3} .1334011
+{txt}{space 11}HISP {c |}{col 17}{res}{space 2} .1533021{col 29}{space 2} .0561402{col 40}{space 1}    2.73{col 49}{space 3}0.006{col 57}{space 4} .0432694{col 70}{space 3} .2633349
+{txt}{space 10}OTHER {c |}{col 17}{res}{space 2} .2261226{col 29}{space 2} .1228011{col 40}{space 1}    1.84{col 49}{space 3}0.066{col 57}{space 4}-.0145631{col 70}{space 3} .4668083
+{txt}{space 11}zses {c |}{col 17}{res}{space 2} .1831966{col 29}{space 2}  .024708{col 40}{space 1}    7.41{col 49}{space 3}0.000{col 57}{space 4} .1347699{col 70}{space 3} .2316233
+{txt}LYMPHOCYTES_PCT {c |}{col 17}{res}{space 2} -.012726{col 29}{space 2} .0091488{col 40}{space 1}   -1.39{col 49}{space 3}0.164{col 57}{space 4}-.0306573{col 70}{space 3} .0052052
+{txt}{space 2}MONOCYTES_PCT {c |}{col 17}{res}{space 2}-.0117283{col 29}{space 2}   .01365{col 40}{space 1}   -0.86{col 49}{space 3}0.390{col 57}{space 4}-.0384817{col 70}{space 3} .0150252
+{txt}{space 1}NEUTROPHIL_PCT {c |}{col 17}{res}{space 2}-.0099733{col 29}{space 2} .0086447{col 40}{space 1}   -1.15{col 49}{space 3}0.249{col 57}{space 4}-.0269167{col 70}{space 3}   .00697
+{txt}{space 10}_cons {c |}{col 17}{res}{space 2} .9605031{col 29}{space 2} .8498889{col 40}{space 1}    1.13{col 49}{space 3}0.258{col 57}{space 4}-.7052485{col 70}{space 3} 2.626255
+{txt}{hline 16}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{res}sigma2          {txt}{c |}
+{space 10}_cons {c |}{col 17}{res}{space 2} .9537218{col 29}{space 2} .0291018{col 40}{space 1}   32.77{col 49}{space 3}0.000{col 57}{space 4} .8966833{col 70}{space 3}  1.01076
+{txt}{hline 16}{c BT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{res}
+
+{txt}-> 4-way decomposition: delta method
+
+{res}{txt}{hline 13}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 14}{c |} Coefficient{col 26}  Std. err.{col 38}      z{col 46}   P>|z|{col 54}     [95% con{col 67}f. interval]
+{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{space 6}tereri {c |}{col 14}{res}{space 2} .3318431{col 26}{space 2} .0575358{col 37}{space 1}    5.77{col 46}{space 3}0.000{col 54}{space 4}  .219075{col 67}{space 3} .4446111
+{txt}{space 3}ereri_cde {c |}{col 14}{res}{space 2} .3268131{col 26}{space 2} .0561314{col 37}{space 1}    5.82{col 46}{space 3}0.000{col 54}{space 4} .2167976{col 67}{space 3} .4368286
+{txt}ereri_intref {c |}{col 14}{res}{space 2} .0007625{col 26}{space 2} .0024624{col 37}{space 1}    0.31{col 46}{space 3}0.757{col 54}{space 4}-.0040638{col 67}{space 3} .0055887
+{txt}ereri_intmed {c |}{col 14}{res}{space 2} .0036426{col 26}{space 2} .0057621{col 37}{space 1}    0.63{col 46}{space 3}0.527{col 54}{space 4}-.0076508{col 67}{space 3} .0149361
+{txt}{space 3}ereri_pie {c |}{col 14}{res}{space 2} .0006249{col 26}{space 2} .0042157{col 37}{space 1}    0.15{col 46}{space 3}0.882{col 54}{space 4}-.0076378{col 67}{space 3} .0088876
+{txt}{space 6}terira {c |}{col 14}{res}{space 2} 1.331843{col 26}{space 2} .0575358{col 37}{space 1}   23.15{col 46}{space 3}0.000{col 54}{space 4} 1.219075{col 67}{space 3} 1.444611
+{txt}{space 7}p_cde {c |}{col 14}{res}{space 2} .9848424{col 26}{space 2} .0294672{col 37}{space 1}   33.42{col 46}{space 3}0.000{col 54}{space 4} .9270878{col 67}{space 3} 1.042597
+{txt}{space 4}p_intref {c |}{col 14}{res}{space 2} .0022976{col 26}{space 2} .0073455{col 37}{space 1}    0.31{col 46}{space 3}0.754{col 54}{space 4}-.0120992{col 67}{space 3} .0166945
+{txt}{space 4}p_intmed {c |}{col 14}{res}{space 2}  .010977{col 26}{space 2} .0170338{col 37}{space 1}    0.64{col 46}{space 3}0.519{col 54}{space 4}-.0224086{col 67}{space 3} .0443626
+{txt}{space 7}p_pie {c |}{col 14}{res}{space 2}  .001883{col 26}{space 2} .0126762{col 37}{space 1}    0.15{col 46}{space 3}0.882{col 54}{space 4}-.0229619{col 67}{space 3} .0267279
+{txt}{space 8}op_m {c |}{col 14}{res}{space 2}   .01286{col 26}{space 2} .0225024{col 37}{space 1}    0.57{col 46}{space 3}0.568{col 54}{space 4}-.0312439{col 67}{space 3} .0569639
+{txt}{space 6}op_ati {c |}{col 14}{res}{space 2} .0132746{col 26}{space 2} .0235159{col 37}{space 1}    0.56{col 46}{space 3}0.572{col 54}{space 4}-.0328156{col 67}{space 3} .0593649
+{txt}{space 8}op_e {c |}{col 14}{res}{space 2} .0151576{col 26}{space 2} .0294672{col 37}{space 1}    0.51{col 46}{space 3}0.607{col 54}{space 4} -.042597{col 67}{space 3} .0729123
+{txt}{hline 13}{c BT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+
+{p 3 3 5 0}
+tereri=total excess relative risk; ereri_cde=excess relative risk due to controlled direct effect; ereri_intref=excess relative risk due to reference interaction; ereri_intmed=excess relative risk due to mediated interaction; ereri_pie=excess relative risk due to pure indirect effect; terira=total effect risk ratio; p_cde=proportion controlled direct effect; p_intref=proportion reference interaction; p_intmed=proportion mediated interaction; p_pie=proportion pure indirect effect; op_m=overall proportion mediated; op_ati=overall proportion attributable to interaction; op_e=overall proportion eliminated.
+{p_end}
+{res}{err}Warning: this analysis assumes a rare outcome.
+Warning: fixed values for the covariates zAGE_NHANES SEX NHB HISP OTHER zses LYMPHOCYTES_PCT MONOCYTES_PCT NEUTROPHIL_PCT were not provided. All covariates are fixed at their respective mean.
+
+{txt}-> Summary
+
+{col 4}Outcome    (yvar):{col 24}{res}TIMEyears
+{col 4}{txt}Exposure   (avar):{col 24}{res}zPhenoAgeEAA
+{col 4}{txt}Mediator   (mvar):{col 24}{res}zhei2015_total_score
+{col 4}{txt}Covariates (cvars):{col 24}{res}zAGE_NHANES SEX NHB HISP OTHER zses LYMPHOCYTES_PCT MONOCYTES_PCT NEUTROPHIL_PCT
+
+{col 4}{txt}Model for the outcome  (yreg):{col 35}{res}cox
+{col 4}{txt}Model for the mediator (mreg):{col 35}{res}linear
+
+{col 4}{txt}Referent exposure level (a0):{col 46}{res}0
+{col 4}{txt}Actual exposure level   (a1):{col 46}{res}1
+{col 4}{txt}Mediator level for the decomposition (m):{col 46}{res}0
+{col 4}{txt}Fixed values of the covariates (c):{col 46}{res}-.001251 .4916 .2053 .3436 .03259 .003348 29.91 8.43 58.07
+
+
+{txt}-> Model for the outcome
+
+{col 9}Failure {bf:_d}: {res}DIED==1
+{col 3}{txt}Analysis time {bf:_t}: {res}TIMEyears
+{col 8}{txt}ID variable: {res}ID
+{col 13}{txt}Weight: {res}[pweight=sampling_weight]
+
+{txt}(sum of wgt is 66,248,158.990167)
+Iteration 0:  Log pseudolikelihood = {res}-7340.3286
+{txt}Iteration 1:  Log pseudolikelihood = {res}-6774.7003
+{txt}Iteration 2:  Log pseudolikelihood = {res}-6764.1391
+{txt}Iteration 3:  Log pseudolikelihood = {res}-6764.1294
+{txt}Refining estimates:
+Iteration 0:  Log pseudolikelihood = {res}-6764.1294
+
+{txt}Cox regression with Breslow method for ties
+
+No. of subjects = {res}{ralign 11:66,248,159}{col 57}{txt}{lalign 13:Number of obs} = {res}{ralign 6:2,148}
+{txt}No. of failures = {res}{ralign 11:30,837,028}
+{txt}Time at risk    = {res}{ralign 11:967907301.2}
+{col 57}{txt}{lalign 13:Wald chi2({res:12})} = {res}{ralign 6:656.69}
+{txt}Log pseudolikelihood = {res}-6764.1294{col 57}{txt}{lalign 13:Prob > chi2} = {res}{ralign 6:0.0000}
+
+{txt}{ralign 96:(Std. err. adjusted for {res:2,148} clusters in {res:ID})}
+{hline 31}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 32}{c |}{col 44}    Robust
+{col 1}                            _t{col 32}{c |} Haz. ratio{col 44}   std. err.{col 56}      z{col 64}   P>|z|{col 72}     [95% con{col 85}f. interval]
+{hline 31}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{space 18}zPhenoAgeEAA {c |}{col 32}{res}{space 2} 1.249087{col 44}{space 2} .0578607{col 55}{space 1}    4.80{col 64}{space 3}0.000{col 72}{space 4} 1.140678{col 85}{space 3} 1.367799
+{txt}{space 10}zhei2015_total_score {c |}{col 32}{res}{space 2} .9768624{col 44}{space 2} .0402238{col 55}{space 1}   -0.57{col 64}{space 3}0.570{col 72}{space 4} .9011226{col 85}{space 3} 1.058968
+{txt}_zPhenoAgeEAAXzhei2015_tot_000 {c |}{col 32}{res}{space 2} 1.005553{col 44}{space 2} .0566049{col 55}{space 1}    0.10{col 64}{space 3}0.922{col 72}{space 4} .9005102{col 85}{space 3} 1.122848
+{txt}{space 19}zAGE_NHANES {c |}{col 32}{res}{space 2} 2.636629{col 44}{space 2} .1322031{col 55}{space 1}   19.34{col 64}{space 3}0.000{col 72}{space 4} 2.389841{col 85}{space 3} 2.908902
+{txt}{space 27}SEX {c |}{col 32}{res}{space 2} .6648276{col 44}{space 2} .0552804{col 55}{space 1}   -4.91{col 64}{space 3}0.000{col 72}{space 4} .5648481{col 85}{space 3} .7825038
+{txt}{space 27}NHB {c |}{col 32}{res}{space 2}  1.13049{col 44}{space 2} .1212052{col 55}{space 1}    1.14{col 64}{space 3}0.253{col 72}{space 4} .9162321{col 85}{space 3} 1.394852
+{txt}{space 26}HISP {c |}{col 32}{res}{space 2} .6662899{col 44}{space 2} .0841512{col 55}{space 1}   -3.21{col 64}{space 3}0.001{col 72}{space 4} .5201852{col 85}{space 3} .8534311
+{txt}{space 25}OTHER {c |}{col 32}{res}{space 2} .7847052{col 44}{space 2} .1832299{col 55}{space 1}   -1.04{col 64}{space 3}0.299{col 72}{space 4} .4965348{col 85}{space 3} 1.240119
+{txt}{space 26}zses {c |}{col 32}{res}{space 2} .6991542{col 44}{space 2} .0350136{col 55}{space 1}   -7.15{col 64}{space 3}0.000{col 72}{space 4} .6337892{col 85}{space 3} .7712605
+{txt}{space 15}LYMPHOCYTES_PCT {c |}{col 32}{res}{space 2} .9599778{col 44}{space 2}  .016768{col 55}{space 1}   -2.34{col 64}{space 3}0.019{col 72}{space 4} .9276693{col 85}{space 3} .9934116
+{txt}{space 17}MONOCYTES_PCT {c |}{col 32}{res}{space 2} .9882069{col 44}{space 2}   .02528{col 55}{space 1}   -0.46{col 64}{space 3}0.643{col 72}{space 4} .9398807{col 85}{space 3} 1.039018
+{txt}{space 16}NEUTROPHIL_PCT {c |}{col 32}{res}{space 2}  .968941{col 44}{space 2}  .015744{col 55}{space 1}   -1.94{col 64}{space 3}0.052{col 72}{space 4} .9385695{col 85}{space 3} 1.000295
+{txt}{hline 31}{c BT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+
+
+-> Model for the mediator
+{res}
+{txt}Iteration 0:{space 2}Log likelihood = {res:-3003.2106}  
+Iteration 1:{space 2}Log likelihood = {res:-3003.2106}  
+{res}
+{txt}{col 1}Linear regression (Maximum Likelihood){col 57}{lalign 13:Number of obs}{col 70} = {res}{ralign 6:2,148}
+{txt}{col 57}{lalign 13:Wald chi2({res:10})}{col 70} = {res}{ralign 6:88.75}
+{txt}{col 1}{lalign 14:Log likelihood}{col 15} = {res}{ralign 10:-3003.2106}{txt}{col 57}{lalign 13:Prob > chi2}{col 70} = {res}{ralign 6:0.0000}
+
+{txt}{hline 16}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 1}zhei2015_tota~e{col 17}{c |} Coefficient{col 29}  Std. err.{col 41}      z{col 49}   P>|z|{col 57}     [95% con{col 70}f. interval]
+{hline 16}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{res}mu              {txt}{c |}
+{space 3}zPhenoAgeEAA {c |}{col 17}{res}{space 2}-.0486372{col 29}{space 2} .0229262{col 40}{space 1}   -2.12{col 49}{space 3}0.034{col 57}{space 4}-.0935718{col 70}{space 3}-.0037025
+{txt}{space 4}zAGE_NHANES {c |}{col 17}{res}{space 2}   .09292{col 29}{space 2} .0228662{col 40}{space 1}    4.06{col 49}{space 3}0.000{col 57}{space 4} .0481032{col 70}{space 3} .1377369
+{txt}{space 12}SEX {c |}{col 17}{res}{space 2} .0825618{col 29}{space 2}  .044103{col 40}{space 1}    1.87{col 49}{space 3}0.061{col 57}{space 4}-.0038786{col 70}{space 3} .1690021
+{txt}{space 12}NHB {c |}{col 17}{res}{space 2}-.0316246{col 29}{space 2}  .062273{col 40}{space 1}   -0.51{col 49}{space 3}0.612{col 57}{space 4}-.1536774{col 70}{space 3} .0904282
+{txt}{space 11}HISP {c |}{col 17}{res}{space 2} .1546037{col 29}{space 2} .0563221{col 40}{space 1}    2.74{col 49}{space 3}0.006{col 57}{space 4} .0442144{col 70}{space 3} .2649929
+{txt}{space 10}OTHER {c |}{col 17}{res}{space 2} .2050386{col 29}{space 2} .1230594{col 40}{space 1}    1.67{col 49}{space 3}0.096{col 57}{space 4}-.0361534{col 70}{space 3} .4462306
+{txt}{space 11}zses {c |}{col 17}{res}{space 2} .1924427{col 29}{space 2} .0246477{col 40}{space 1}    7.81{col 49}{space 3}0.000{col 57}{space 4} .1441341{col 70}{space 3} .2407512
+{txt}LYMPHOCYTES_PCT {c |}{col 17}{res}{space 2}-.0078195{col 29}{space 2} .0090721{col 40}{space 1}   -0.86{col 49}{space 3}0.389{col 57}{space 4}-.0256005{col 70}{space 3} .0099615
+{txt}{space 2}MONOCYTES_PCT {c |}{col 17}{res}{space 2}-.0097577{col 29}{space 2} .0136792{col 40}{space 1}   -0.71{col 49}{space 3}0.476{col 57}{space 4}-.0365686{col 70}{space 3} .0170531
+{txt}{space 1}NEUTROPHIL_PCT {c |}{col 17}{res}{space 2}-.0083547{col 29}{space 2} .0086651{col 40}{space 1}   -0.96{col 49}{space 3}0.335{col 57}{space 4}-.0253381{col 70}{space 3} .0086286
+{txt}{space 10}_cons {c |}{col 17}{res}{space 2} .7052361{col 29}{space 2} .8497889{col 40}{space 1}    0.83{col 49}{space 3}0.407{col 57}{space 4}-.9603195{col 70}{space 3} 2.370792
+{txt}{hline 16}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{res}sigma2          {txt}{c |}
+{space 10}_cons {c |}{col 17}{res}{space 2} .9592614{col 29}{space 2} .0292708{col 40}{space 1}   32.77{col 49}{space 3}0.000{col 57}{space 4} .9018917{col 70}{space 3} 1.016631
+{txt}{hline 16}{c BT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{res}
+
+{txt}-> 4-way decomposition: delta method
+
+{res}{txt}{hline 13}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 14}{c |} Coefficient{col 26}  Std. err.{col 38}      z{col 46}   P>|z|{col 54}     [95% con{col 67}f. interval]
+{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{space 6}tereri {c |}{col 14}{res}{space 2} .2500245{col 26}{space 2}  .058204{col 37}{space 1}    4.30{col 46}{space 3}0.000{col 54}{space 4} .1359467{col 67}{space 3} .3641024
+{txt}{space 3}ereri_cde {c |}{col 14}{res}{space 2} .2490117{col 26}{space 2} .0578462{col 37}{space 1}    4.30{col 46}{space 3}0.000{col 54}{space 4} .1356353{col 67}{space 3} .3623881
+{txt}ereri_intref {c |}{col 14}{res}{space 2}-.0000733{col 26}{space 2} .0013266{col 37}{space 1}   -0.06{col 46}{space 3}0.956{col 54}{space 4}-.0026734{col 67}{space 3} .0025269
+{txt}ereri_intmed {c |}{col 14}{res}{space 2}-.0000531{col 26}{space 2} .0033769{col 37}{space 1}   -0.02{col 46}{space 3}0.987{col 54}{space 4}-.0066717{col 67}{space 3} .0065655
+{txt}{space 3}ereri_pie {c |}{col 14}{res}{space 2} .0011392{col 26}{space 2} .0020757{col 37}{space 1}    0.55{col 46}{space 3}0.583{col 54}{space 4}-.0029291{col 67}{space 3} .0052076
+{txt}{space 6}terira {c |}{col 14}{res}{space 2} 1.250025{col 26}{space 2}  .058204{col 37}{space 1}   21.48{col 46}{space 3}0.000{col 54}{space 4} 1.135947{col 67}{space 3} 1.364102
+{txt}{space 7}p_cde {c |}{col 14}{res}{space 2}  .995949{col 26}{space 2} .0198952{col 37}{space 1}   50.06{col 46}{space 3}0.000{col 54}{space 4} .9569551{col 67}{space 3} 1.034943
+{txt}{space 4}p_intref {c |}{col 14}{res}{space 2}-.0002931{col 26}{space 2} .0053137{col 37}{space 1}   -0.06{col 46}{space 3}0.956{col 54}{space 4}-.0107077{col 67}{space 3} .0101216
+{txt}{space 4}p_intmed {c |}{col 14}{res}{space 2}-.0002124{col 26}{space 2} .0135121{col 37}{space 1}   -0.02{col 46}{space 3}0.987{col 54}{space 4}-.0266957{col 67}{space 3} .0262709
+{txt}{space 7}p_pie {c |}{col 14}{res}{space 2} .0045564{col 26}{space 2} .0083517{col 37}{space 1}    0.55{col 46}{space 3}0.585{col 54}{space 4}-.0118126{col 67}{space 3} .0209254
+{txt}{space 8}op_m {c |}{col 14}{res}{space 2}  .004344{col 26}{space 2} .0155971{col 37}{space 1}    0.28{col 46}{space 3}0.781{col 54}{space 4}-.0262258{col 67}{space 3} .0349139
+{txt}{space 6}op_ati {c |}{col 14}{res}{space 2}-.0005055{col 26}{space 2} .0187733{col 37}{space 1}   -0.03{col 46}{space 3}0.979{col 54}{space 4}-.0373005{col 67}{space 3} .0362896
+{txt}{space 8}op_e {c |}{col 14}{res}{space 2}  .004051{col 26}{space 2} .0198952{col 37}{space 1}    0.20{col 46}{space 3}0.839{col 54}{space 4}-.0349429{col 67}{space 3} .0430449
+{txt}{hline 13}{c BT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+
+{p 3 3 5 0}
+tereri=total excess relative risk; ereri_cde=excess relative risk due to controlled direct effect; ereri_intref=excess relative risk due to reference interaction; ereri_intmed=excess relative risk due to mediated interaction; ereri_pie=excess relative risk due to pure indirect effect; terira=total effect risk ratio; p_cde=proportion controlled direct effect; p_intref=proportion reference interaction; p_intmed=proportion mediated interaction; p_pie=proportion pure indirect effect; op_m=overall proportion mediated; op_ati=overall proportion attributable to interaction; op_e=overall proportion eliminated.
+{p_end}
+{res}{err}Warning: this analysis assumes a rare outcome.
+Warning: fixed values for the covariates zAGE_NHANES SEX NHB HISP OTHER zses LYMPHOCYTES_PCT MONOCYTES_PCT NEUTROPHIL_PCT were not provided. All covariates are fixed at their respective mean.
+
+{txt}-> Summary
+
+{col 4}Outcome    (yvar):{col 24}{res}TIMEyears
+{col 4}{txt}Exposure   (avar):{col 24}{res}zGrimAgeMortEAA
+{col 4}{txt}Mediator   (mvar):{col 24}{res}zhei2015_total_score
+{col 4}{txt}Covariates (cvars):{col 24}{res}zAGE_NHANES SEX NHB HISP OTHER zses LYMPHOCYTES_PCT MONOCYTES_PCT NEUTROPHIL_PCT
+
+{col 4}{txt}Model for the outcome  (yreg):{col 35}{res}cox
+{col 4}{txt}Model for the mediator (mreg):{col 35}{res}linear
+
+{col 4}{txt}Referent exposure level (a0):{col 46}{res}0
+{col 4}{txt}Actual exposure level   (a1):{col 46}{res}1
+{col 4}{txt}Mediator level for the decomposition (m):{col 46}{res}0
+{col 4}{txt}Fixed values of the covariates (c):{col 46}{res}-.001251 .4916 .2053 .3436 .03259 .003348 29.91 8.43 58.07
+
+
+{txt}-> Model for the outcome
+
+{col 9}Failure {bf:_d}: {res}DIED==1
+{col 3}{txt}Analysis time {bf:_t}: {res}TIMEyears
+{col 8}{txt}ID variable: {res}ID
+{col 13}{txt}Weight: {res}[pweight=sampling_weight]
+
+{txt}(sum of wgt is 66,248,158.990167)
+Iteration 0:  Log pseudolikelihood = {res}-7340.3286
+{txt}Iteration 1:  Log pseudolikelihood = {res}-6724.3133
+{txt}Iteration 2:  Log pseudolikelihood = {res}-6714.4047
+{txt}Iteration 3:  Log pseudolikelihood = {res}-6714.3901
+{txt}Iteration 4:  Log pseudolikelihood = {res}-6714.3901
+{txt}Refining estimates:
+Iteration 0:  Log pseudolikelihood = {res}-6714.3901
+
+{txt}Cox regression with Breslow method for ties
+
+No. of subjects = {res}{ralign 11:66,248,159}{col 57}{txt}{lalign 13:Number of obs} = {res}{ralign 6:2,148}
+{txt}No. of failures = {res}{ralign 11:30,837,028}
+{txt}Time at risk    = {res}{ralign 11:967907301.2}
+{col 57}{txt}{lalign 13:Wald chi2({res:12})} = {res}{ralign 6:667.54}
+{txt}Log pseudolikelihood = {res}-6714.3901{col 57}{txt}{lalign 13:Prob > chi2} = {res}{ralign 6:0.0000}
+
+{txt}{ralign 96:(Std. err. adjusted for {res:2,148} clusters in {res:ID})}
+{hline 31}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 32}{c |}{col 44}    Robust
+{col 1}                            _t{col 32}{c |} Haz. ratio{col 44}   std. err.{col 56}      z{col 64}   P>|z|{col 72}     [95% con{col 85}f. interval]
+{hline 31}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{space 15}zGrimAgeMortEAA {c |}{col 32}{res}{space 2} 1.539945{col 44}{space 2} .0697157{col 55}{space 1}    9.54{col 64}{space 3}0.000{col 72}{space 4} 1.409191{col 85}{space 3} 1.682831
+{txt}{space 10}zhei2015_total_score {c |}{col 32}{res}{space 2} 1.009836{col 44}{space 2} .0431101{col 55}{space 1}    0.23{col 64}{space 3}0.819{col 72}{space 4} .9287804{col 85}{space 3} 1.097966
+{txt}_zGrimAgeMortXzhei2015_tot_000 {c |}{col 32}{res}{space 2}   1.0291{col 44}{space 2}   .04627{col 55}{space 1}    0.64{col 64}{space 3}0.523{col 72}{space 4} .9422933{col 85}{space 3} 1.123903
+{txt}{space 19}zAGE_NHANES {c |}{col 32}{res}{space 2}  2.78154{col 44}{space 2} .1442227{col 55}{space 1}   19.73{col 64}{space 3}0.000{col 72}{space 4} 2.512758{col 85}{space 3} 3.079074
+{txt}{space 27}SEX {c |}{col 32}{res}{space 2}  .839289{col 44}{space 2} .0738242{col 55}{space 1}   -1.99{col 64}{space 3}0.046{col 72}{space 4} .7063818{col 85}{space 3} .9972031
+{txt}{space 27}NHB {c |}{col 32}{res}{space 2} 1.027798{col 44}{space 2} .1098824{col 55}{space 1}    0.26{col 64}{space 3}0.798{col 72}{space 4} .8334999{col 85}{space 3}  1.26739
+{txt}{space 26}HISP {c |}{col 32}{res}{space 2} .7016062{col 44}{space 2} .0902442{col 55}{space 1}   -2.76{col 64}{space 3}0.006{col 72}{space 4} .5452649{col 85}{space 3} .9027745
+{txt}{space 25}OTHER {c |}{col 32}{res}{space 2}   .79843{col 44}{space 2} .1900767{col 55}{space 1}   -0.95{col 64}{space 3}0.344{col 72}{space 4} .5007226{col 85}{space 3} 1.273141
+{txt}{space 26}zses {c |}{col 32}{res}{space 2} .7260879{col 44}{space 2} .0367249{col 55}{space 1}   -6.33{col 64}{space 3}0.000{col 72}{space 4} .6575611{col 85}{space 3} .8017561
+{txt}{space 15}LYMPHOCYTES_PCT {c |}{col 32}{res}{space 2} .9796952{col 44}{space 2} .0193009{col 55}{space 1}   -1.04{col 64}{space 3}0.298{col 72}{space 4} .9425871{col 85}{space 3} 1.018264
+{txt}{space 17}MONOCYTES_PCT {c |}{col 32}{res}{space 2} 1.005111{col 44}{space 2} .0268386{col 55}{space 1}    0.19{col 64}{space 3}0.849{col 72}{space 4} .9538613{col 85}{space 3} 1.059115
+{txt}{space 16}NEUTROPHIL_PCT {c |}{col 32}{res}{space 2} .9831931{col 44}{space 2} .0176898{col 55}{space 1}   -0.94{col 64}{space 3}0.346{col 72}{space 4} .9491259{col 85}{space 3} 1.018483
+{txt}{hline 31}{c BT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+
+
+-> Model for the mediator
+{res}
+{txt}Iteration 0:{space 2}Log likelihood = {res: -2991.945}  
+Iteration 1:{space 2}Log likelihood = {res: -2991.945}  
+{res}
+{txt}{col 1}Linear regression (Maximum Likelihood){col 57}{lalign 13:Number of obs}{col 70} = {res}{ralign 6:2,148}
+{txt}{col 57}{lalign 13:Wald chi2({res:10})}{col 70} = {res}{ralign 6:112.34}
+{txt}{col 1}{lalign 14:Log likelihood}{col 15} = {res}{ralign 9:-2991.945}{txt}{col 57}{lalign 13:Prob > chi2}{col 70} = {res}{ralign 6:0.0000}
+
+{txt}{hline 16}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 1}zhei2015_tota~e{col 17}{c |} Coefficient{col 29}  Std. err.{col 41}      z{col 49}   P>|z|{col 57}     [95% con{col 70}f. interval]
+{hline 16}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{res}mu              {txt}{c |}
+zGrimAgeMortEAA {c |}{col 17}{res}{space 2}-.1250268{col 29}{space 2} .0239738{col 40}{space 1}   -5.22{col 49}{space 3}0.000{col 57}{space 4}-.1720147{col 70}{space 3} -.078039
+{txt}{space 4}zAGE_NHANES {c |}{col 17}{res}{space 2} .0881123{col 29}{space 2} .0227509{col 40}{space 1}    3.87{col 49}{space 3}0.000{col 57}{space 4} .0435213{col 70}{space 3} .1327033
+{txt}{space 12}SEX {c |}{col 17}{res}{space 2} .0034119{col 29}{space 2} .0464853{col 40}{space 1}    0.07{col 49}{space 3}0.941{col 57}{space 4}-.0876976{col 70}{space 3} .0945214
+{txt}{space 12}NHB {c |}{col 17}{res}{space 2}  .003385{col 29}{space 2}  .062351{col 40}{space 1}    0.05{col 49}{space 3}0.957{col 57}{space 4}-.1188208{col 70}{space 3} .1255908
+{txt}{space 11}HISP {c |}{col 17}{res}{space 2} .1292593{col 29}{space 2} .0561661{col 40}{space 1}    2.30{col 49}{space 3}0.021{col 57}{space 4} .0191757{col 70}{space 3} .2393429
+{txt}{space 10}OTHER {c |}{col 17}{res}{space 2} .1998919{col 29}{space 2} .1224204{col 40}{space 1}    1.63{col 49}{space 3}0.103{col 57}{space 4}-.0400477{col 70}{space 3} .4398315
+{txt}{space 11}zses {c |}{col 17}{res}{space 2} .1755617{col 29}{space 2}  .024766{col 40}{space 1}    7.09{col 49}{space 3}0.000{col 57}{space 4} .1270213{col 70}{space 3} .2241022
+{txt}LYMPHOCYTES_PCT {c |}{col 17}{res}{space 2}-.0112931{col 29}{space 2} .0090517{col 40}{space 1}   -1.25{col 49}{space 3}0.212{col 57}{space 4}-.0290341{col 70}{space 3}  .006448
+{txt}{space 2}MONOCYTES_PCT {c |}{col 17}{res}{space 2}-.0133249{col 29}{space 2}  .013627{col 40}{space 1}   -0.98{col 49}{space 3}0.328{col 57}{space 4}-.0400334{col 70}{space 3} .0133836
+{txt}{space 1}NEUTROPHIL_PCT {c |}{col 17}{res}{space 2}-.0098938{col 29}{space 2} .0086218{col 40}{space 1}   -1.15{col 49}{space 3}0.251{col 57}{space 4}-.0267923{col 70}{space 3} .0070047
+{txt}{space 10}_cons {c |}{col 17}{res}{space 2} .9677894{col 29}{space 2} .8470178{col 40}{space 1}    1.14{col 49}{space 3}0.253{col 57}{space 4}-.6923351{col 70}{space 3} 2.627914
+{txt}{hline 16}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{res}sigma2          {txt}{c |}
+{space 10}_cons {c |}{col 17}{res}{space 2}  .949252{col 29}{space 2} .0289654{col 40}{space 1}   32.77{col 49}{space 3}0.000{col 57}{space 4} .8924809{col 70}{space 3} 1.006023
+{txt}{hline 16}{c BT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{res}
+
+{txt}-> 4-way decomposition: delta method
+
+{res}{txt}{hline 13}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 14}{c |} Coefficient{col 26}  Std. err.{col 38}      z{col 46}   P>|z|{col 54}     [95% con{col 67}f. interval]
+{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{space 6}tereri {c |}{col 14}{res}{space 2} .5334265{col 26}{space 2} .0688618{col 37}{space 1}    7.75{col 46}{space 3}0.000{col 54}{space 4} .3984599{col 67}{space 3} .6683931
+{txt}{space 3}ereri_cde {c |}{col 14}{res}{space 2} .5399369{col 26}{space 2} .0696974{col 37}{space 1}    7.75{col 46}{space 3}0.000{col 54}{space 4} .4033325{col 67}{space 3} .6765412
+{txt}ereri_intref {c |}{col 14}{res}{space 2} .0008834{col 26}{space 2} .0032509{col 37}{space 1}    0.27{col 46}{space 3}0.786{col 54}{space 4}-.0054883{col 67}{space 3} .0072551
+{txt}ereri_intmed {c |}{col 14}{res}{space 2}-.0061707{col 26}{space 2}  .009313{col 37}{space 1}   -0.66{col 46}{space 3}0.508{col 54}{space 4}-.0244238{col 67}{space 3} .0120824
+{txt}{space 3}ereri_pie {c |}{col 14}{res}{space 2}-.0012231{col 26}{space 2}  .005336{col 37}{space 1}   -0.23{col 46}{space 3}0.819{col 54}{space 4}-.0116815{col 67}{space 3} .0092354
+{txt}{space 6}terira {c |}{col 14}{res}{space 2} 1.533427{col 26}{space 2} .0688618{col 37}{space 1}   22.27{col 46}{space 3}0.000{col 54}{space 4}  1.39846{col 67}{space 3} 1.668393
+{txt}{space 7}p_cde {c |}{col 14}{res}{space 2} 1.012205{col 26}{space 2} .0174252{col 37}{space 1}   58.09{col 46}{space 3}0.000{col 54}{space 4}  .978052{col 67}{space 3} 1.046357
+{txt}{space 4}p_intref {c |}{col 14}{res}{space 2} .0016561{col 26}{space 2}  .006096{col 37}{space 1}    0.27{col 46}{space 3}0.786{col 54}{space 4}-.0102918{col 67}{space 3}  .013604
+{txt}{space 4}p_intmed {c |}{col 14}{res}{space 2} -.011568{col 26}{space 2} .0175048{col 37}{space 1}   -0.66{col 46}{space 3}0.509{col 54}{space 4}-.0458768{col 67}{space 3} .0227408
+{txt}{space 7}p_pie {c |}{col 14}{res}{space 2}-.0022928{col 26}{space 2} .0100001{col 37}{space 1}   -0.23{col 46}{space 3}0.819{col 54}{space 4}-.0218926{col 67}{space 3} .0173069
+{txt}{space 8}op_m {c |}{col 14}{res}{space 2}-.0138609{col 26}{space 2} .0230179{col 37}{space 1}   -0.60{col 46}{space 3}0.547{col 54}{space 4}-.0589751{col 67}{space 3} .0312534
+{txt}{space 6}op_ati {c |}{col 14}{res}{space 2}-.0099119{col 26}{space 2} .0124995{col 37}{space 1}   -0.79{col 46}{space 3}0.428{col 54}{space 4}-.0344106{col 67}{space 3} .0145868
+{txt}{space 8}op_e {c |}{col 14}{res}{space 2}-.0122047{col 26}{space 2} .0174252{col 37}{space 1}   -0.70{col 46}{space 3}0.484{col 54}{space 4}-.0463574{col 67}{space 3}  .021948
+{txt}{hline 13}{c BT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+
+{p 3 3 5 0}
+tereri=total excess relative risk; ereri_cde=excess relative risk due to controlled direct effect; ereri_intref=excess relative risk due to reference interaction; ereri_intmed=excess relative risk due to mediated interaction; ereri_pie=excess relative risk due to pure indirect effect; terira=total effect risk ratio; p_cde=proportion controlled direct effect; p_intref=proportion reference interaction; p_intmed=proportion mediated interaction; p_pie=proportion pure indirect effect; op_m=overall proportion mediated; op_ati=overall proportion attributable to interaction; op_e=overall proportion eliminated.
+{p_end}
+
+{com}. 
+. foreach m of varlist zHorvathAgeEAA zHannumAgeEAA zDunedinPoAm zPhenoAgeEAA zGrimAgeMortEAA {c -(}
+{txt}  2{com}.     med4way `m' zhei2015_total_score zAGE_HRS SEX NHB HISP OTHER zses ///
+>         pbcell_pct ptcell_pct pnk_pct pmono_pct pdc_pct ///
+>         if sample_final==1 & COHORT==2, a0(0) a1(1) m(0) yreg(cox) mreg(linear) fulloutput
+{txt}  3{com}. {c )-}
+{res}{err}Warning: this analysis assumes a rare outcome.
+Warning: fixed values for the covariates zAGE_HRS SEX NHB HISP OTHER zses pbcell_pct ptcell_pct pnk_pct pmono_pct pdc_pct were not provided. All covariates are fixed at their respective mean.
+
+{txt}-> Summary
+
+{col 4}Outcome    (yvar):{col 24}{res}TIMEyears
+{col 4}{txt}Exposure   (avar):{col 24}{res}zHorvathAgeEAA
+{col 4}{txt}Mediator   (mvar):{col 24}{res}zhei2015_total_score
+{col 4}{txt}Covariates (cvars):{col 24}{res}zAGE_HRS SEX NHB HISP OTHER zses pbcell_pct ptcell_pct pnk_pct pmono_pct pdc_pct
+
+{col 4}{txt}Model for the outcome  (yreg):{col 35}{res}cox
+{col 4}{txt}Model for the mediator (mreg):{col 35}{res}linear
+
+{col 4}{txt}Referent exposure level (a0):{col 46}{res}0
+{col 4}{txt}Actual exposure level   (a1):{col 46}{res}1
+{col 4}{txt}Mediator level for the decomposition (m):{col 46}{res}0
+{col 4}{txt}Fixed values of the covariates (c):{col 46}{res}.3572 .6028 .1041 .1015 .02689 -.02764 .06633 .6892 .03614 .03069 .007945
+
+
+{txt}-> Model for the outcome
+
+{col 9}Failure {bf:_d}: {res}DIED==1
+{col 3}{txt}Analysis time {bf:_t}: {res}TIMEyears
+{col 8}{txt}ID variable: {res}ID
+{col 13}{txt}Weight: {res}[pweight=sampling_weight]
+
+{txt}(sum of wgt is 22,539,565)
+Iteration 0:  Log pseudolikelihood = {res}-1499.4729
+{txt}Iteration 1:  Log pseudolikelihood = {res}-1345.3096
+{txt}Iteration 2:  Log pseudolikelihood = {res}-1341.7511
+{txt}Iteration 3:  Log pseudolikelihood = {res}-1341.7393
+{txt}Iteration 4:  Log pseudolikelihood = {res}-1341.7393
+{txt}Refining estimates:
+Iteration 0:  Log pseudolikelihood = {res}-1341.7393
+
+{txt}Cox regression with Breslow method for ties
+
+No. of subjects = {res}{ralign 11:22,539,565}{col 57}{txt}{lalign 13:Number of obs} = {res}{ralign 6:1,128}
+{txt}No. of failures = {res}{ralign 11:4,349,255}
+{txt}Time at risk    = {res}{ralign 11:141691501.6}
+{col 57}{txt}{lalign 13:Wald chi2({res:14})} = {res}{ralign 6:272.17}
+{txt}Log pseudolikelihood = {res}-1341.7393{col 57}{txt}{lalign 13:Prob > chi2} = {res}{ralign 6:0.0000}
+
+{txt}{ralign 96:(Std. err. adjusted for {res:1,128} clusters in {res:ID})}
+{hline 31}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 32}{c |}{col 44}    Robust
+{col 1}                            _t{col 32}{c |} Haz. ratio{col 44}   std. err.{col 56}      z{col 64}   P>|z|{col 72}     [95% con{col 85}f. interval]
+{hline 31}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{space 16}zHorvathAgeEAA {c |}{col 32}{res}{space 2} .9494941{col 44}{space 2} .0718142{col 55}{space 1}   -0.69{col 64}{space 3}0.493{col 72}{space 4} .8186766{col 85}{space 3} 1.101215
+{txt}{space 10}zhei2015_total_score {c |}{col 32}{res}{space 2} .8571212{col 44}{space 2}   .06399{col 55}{space 1}   -2.07{col 64}{space 3}0.039{col 72}{space 4} .7404474{col 85}{space 3} .9921796
+{txt}_zHorvathAgeEXzhei2015_tot_000 {c |}{col 32}{res}{space 2} .9549084{col 44}{space 2} .0919352{col 55}{space 1}   -0.48{col 64}{space 3}0.632{col 72}{space 4} .7906987{col 85}{space 3} 1.153221
+{txt}{space 22}zAGE_HRS {c |}{col 32}{res}{space 2} 3.137557{col 44}{space 2} .3105556{col 55}{space 1}   11.55{col 64}{space 3}0.000{col 72}{space 4} 2.584281{col 85}{space 3} 3.809287
+{txt}{space 27}SEX {c |}{col 32}{res}{space 2} .9889364{col 44}{space 2} .1432226{col 55}{space 1}   -0.08{col 64}{space 3}0.939{col 72}{space 4} .7445488{col 85}{space 3} 1.313541
+{txt}{space 27}NHB {c |}{col 32}{res}{space 2} 1.274825{col 44}{space 2} .3208861{col 55}{space 1}    0.96{col 64}{space 3}0.335{col 72}{space 4} .7783856{col 85}{space 3} 2.087885
+{txt}{space 26}HISP {c |}{col 32}{res}{space 2} .3342316{col 44}{space 2} .1181828{col 55}{space 1}   -3.10{col 64}{space 3}0.002{col 72}{space 4} .1671346{col 85}{space 3} .6683877
+{txt}{space 25}OTHER {c |}{col 32}{res}{space 2} 1.273487{col 44}{space 2}  .655753{col 55}{space 1}    0.47{col 64}{space 3}0.639{col 72}{space 4} .4641813{col 85}{space 3} 3.493826
+{txt}{space 26}zses {c |}{col 32}{res}{space 2}  .713883{col 44}{space 2} .0608718{col 55}{space 1}   -3.95{col 64}{space 3}0.000{col 72}{space 4}  .604013{col 85}{space 3} .8437383
+{txt}{space 20}pbcell_pct {c |}{col 32}{res}{space 2} .0864711{col 44}{space 2} .1603083{col 55}{space 1}   -1.32{col 64}{space 3}0.187{col 72}{space 4} .0022847{col 85}{space 3} 3.272714
+{txt}{space 20}ptcell_pct {c |}{col 32}{res}{space 2} .2784272{col 44}{space 2} .1903415{col 55}{space 1}   -1.87{col 64}{space 3}0.061{col 72}{space 4} .0729128{col 85}{space 3} 1.063211
+{txt}{space 23}pnk_pct {c |}{col 32}{res}{space 2} .0007987{col 44}{space 2} .0033432{col 55}{space 1}   -1.70{col 64}{space 3}0.088{col 72}{space 4} 2.19e-07{col 85}{space 3} 2.919535
+{txt}{space 21}pmono_pct {c |}{col 32}{res}{space 2} 4302.491{col 44}{space 2} 19782.66{col 55}{space 1}    1.82{col 64}{space 3}0.069{col 72}{space 4} .5247266{col 85}{space 3} 3.53e+07
+{txt}{space 23}pdc_pct {c |}{col 32}{res}{space 2} 1.40e-15{col 44}{space 2} 2.92e-14{col 55}{space 1}   -1.63{col 64}{space 3}0.103{col 72}{space 4} 2.01e-33{col 85}{space 3} 970.3142
+{txt}{hline 31}{c BT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+
+
+-> Model for the mediator
+{res}
+{txt}Iteration 0:{space 2}Log likelihood = {res:-1578.9154}  
+Iteration 1:{space 2}Log likelihood = {res:-1578.9154}  
+{res}
+{txt}{col 1}Linear regression (Maximum Likelihood){col 57}{lalign 13:Number of obs}{col 70} = {res}{ralign 6:1,153}
+{txt}{col 57}{lalign 13:Wald chi2({res:12})}{col 70} = {res}{ralign 6:83.02}
+{txt}{col 1}{lalign 14:Log likelihood}{col 15} = {res}{ralign 10:-1578.9154}{txt}{col 57}{lalign 13:Prob > chi2}{col 70} = {res}{ralign 6:0.0000}
+
+{txt}{hline 15}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 1}zhei2015_tot~e{col 16}{c |} Coefficient{col 28}  Std. err.{col 40}      z{col 48}   P>|z|{col 56}     [95% con{col 69}f. interval]
+{hline 15}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{res}mu             {txt}{c |}
+zHorvathAgeEAA {c |}{col 16}{res}{space 2} -.004824{col 28}{space 2} .0285645{col 39}{space 1}   -0.17{col 48}{space 3}0.866{col 56}{space 4}-.0608094{col 69}{space 3} .0511614
+{txt}{space 6}zAGE_HRS {c |}{col 16}{res}{space 2} .1402199{col 28}{space 2} .0325452{col 39}{space 1}    4.31{col 48}{space 3}0.000{col 56}{space 4} .0764325{col 69}{space 3} .2040072
+{txt}{space 11}SEX {c |}{col 16}{res}{space 2}  .247204{col 28}{space 2} .0592434{col 39}{space 1}    4.17{col 48}{space 3}0.000{col 56}{space 4} .1310892{col 69}{space 3} .3633189
+{txt}{space 11}NHB {c |}{col 16}{res}{space 2} .1996776{col 28}{space 2} .0967001{col 39}{space 1}    2.06{col 48}{space 3}0.039{col 56}{space 4} .0101488{col 69}{space 3} .3892064
+{txt}{space 10}HISP {c |}{col 16}{res}{space 2} .4863867{col 28}{space 2} .1027136{col 39}{space 1}    4.74{col 48}{space 3}0.000{col 56}{space 4} .2850717{col 69}{space 3} .6877017
+{txt}{space 9}OTHER {c |}{col 16}{res}{space 2} .0614572{col 28}{space 2} .1764758{col 39}{space 1}    0.35{col 48}{space 3}0.728{col 56}{space 4}-.2844291{col 69}{space 3} .4073435
+{txt}{space 10}zses {c |}{col 16}{res}{space 2} .2309314{col 28}{space 2} .0315527{col 39}{space 1}    7.32{col 48}{space 3}0.000{col 56}{space 4} .1690892{col 69}{space 3} .2927736
+{txt}{space 4}pbcell_pct {c |}{col 16}{res}{space 2} .2403167{col 28}{space 2} .6461353{col 39}{space 1}    0.37{col 48}{space 3}0.710{col 56}{space 4}-1.026085{col 69}{space 3} 1.506719
+{txt}{space 4}ptcell_pct {c |}{col 16}{res}{space 2} .4246206{col 28}{space 2} .3063587{col 39}{space 1}    1.39{col 48}{space 3}0.166{col 56}{space 4}-.1758314{col 69}{space 3} 1.025073
+{txt}{space 7}pnk_pct {c |}{col 16}{res}{space 2}-.3210601{col 28}{space 2} 1.548216{col 39}{space 1}   -0.21{col 48}{space 3}0.836{col 56}{space 4}-3.355508{col 69}{space 3} 2.713388
+{txt}{space 5}pmono_pct {c |}{col 16}{res}{space 2} 2.174333{col 28}{space 2} 1.465567{col 39}{space 1}    1.48{col 48}{space 3}0.138{col 56}{space 4}-.6981257{col 69}{space 3} 5.046791
+{txt}{space 7}pdc_pct {c |}{col 16}{res}{space 2}  7.04935{col 28}{space 2} 4.658581{col 39}{space 1}    1.51{col 48}{space 3}0.130{col 56}{space 4}-2.081301{col 69}{space 3}    16.18
+{txt}{space 9}_cons {c |}{col 16}{res}{space 2}-.6768171{col 28}{space 2} .2855126{col 39}{space 1}   -2.37{col 48}{space 3}0.018{col 56}{space 4}-1.236412{col 69}{space 3}-.1172227
+{txt}{hline 15}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{res}sigma2         {txt}{c |}
+{space 9}_cons {c |}{col 16}{res}{space 2} .9056685{col 28}{space 2} .0377198{col 39}{space 1}   24.01{col 48}{space 3}0.000{col 56}{space 4}  .831739{col 69}{space 3}  .979598
+{txt}{hline 15}{c BT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{res}
+
+{txt}-> 4-way decomposition: delta method
+
+{res}{txt}{hline 13}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 14}{c |} Coefficient{col 26}  Std. err.{col 38}      z{col 46}   P>|z|{col 54}     [95% con{col 67}f. interval]
+{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{space 6}tereri {c |}{col 14}{res}{space 2}-.0428502{col 26}{space 2}  .078192{col 37}{space 1}   -0.55{col 46}{space 3}0.584{col 54}{space 4}-.1961038{col 67}{space 3} .1104033
+{txt}{space 3}ereri_cde {c |}{col 14}{res}{space 2}-.0500224{col 26}{space 2} .0711683{col 37}{space 1}   -0.70{col 46}{space 3}0.482{col 54}{space 4}-.1895098{col 67}{space 3}  .089465
+{txt}ereri_intref {c |}{col 14}{res}{space 2} .0062477{col 26}{space 2} .0162377{col 37}{space 1}    0.38{col 46}{space 3}0.700{col 54}{space 4}-.0255777{col 67}{space 3} .0380731
+{txt}ereri_intmed {c |}{col 14}{res}{space 2} .0001804{col 26}{space 2} .0011732{col 37}{space 1}    0.15{col 46}{space 3}0.878{col 54}{space 4} -.002119{col 67}{space 3} .0024799
+{txt}{space 3}ereri_pie {c |}{col 14}{res}{space 2}  .000744{col 26}{space 2} .0044219{col 37}{space 1}    0.17{col 46}{space 3}0.866{col 54}{space 4}-.0079228{col 67}{space 3} .0094109
+{txt}{space 6}terira {c |}{col 14}{res}{space 2} .9571498{col 26}{space 2}  .078192{col 37}{space 1}   12.24{col 46}{space 3}0.000{col 54}{space 4} .8038962{col 67}{space 3} 1.110403
+{txt}{space 7}p_cde {c |}{col 14}{res}{space 2} 1.167377{col 26}{space 2}  .621291{col 37}{space 1}    1.88{col 46}{space 3}0.060{col 54}{space 4}-.0503306{col 67}{space 3} 2.385085
+{txt}{space 4}p_intref {c |}{col 14}{res}{space 2}-.1458031{col 26}{space 2} .5602839{col 37}{space 1}   -0.26{col 46}{space 3}0.795{col 54}{space 4}-1.243939{col 67}{space 3} .9523332
+{txt}{space 4}p_intmed {c |}{col 14}{res}{space 2}-.0042111{col 26}{space 2} .0304611{col 37}{space 1}   -0.14{col 46}{space 3}0.890{col 54}{space 4}-.0639137{col 67}{space 3} .0554915
+{txt}{space 7}p_pie {c |}{col 14}{res}{space 2}-.0173631{col 26}{space 2} .1102728{col 37}{space 1}   -0.16{col 46}{space 3}0.875{col 54}{space 4}-.2334938{col 67}{space 3} .1987676
+{txt}{space 8}op_m {c |}{col 14}{res}{space 2}-.0215742{col 26}{space 2}  .138912{col 37}{space 1}   -0.16{col 46}{space 3}0.877{col 54}{space 4}-.2938367{col 67}{space 3} .2506882
+{txt}{space 6}op_ati {c |}{col 14}{res}{space 2}-.1500142{col 26}{space 2} .5782232{col 37}{space 1}   -0.26{col 46}{space 3}0.795{col 54}{space 4}-1.283311{col 67}{space 3} .9832826
+{txt}{space 8}op_e {c |}{col 14}{res}{space 2}-.1673773{col 26}{space 2} .6212909{col 37}{space 1}   -0.27{col 46}{space 3}0.788{col 54}{space 4}-1.385085{col 67}{space 3}  1.05033
+{txt}{hline 13}{c BT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+
+{p 3 3 5 0}
+tereri=total excess relative risk; ereri_cde=excess relative risk due to controlled direct effect; ereri_intref=excess relative risk due to reference interaction; ereri_intmed=excess relative risk due to mediated interaction; ereri_pie=excess relative risk due to pure indirect effect; terira=total effect risk ratio; p_cde=proportion controlled direct effect; p_intref=proportion reference interaction; p_intmed=proportion mediated interaction; p_pie=proportion pure indirect effect; op_m=overall proportion mediated; op_ati=overall proportion attributable to interaction; op_e=overall proportion eliminated.
+{p_end}
+{res}{err}Warning: this analysis assumes a rare outcome.
+Warning: fixed values for the covariates zAGE_HRS SEX NHB HISP OTHER zses pbcell_pct ptcell_pct pnk_pct pmono_pct pdc_pct were not provided. All covariates are fixed at their respective mean.
+
+{txt}-> Summary
+
+{col 4}Outcome    (yvar):{col 24}{res}TIMEyears
+{col 4}{txt}Exposure   (avar):{col 24}{res}zHannumAgeEAA
+{col 4}{txt}Mediator   (mvar):{col 24}{res}zhei2015_total_score
+{col 4}{txt}Covariates (cvars):{col 24}{res}zAGE_HRS SEX NHB HISP OTHER zses pbcell_pct ptcell_pct pnk_pct pmono_pct pdc_pct
+
+{col 4}{txt}Model for the outcome  (yreg):{col 35}{res}cox
+{col 4}{txt}Model for the mediator (mreg):{col 35}{res}linear
+
+{col 4}{txt}Referent exposure level (a0):{col 46}{res}0
+{col 4}{txt}Actual exposure level   (a1):{col 46}{res}1
+{col 4}{txt}Mediator level for the decomposition (m):{col 46}{res}0
+{col 4}{txt}Fixed values of the covariates (c):{col 46}{res}.3572 .6028 .1041 .1015 .02689 -.02764 .06633 .6892 .03614 .03069 .007945
+
+
+{txt}-> Model for the outcome
+
+{col 9}Failure {bf:_d}: {res}DIED==1
+{col 3}{txt}Analysis time {bf:_t}: {res}TIMEyears
+{col 8}{txt}ID variable: {res}ID
+{col 13}{txt}Weight: {res}[pweight=sampling_weight]
+
+{txt}(sum of wgt is 22,539,565)
+Iteration 0:  Log pseudolikelihood = {res}-1499.4729
+{txt}Iteration 1:  Log pseudolikelihood = {res}-1342.3062
+{txt}Iteration 2:  Log pseudolikelihood = {res}-1339.5419
+{txt}Iteration 3:  Log pseudolikelihood = {res}-1339.5342
+{txt}Iteration 4:  Log pseudolikelihood = {res}-1339.5342
+{txt}Refining estimates:
+Iteration 0:  Log pseudolikelihood = {res}-1339.5342
+
+{txt}Cox regression with Breslow method for ties
+
+No. of subjects = {res}{ralign 11:22,539,565}{col 57}{txt}{lalign 13:Number of obs} = {res}{ralign 6:1,128}
+{txt}No. of failures = {res}{ralign 11:4,349,255}
+{txt}Time at risk    = {res}{ralign 11:141691501.6}
+{col 57}{txt}{lalign 13:Wald chi2({res:14})} = {res}{ralign 6:257.80}
+{txt}Log pseudolikelihood = {res}-1339.5342{col 57}{txt}{lalign 13:Prob > chi2} = {res}{ralign 6:0.0000}
+
+{txt}{ralign 96:(Std. err. adjusted for {res:1,128} clusters in {res:ID})}
+{hline 31}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 32}{c |}{col 44}    Robust
+{col 1}                            _t{col 32}{c |} Haz. ratio{col 44}   std. err.{col 56}      z{col 64}   P>|z|{col 72}     [95% con{col 85}f. interval]
+{hline 31}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{space 17}zHannumAgeEAA {c |}{col 32}{res}{space 2} 1.154737{col 44}{space 2} .0723091{col 55}{space 1}    2.30{col 64}{space 3}0.022{col 72}{space 4} 1.021366{col 85}{space 3} 1.305524
+{txt}{space 10}zhei2015_total_score {c |}{col 32}{res}{space 2} .8634428{col 44}{space 2} .0634097{col 55}{space 1}   -2.00{col 64}{space 3}0.046{col 72}{space 4} .7476923{col 85}{space 3} .9971127
+{txt}_zHannumAgeEAXzhei2015_tot_000 {c |}{col 32}{res}{space 2} .9604623{col 44}{space 2} .0638941{col 55}{space 1}   -0.61{col 64}{space 3}0.544{col 72}{space 4} .8430527{col 85}{space 3} 1.094223
+{txt}{space 22}zAGE_HRS {c |}{col 32}{res}{space 2} 3.172425{col 44}{space 2} .3108789{col 55}{space 1}   11.78{col 64}{space 3}0.000{col 72}{space 4} 2.618054{col 85}{space 3} 3.844183
+{txt}{space 27}SEX {c |}{col 32}{res}{space 2} 1.034348{col 44}{space 2} .1514703{col 55}{space 1}    0.23{col 64}{space 3}0.818{col 72}{space 4} .7762759{col 85}{space 3} 1.378215
+{txt}{space 27}NHB {c |}{col 32}{res}{space 2} 1.311979{col 44}{space 2} .3258056{col 55}{space 1}    1.09{col 64}{space 3}0.274{col 72}{space 4} .8063934{col 85}{space 3} 2.134553
+{txt}{space 26}HISP {c |}{col 32}{res}{space 2} .3691507{col 44}{space 2} .1293097{col 55}{space 1}   -2.84{col 64}{space 3}0.004{col 72}{space 4} .1857961{col 85}{space 3} .7334508
+{txt}{space 25}OTHER {c |}{col 32}{res}{space 2} 1.339977{col 44}{space 2} .6823925{col 55}{space 1}    0.57{col 64}{space 3}0.566{col 72}{space 4} .4938751{col 85}{space 3} 3.635612
+{txt}{space 26}zses {c |}{col 32}{res}{space 2} .7168357{col 44}{space 2} .0617143{col 55}{space 1}   -3.87{col 64}{space 3}0.000{col 72}{space 4} .6055325{col 85}{space 3} .8485977
+{txt}{space 20}pbcell_pct {c |}{col 32}{res}{space 2} .0667505{col 44}{space 2} .1170752{col 55}{space 1}   -1.54{col 64}{space 3}0.123{col 72}{space 4} .0021454{col 85}{space 3} 2.076805
+{txt}{space 20}ptcell_pct {c |}{col 32}{res}{space 2} .2928243{col 44}{space 2} .2007368{col 55}{space 1}   -1.79{col 64}{space 3}0.073{col 72}{space 4} .0763997{col 85}{space 3} 1.122335
+{txt}{space 23}pnk_pct {c |}{col 32}{res}{space 2} .0008292{col 44}{space 2} .0034894{col 55}{space 1}   -1.69{col 64}{space 3}0.092{col 72}{space 4} 2.17e-07{col 85}{space 3} 3.166475
+{txt}{space 21}pmono_pct {c |}{col 32}{res}{space 2} 4708.031{col 44}{space 2} 21363.25{col 55}{space 1}    1.86{col 64}{space 3}0.062{col 72}{space 4} .6462663{col 85}{space 3} 3.43e+07
+{txt}{space 23}pdc_pct {c |}{col 32}{res}{space 2} 6.83e-16{col 44}{space 2} 1.40e-14{col 55}{space 1}   -1.70{col 64}{space 3}0.089{col 72}{space 4} 2.36e-33{col 85}{space 3} 197.2218
+{txt}{hline 31}{c BT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+
+
+-> Model for the mediator
+{res}
+{txt}Iteration 0:{space 2}Log likelihood = {res:-1575.9932}  
+Iteration 1:{space 2}Log likelihood = {res:-1575.9932}  
+{res}
+{txt}{col 1}Linear regression (Maximum Likelihood){col 57}{lalign 13:Number of obs}{col 70} = {res}{ralign 6:1,153}
+{txt}{col 57}{lalign 13:Wald chi2({res:12})}{col 70} = {res}{ralign 6:89.30}
+{txt}{col 1}{lalign 14:Log likelihood}{col 15} = {res}{ralign 10:-1575.9932}{txt}{col 57}{lalign 13:Prob > chi2}{col 70} = {res}{ralign 6:0.0000}
+
+{txt}{hline 14}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 1}zhei2015_to~e{col 15}{c |} Coefficient{col 27}  Std. err.{col 39}      z{col 47}   P>|z|{col 55}     [95% con{col 68}f. interval]
+{hline 14}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{res}mu            {txt}{c |}
+zHannumAgeEAA {c |}{col 15}{res}{space 2}-.0709755{col 27}{space 2} .0292501{col 38}{space 1}   -2.43{col 47}{space 3}0.015{col 55}{space 4}-.1283047{col 68}{space 3}-.0136464
+{txt}{space 5}zAGE_HRS {c |}{col 15}{res}{space 2} .1397681{col 27}{space 2} .0324632{col 38}{space 1}    4.31{col 47}{space 3}0.000{col 55}{space 4} .0761413{col 68}{space 3} .2033949
+{txt}{space 10}SEX {c |}{col 15}{res}{space 2} .2242713{col 27}{space 2} .0593569{col 38}{space 1}    3.78{col 47}{space 3}0.000{col 55}{space 4} .1079339{col 68}{space 3} .3406087
+{txt}{space 10}NHB {c |}{col 15}{res}{space 2} .1671695{col 27}{space 2}   .09736{col 38}{space 1}    1.72{col 47}{space 3}0.086{col 55}{space 4}-.0236526{col 68}{space 3} .3579915
+{txt}{space 9}HISP {c |}{col 15}{res}{space 2}  .480442{col 27}{space 2} .1023007{col 38}{space 1}    4.70{col 47}{space 3}0.000{col 55}{space 4} .2799363{col 68}{space 3} .6809476
+{txt}{space 8}OTHER {c |}{col 15}{res}{space 2}  .044117{col 27}{space 2} .1761747{col 38}{space 1}    0.25{col 47}{space 3}0.802{col 55}{space 4}-.3011791{col 68}{space 3}  .389413
+{txt}{space 9}zses {c |}{col 15}{res}{space 2} .2273611{col 27}{space 2} .0315052{col 38}{space 1}    7.22{col 47}{space 3}0.000{col 55}{space 4}  .165612{col 68}{space 3} .2891102
+{txt}{space 3}pbcell_pct {c |}{col 15}{res}{space 2} .3357007{col 27}{space 2} .6447108{col 38}{space 1}    0.52{col 47}{space 3}0.603{col 55}{space 4}-.9279092{col 68}{space 3} 1.599311
+{txt}{space 3}ptcell_pct {c |}{col 15}{res}{space 2} .3827534{col 27}{space 2} .3055199{col 38}{space 1}    1.25{col 47}{space 3}0.210{col 55}{space 4}-.2160547{col 68}{space 3} .9815614
+{txt}{space 6}pnk_pct {c |}{col 15}{res}{space 2} -.555172{col 27}{space 2} 1.545816{col 38}{space 1}   -0.36{col 47}{space 3}0.719{col 55}{space 4}-3.584915{col 68}{space 3} 2.474571
+{txt}{space 4}pmono_pct {c |}{col 15}{res}{space 2} 2.320493{col 27}{space 2} 1.460463{col 38}{space 1}    1.59{col 47}{space 3}0.112{col 55}{space 4}-.5419624{col 68}{space 3} 5.182949
+{txt}{space 6}pdc_pct {c |}{col 15}{res}{space 2}  6.79219{col 27}{space 2} 4.647057{col 38}{space 1}    1.46{col 47}{space 3}0.144{col 55}{space 4}-2.315874{col 68}{space 3} 15.90025
+{txt}{space 8}_cons {c |}{col 15}{res}{space 2}-.6303705{col 27}{space 2} .2849402{col 38}{space 1}   -2.21{col 47}{space 3}0.027{col 55}{space 4}-1.188843{col 68}{space 3}-.0718981
+{txt}{hline 14}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{res}sigma2        {txt}{c |}
+{space 8}_cons {c |}{col 15}{res}{space 2} .9010893{col 27}{space 2} .0375291{col 38}{space 1}   24.01{col 47}{space 3}0.000{col 55}{space 4} .8275337{col 68}{space 3}  .974645
+{txt}{hline 14}{c BT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{res}
+
+{txt}-> 4-way decomposition: delta method
+
+{res}{txt}{hline 13}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 14}{c |} Coefficient{col 26}  Std. err.{col 38}      z{col 46}   P>|z|{col 54}     [95% con{col 67}f. interval]
+{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{space 6}tereri {c |}{col 14}{res}{space 2}  .176973{col 26}{space 2} .0759689{col 37}{space 1}    2.33{col 46}{space 3}0.020{col 54}{space 4} .0280768{col 67}{space 3} .3258693
+{txt}{space 3}ereri_cde {c |}{col 14}{res}{space 2} .1533984{col 26}{space 2} .0717392{col 37}{space 1}    2.14{col 46}{space 3}0.032{col 54}{space 4} .0127921{col 67}{space 3} .2940048
+{txt}ereri_intref {c |}{col 14}{res}{space 2} .0080426{col 26}{space 2} .0126353{col 37}{space 1}    0.64{col 46}{space 3}0.524{col 54}{space 4} -.016722{col 67}{space 3} .0328073
+{txt}ereri_intmed {c |}{col 14}{res}{space 2} .0050563{col 26}{space 2} .0060719{col 37}{space 1}    0.83{col 46}{space 3}0.405{col 54}{space 4}-.0068445{col 67}{space 3}  .016957
+{txt}{space 3}ereri_pie {c |}{col 14}{res}{space 2} .0104757{col 26}{space 2} .0068245{col 37}{space 1}    1.54{col 46}{space 3}0.125{col 54}{space 4}-.0029001{col 67}{space 3} .0238514
+{txt}{space 6}terira {c |}{col 14}{res}{space 2} 1.176973{col 26}{space 2} .0759689{col 37}{space 1}   15.49{col 46}{space 3}0.000{col 54}{space 4} 1.028077{col 67}{space 3} 1.325869
+{txt}{space 7}p_cde {c |}{col 14}{res}{space 2}   .86679{col 26}{space 2} .1106924{col 37}{space 1}    7.83{col 46}{space 3}0.000{col 54}{space 4} .6498368{col 67}{space 3} 1.083743
+{txt}{space 4}p_intref {c |}{col 14}{res}{space 2} .0454456{col 26}{space 2} .0679798{col 37}{space 1}    0.67{col 46}{space 3}0.504{col 54}{space 4}-.0877924{col 67}{space 3} .1786836
+{txt}{space 4}p_intmed {c |}{col 14}{res}{space 2} .0285709{col 26}{space 2} .0316274{col 37}{space 1}    0.90{col 46}{space 3}0.366{col 54}{space 4}-.0334177{col 67}{space 3} .0905595
+{txt}{space 7}p_pie {c |}{col 14}{res}{space 2} .0591935{col 26}{space 2}  .044171{col 37}{space 1}    1.34{col 46}{space 3}0.180{col 54}{space 4}  -.02738{col 67}{space 3}  .145767
+{txt}{space 8}op_m {c |}{col 14}{res}{space 2} .0877644{col 26}{space 2} .0576662{col 37}{space 1}    1.52{col 46}{space 3}0.128{col 54}{space 4}-.0252593{col 67}{space 3} .2007881
+{txt}{space 6}op_ati {c |}{col 14}{res}{space 2} .0740165{col 26}{space 2} .0973245{col 37}{space 1}    0.76{col 46}{space 3}0.447{col 54}{space 4}-.1167361{col 67}{space 3}  .264769
+{txt}{space 8}op_e {c |}{col 14}{res}{space 2}   .13321{col 26}{space 2} .1106924{col 37}{space 1}    1.20{col 46}{space 3}0.229{col 54}{space 4}-.0837432{col 67}{space 3} .3501632
+{txt}{hline 13}{c BT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+
+{p 3 3 5 0}
+tereri=total excess relative risk; ereri_cde=excess relative risk due to controlled direct effect; ereri_intref=excess relative risk due to reference interaction; ereri_intmed=excess relative risk due to mediated interaction; ereri_pie=excess relative risk due to pure indirect effect; terira=total effect risk ratio; p_cde=proportion controlled direct effect; p_intref=proportion reference interaction; p_intmed=proportion mediated interaction; p_pie=proportion pure indirect effect; op_m=overall proportion mediated; op_ati=overall proportion attributable to interaction; op_e=overall proportion eliminated.
+{p_end}
+{res}{err}Warning: this analysis assumes a rare outcome.
+Warning: fixed values for the covariates zAGE_HRS SEX NHB HISP OTHER zses pbcell_pct ptcell_pct pnk_pct pmono_pct pdc_pct were not provided. All covariates are fixed at their respective mean.
+
+{txt}-> Summary
+
+{col 4}Outcome    (yvar):{col 24}{res}TIMEyears
+{col 4}{txt}Exposure   (avar):{col 24}{res}zDunedinPoAm
+{col 4}{txt}Mediator   (mvar):{col 24}{res}zhei2015_total_score
+{col 4}{txt}Covariates (cvars):{col 24}{res}zAGE_HRS SEX NHB HISP OTHER zses pbcell_pct ptcell_pct pnk_pct pmono_pct pdc_pct
+
+{col 4}{txt}Model for the outcome  (yreg):{col 35}{res}cox
+{col 4}{txt}Model for the mediator (mreg):{col 35}{res}linear
+
+{col 4}{txt}Referent exposure level (a0):{col 46}{res}0
+{col 4}{txt}Actual exposure level   (a1):{col 46}{res}1
+{col 4}{txt}Mediator level for the decomposition (m):{col 46}{res}0
+{col 4}{txt}Fixed values of the covariates (c):{col 46}{res}.3572 .6028 .1041 .1015 .02689 -.02764 .06633 .6892 .03614 .03069 .007945
+
+
+{txt}-> Model for the outcome
+
+{col 9}Failure {bf:_d}: {res}DIED==1
+{col 3}{txt}Analysis time {bf:_t}: {res}TIMEyears
+{col 8}{txt}ID variable: {res}ID
+{col 13}{txt}Weight: {res}[pweight=sampling_weight]
+
+{txt}(sum of wgt is 22,539,565)
+Iteration 0:  Log pseudolikelihood = {res}-1499.4729
+{txt}Iteration 1:  Log pseudolikelihood = {res}-1345.6579
+{txt}Iteration 2:  Log pseudolikelihood = {res}-1339.5386
+{txt}Iteration 3:  Log pseudolikelihood = {res}-1339.5062
+{txt}Iteration 4:  Log pseudolikelihood = {res}-1339.5062
+{txt}Refining estimates:
+Iteration 0:  Log pseudolikelihood = {res}-1339.5062
+
+{txt}Cox regression with Breslow method for ties
+
+No. of subjects = {res}{ralign 11:22,539,565}{col 57}{txt}{lalign 13:Number of obs} = {res}{ralign 6:1,128}
+{txt}No. of failures = {res}{ralign 11:4,349,255}
+{txt}Time at risk    = {res}{ralign 11:141691501.6}
+{col 57}{txt}{lalign 13:Wald chi2({res:14})} = {res}{ralign 6:264.59}
+{txt}Log pseudolikelihood = {res}-1339.5062{col 57}{txt}{lalign 13:Prob > chi2} = {res}{ralign 6:0.0000}
+
+{txt}{ralign 96:(Std. err. adjusted for {res:1,128} clusters in {res:ID})}
+{hline 31}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 32}{c |}{col 44}    Robust
+{col 1}                            _t{col 32}{c |} Haz. ratio{col 44}   std. err.{col 56}      z{col 64}   P>|z|{col 72}     [95% con{col 85}f. interval]
+{hline 31}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{space 18}zDunedinPoAm {c |}{col 32}{res}{space 2} 1.162352{col 44}{space 2} .0965284{col 55}{space 1}    1.81{col 64}{space 3}0.070{col 72}{space 4} .9877541{col 85}{space 3} 1.367811
+{txt}{space 10}zhei2015_total_score {c |}{col 32}{res}{space 2} .8855606{col 44}{space 2} .0659002{col 55}{space 1}   -1.63{col 64}{space 3}0.102{col 72}{space 4} .7653762{col 85}{space 3} 1.024617
+{txt}_zDunedinPoAmXzhei2015_tot_000 {c |}{col 32}{res}{space 2} .9459993{col 44}{space 2} .0768016{col 55}{space 1}   -0.68{col 64}{space 3}0.494{col 72}{space 4} .8068364{col 85}{space 3} 1.109165
+{txt}{space 22}zAGE_HRS {c |}{col 32}{res}{space 2} 3.073014{col 44}{space 2} .2978039{col 55}{space 1}   11.58{col 64}{space 3}0.000{col 72}{space 4} 2.541412{col 85}{space 3} 3.715814
+{txt}{space 27}SEX {c |}{col 32}{res}{space 2} .9946125{col 44}{space 2} .1485797{col 55}{space 1}   -0.04{col 64}{space 3}0.971{col 72}{space 4} .7421601{col 85}{space 3} 1.332939
+{txt}{space 27}NHB {c |}{col 32}{res}{space 2} 1.205223{col 44}{space 2} .2937861{col 55}{space 1}    0.77{col 64}{space 3}0.444{col 72}{space 4} .7474422{col 85}{space 3} 1.943376
+{txt}{space 26}HISP {c |}{col 32}{res}{space 2} .3277851{col 44}{space 2} .1193618{col 55}{space 1}   -3.06{col 64}{space 3}0.002{col 72}{space 4} .1605563{col 85}{space 3} .6691927
+{txt}{space 25}OTHER {c |}{col 32}{res}{space 2} 1.144117{col 44}{space 2} .6098041{col 55}{space 1}    0.25{col 64}{space 3}0.801{col 72}{space 4}   .40252{col 85}{space 3}  3.25202
+{txt}{space 26}zses {c |}{col 32}{res}{space 2}  .710051{col 44}{space 2} .0615609{col 55}{space 1}   -3.95{col 64}{space 3}0.000{col 72}{space 4} .5990885{col 85}{space 3} .8415658
+{txt}{space 20}pbcell_pct {c |}{col 32}{res}{space 2} .1494308{col 44}{space 2} .2984822{col 55}{space 1}   -0.95{col 64}{space 3}0.341{col 72}{space 4} .0029799{col 85}{space 3} 7.493461
+{txt}{space 20}ptcell_pct {c |}{col 32}{res}{space 2} .4320998{col 44}{space 2} .3268838{col 55}{space 1}   -1.11{col 64}{space 3}0.267{col 72}{space 4} .0980956{col 85}{space 3} 1.903349
+{txt}{space 23}pnk_pct {c |}{col 32}{res}{space 2} .0079112{col 44}{space 2} .0362523{col 55}{space 1}   -1.06{col 64}{space 3}0.291{col 72}{space 4} 9.95e-07{col 85}{space 3} 62.92087
+{txt}{space 21}pmono_pct {c |}{col 32}{res}{space 2} 2779.166{col 44}{space 2} 12582.85{col 55}{space 1}    1.75{col 64}{space 3}0.080{col 72}{space 4} .3890879{col 85}{space 3} 1.99e+07
+{txt}{space 23}pdc_pct {c |}{col 32}{res}{space 2} 6.70e-14{col 44}{space 2} 1.37e-12{col 55}{space 1}   -1.48{col 64}{space 3}0.138{col 72}{space 4} 2.65e-31{col 85}{space 3}  16961.9
+{txt}{hline 31}{c BT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+
+
+-> Model for the mediator
+{res}
+{txt}Iteration 0:{space 2}Log likelihood = {res:-1576.2942}  
+Iteration 1:{space 2}Log likelihood = {res:-1576.2942}  
+{res}
+{txt}{col 1}Linear regression (Maximum Likelihood){col 57}{lalign 13:Number of obs}{col 70} = {res}{ralign 6:1,153}
+{txt}{col 57}{lalign 13:Wald chi2({res:12})}{col 70} = {res}{ralign 6:88.65}
+{txt}{col 1}{lalign 14:Log likelihood}{col 15} = {res}{ralign 10:-1576.2942}{txt}{col 57}{lalign 13:Prob > chi2}{col 70} = {res}{ralign 6:0.0000}
+
+{txt}{hline 13}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 1}zhei2015_t~e{col 14}{c |} Coefficient{col 26}  Std. err.{col 38}      z{col 46}   P>|z|{col 54}     [95% con{col 67}f. interval]
+{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{res}mu           {txt}{c |}
+zDunedinPoAm {c |}{col 14}{res}{space 2} -.068799{col 26}{space 2} .0299328{col 37}{space 1}   -2.30{col 46}{space 3}0.022{col 54}{space 4}-.1274663{col 67}{space 3}-.0101318
+{txt}{space 4}zAGE_HRS {c |}{col 14}{res}{space 2} .1412777{col 26}{space 2} .0324743{col 37}{space 1}    4.35{col 46}{space 3}0.000{col 54}{space 4} .0776292{col 67}{space 3} .2049262
+{txt}{space 9}SEX {c |}{col 14}{res}{space 2} .2400574{col 26}{space 2} .0586366{col 37}{space 1}    4.09{col 46}{space 3}0.000{col 54}{space 4} .1251318{col 67}{space 3} .3549829
+{txt}{space 9}NHB {c |}{col 14}{res}{space 2} .2191161{col 26}{space 2} .0968501{col 37}{space 1}    2.26{col 46}{space 3}0.024{col 54}{space 4} .0292933{col 67}{space 3} .4089389
+{txt}{space 8}HISP {c |}{col 14}{res}{space 2} .4839346{col 26}{space 2}  .102298{col 37}{space 1}    4.73{col 46}{space 3}0.000{col 54}{space 4} .2834342{col 67}{space 3} .6844351
+{txt}{space 7}OTHER {c |}{col 14}{res}{space 2} .0911822{col 26}{space 2} .1765477{col 37}{space 1}    0.52{col 46}{space 3}0.606{col 54}{space 4}-.2548449{col 67}{space 3} .4372092
+{txt}{space 8}zses {c |}{col 14}{res}{space 2} .2246995{col 26}{space 2} .0315971{col 37}{space 1}    7.11{col 46}{space 3}0.000{col 54}{space 4} .1627704{col 67}{space 3} .2866286
+{txt}{space 2}pbcell_pct {c |}{col 14}{res}{space 2}  .095667{col 26}{space 2} .6463083{col 37}{space 1}    0.15{col 46}{space 3}0.882{col 54}{space 4}-1.171074{col 67}{space 3} 1.362408
+{txt}{space 2}ptcell_pct {c |}{col 14}{res}{space 2} .2630302{col 26}{space 2} .3128886{col 37}{space 1}    0.84{col 46}{space 3}0.401{col 54}{space 4}-.3502203{col 67}{space 3} .8762807
+{txt}{space 5}pnk_pct {c |}{col 14}{res}{space 2}-1.082404{col 26}{space 2} 1.577665{col 37}{space 1}   -0.69{col 46}{space 3}0.493{col 54}{space 4} -4.17457{col 67}{space 3} 2.009762
+{txt}{space 3}pmono_pct {c |}{col 14}{res}{space 2} 2.268183{col 26}{space 2} 1.460099{col 37}{space 1}    1.55{col 46}{space 3}0.120{col 54}{space 4}-.5935574{col 67}{space 3} 5.129924
+{txt}{space 5}pdc_pct {c |}{col 14}{res}{space 2} 5.849566{col 26}{space 2} 4.675712{col 37}{space 1}    1.25{col 46}{space 3}0.211{col 54}{space 4}-3.314662{col 67}{space 3} 15.01379
+{txt}{space 7}_cons {c |}{col 14}{res}{space 2}-.5210438{col 26}{space 2} .2921415{col 37}{space 1}   -1.78{col 46}{space 3}0.074{col 54}{space 4}-1.093631{col 67}{space 3}  .051543
+{txt}{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{res}sigma2       {txt}{c |}
+{space 7}_cons {c |}{col 14}{res}{space 2} .9015601{col 26}{space 2} .0375487{col 37}{space 1}   24.01{col 46}{space 3}0.000{col 54}{space 4} .8279659{col 67}{space 3} .9751542
+{txt}{hline 13}{c BT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{res}
+
+{txt}-> 4-way decomposition: delta method
+
+{res}{txt}{hline 13}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 14}{c |} Coefficient{col 26}  Std. err.{col 38}      z{col 46}   P>|z|{col 54}     [95% con{col 67}f. interval]
+{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{space 6}tereri {c |}{col 14}{res}{space 2} .1849688{col 26}{space 2} .0989078{col 37}{space 1}    1.87{col 46}{space 3}0.061{col 54}{space 4}-.0088869{col 67}{space 3} .3788245
+{txt}{space 3}ereri_cde {c |}{col 14}{res}{space 2}  .161409{col 26}{space 2} .0962121{col 37}{space 1}    1.68{col 46}{space 3}0.093{col 54}{space 4}-.0271632{col 67}{space 3} .3499812
+{txt}ereri_intref {c |}{col 14}{res}{space 2} .0092136{col 26}{space 2} .0154977{col 37}{space 1}    0.59{col 46}{space 3}0.552{col 54}{space 4}-.0211614{col 67}{space 3} .0395886
+{txt}ereri_intmed {c |}{col 14}{res}{space 2} .0059497{col 26}{space 2} .0073537{col 37}{space 1}    0.81{col 46}{space 3}0.418{col 54}{space 4}-.0084633{col 67}{space 3} .0203627
+{txt}{space 3}ereri_pie {c |}{col 14}{res}{space 2} .0083965{col 26}{space 2} .0063334{col 37}{space 1}    1.33{col 46}{space 3}0.185{col 54}{space 4}-.0040166{col 67}{space 3} .0208096
+{txt}{space 6}terira {c |}{col 14}{res}{space 2} 1.184969{col 26}{space 2} .0989078{col 37}{space 1}   11.98{col 46}{space 3}0.000{col 54}{space 4} .9911131{col 67}{space 3} 1.378824
+{txt}{space 7}p_cde {c |}{col 14}{res}{space 2} .8726281{col 26}{space 2} .1352716{col 37}{space 1}    6.45{col 46}{space 3}0.000{col 54}{space 4} .6075006{col 67}{space 3} 1.137756
+{txt}{space 4}p_intref {c |}{col 14}{res}{space 2} .0498116{col 26}{space 2} .0820238{col 37}{space 1}    0.61{col 46}{space 3}0.544{col 54}{space 4} -.110952{col 67}{space 3} .2105752
+{txt}{space 4}p_intmed {c |}{col 14}{res}{space 2} .0321661{col 26}{space 2} .0375371{col 37}{space 1}    0.86{col 46}{space 3}0.391{col 54}{space 4}-.0414053{col 67}{space 3} .1057375
+{txt}{space 7}p_pie {c |}{col 14}{res}{space 2} .0453942{col 26}{space 2} .0427039{col 37}{space 1}    1.06{col 46}{space 3}0.288{col 54}{space 4} -.038304{col 67}{space 3} .1290923
+{txt}{space 8}op_m {c |}{col 14}{res}{space 2} .0775603{col 26}{space 2} .0645074{col 37}{space 1}    1.20{col 46}{space 3}0.229{col 54}{space 4}-.0488719{col 67}{space 3} .2039924
+{txt}{space 6}op_ati {c |}{col 14}{res}{space 2} .0819777{col 26}{space 2} .1167405{col 37}{space 1}    0.70{col 46}{space 3}0.483{col 54}{space 4}-.1468294{col 67}{space 3} .3107848
+{txt}{space 8}op_e {c |}{col 14}{res}{space 2} .1273719{col 26}{space 2} .1352716{col 37}{space 1}    0.94{col 46}{space 3}0.346{col 54}{space 4}-.1377557{col 67}{space 3} .3924994
+{txt}{hline 13}{c BT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+
+{p 3 3 5 0}
+tereri=total excess relative risk; ereri_cde=excess relative risk due to controlled direct effect; ereri_intref=excess relative risk due to reference interaction; ereri_intmed=excess relative risk due to mediated interaction; ereri_pie=excess relative risk due to pure indirect effect; terira=total effect risk ratio; p_cde=proportion controlled direct effect; p_intref=proportion reference interaction; p_intmed=proportion mediated interaction; p_pie=proportion pure indirect effect; op_m=overall proportion mediated; op_ati=overall proportion attributable to interaction; op_e=overall proportion eliminated.
+{p_end}
+{res}{err}Warning: this analysis assumes a rare outcome.
+Warning: fixed values for the covariates zAGE_HRS SEX NHB HISP OTHER zses pbcell_pct ptcell_pct pnk_pct pmono_pct pdc_pct were not provided. All covariates are fixed at their respective mean.
+
+{txt}-> Summary
+
+{col 4}Outcome    (yvar):{col 24}{res}TIMEyears
+{col 4}{txt}Exposure   (avar):{col 24}{res}zPhenoAgeEAA
+{col 4}{txt}Mediator   (mvar):{col 24}{res}zhei2015_total_score
+{col 4}{txt}Covariates (cvars):{col 24}{res}zAGE_HRS SEX NHB HISP OTHER zses pbcell_pct ptcell_pct pnk_pct pmono_pct pdc_pct
+
+{col 4}{txt}Model for the outcome  (yreg):{col 35}{res}cox
+{col 4}{txt}Model for the mediator (mreg):{col 35}{res}linear
+
+{col 4}{txt}Referent exposure level (a0):{col 46}{res}0
+{col 4}{txt}Actual exposure level   (a1):{col 46}{res}1
+{col 4}{txt}Mediator level for the decomposition (m):{col 46}{res}0
+{col 4}{txt}Fixed values of the covariates (c):{col 46}{res}.3572 .6028 .1041 .1015 .02689 -.02764 .06633 .6892 .03614 .03069 .007945
+
+
+{txt}-> Model for the outcome
+
+{col 9}Failure {bf:_d}: {res}DIED==1
+{col 3}{txt}Analysis time {bf:_t}: {res}TIMEyears
+{col 8}{txt}ID variable: {res}ID
+{col 13}{txt}Weight: {res}[pweight=sampling_weight]
+
+{txt}(sum of wgt is 22,539,565)
+Iteration 0:  Log pseudolikelihood = {res}-1499.4729
+{txt}Iteration 1:  Log pseudolikelihood = {res}-1339.0951
+{txt}Iteration 2:  Log pseudolikelihood = {res} -1335.807
+{txt}Iteration 3:  Log pseudolikelihood = {res}-1335.7813
+{txt}Iteration 4:  Log pseudolikelihood = {res}-1335.7813
+{txt}Refining estimates:
+Iteration 0:  Log pseudolikelihood = {res}-1335.7813
+
+{txt}Cox regression with Breslow method for ties
+
+No. of subjects = {res}{ralign 11:22,539,565}{col 57}{txt}{lalign 13:Number of obs} = {res}{ralign 6:1,128}
+{txt}No. of failures = {res}{ralign 11:4,349,255}
+{txt}Time at risk    = {res}{ralign 11:141691501.6}
+{col 57}{txt}{lalign 13:Wald chi2({res:14})} = {res}{ralign 6:268.19}
+{txt}Log pseudolikelihood = {res}-1335.7813{col 57}{txt}{lalign 13:Prob > chi2} = {res}{ralign 6:0.0000}
+
+{txt}{ralign 96:(Std. err. adjusted for {res:1,128} clusters in {res:ID})}
+{hline 31}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 32}{c |}{col 44}    Robust
+{col 1}                            _t{col 32}{c |} Haz. ratio{col 44}   std. err.{col 56}      z{col 64}   P>|z|{col 72}     [95% con{col 85}f. interval]
+{hline 31}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{space 18}zPhenoAgeEAA {c |}{col 32}{res}{space 2} 1.179859{col 44}{space 2} .0778276{col 55}{space 1}    2.51{col 64}{space 3}0.012{col 72}{space 4} 1.036769{col 85}{space 3} 1.342698
+{txt}{space 10}zhei2015_total_score {c |}{col 32}{res}{space 2} .8657446{col 44}{space 2} .0615043{col 55}{space 1}   -2.03{col 64}{space 3}0.042{col 72}{space 4} .7532145{col 85}{space 3} .9950867
+{txt}_zPhenoAgeEAAXzhei2015_tot_000 {c |}{col 32}{res}{space 2} .8473777{col 44}{space 2} .0549128{col 55}{space 1}   -2.56{col 64}{space 3}0.011{col 72}{space 4}  .746305{col 85}{space 3} .9621387
+{txt}{space 22}zAGE_HRS {c |}{col 32}{res}{space 2} 3.203488{col 44}{space 2} .3111754{col 55}{space 1}   11.99{col 64}{space 3}0.000{col 72}{space 4} 2.648137{col 85}{space 3} 3.875304
+{txt}{space 27}SEX {c |}{col 32}{res}{space 2} .9932433{col 44}{space 2} .1456108{col 55}{space 1}   -0.05{col 64}{space 3}0.963{col 72}{space 4} .7451923{col 85}{space 3} 1.323863
+{txt}{space 27}NHB {c |}{col 32}{res}{space 2}  1.27389{col 44}{space 2} .3182174{col 55}{space 1}    0.97{col 64}{space 3}0.333{col 72}{space 4} .7807321{col 85}{space 3} 2.078557
+{txt}{space 26}HISP {c |}{col 32}{res}{space 2} .2950154{col 44}{space 2} .1206711{col 55}{space 1}   -2.98{col 64}{space 3}0.003{col 72}{space 4} .1323351{col 85}{space 3} .6576797
+{txt}{space 25}OTHER {c |}{col 32}{res}{space 2} 1.108775{col 44}{space 2} .6120143{col 55}{space 1}    0.19{col 64}{space 3}0.852{col 72}{space 4} .3758401{col 85}{space 3} 3.271026
+{txt}{space 26}zses {c |}{col 32}{res}{space 2} .7100162{col 44}{space 2} .0613859{col 55}{space 1}   -3.96{col 64}{space 3}0.000{col 72}{space 4} .5993435{col 85}{space 3} .8411252
+{txt}{space 20}pbcell_pct {c |}{col 32}{res}{space 2} .0961685{col 44}{space 2} .1722926{col 55}{space 1}   -1.31{col 64}{space 3}0.191{col 72}{space 4} .0028711{col 85}{space 3}  3.22122
+{txt}{space 20}ptcell_pct {c |}{col 32}{res}{space 2} .2959743{col 44}{space 2}  .191708{col 55}{space 1}   -1.88{col 64}{space 3}0.060{col 72}{space 4} .0831601{col 85}{space 3} 1.053399
+{txt}{space 23}pnk_pct {c |}{col 32}{res}{space 2} .0021424{col 44}{space 2} .0086914{col 55}{space 1}   -1.51{col 64}{space 3}0.130{col 72}{space 4} 7.54e-07{col 85}{space 3}  6.08352
+{txt}{space 21}pmono_pct {c |}{col 32}{res}{space 2} 6595.524{col 44}{space 2} 29484.72{col 55}{space 1}    1.97{col 64}{space 3}0.049{col 72}{space 4} 1.032823{col 85}{space 3} 4.21e+07
+{txt}{space 23}pdc_pct {c |}{col 32}{res}{space 2} 4.30e-14{col 44}{space 2} 8.53e-13{col 55}{space 1}   -1.55{col 64}{space 3}0.121{col 72}{space 4} 5.68e-31{col 85}{space 3} 3259.497
+{txt}{hline 31}{c BT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+
+
+-> Model for the mediator
+{res}
+{txt}Iteration 0:{space 2}Log likelihood = {res:-1577.5554}  
+Iteration 1:{space 2}Log likelihood = {res:-1577.5554}  
+{res}
+{txt}{col 1}Linear regression (Maximum Likelihood){col 57}{lalign 13:Number of obs}{col 70} = {res}{ralign 6:1,153}
+{txt}{col 57}{lalign 13:Wald chi2({res:12})}{col 70} = {res}{ralign 6:85.94}
+{txt}{col 1}{lalign 14:Log likelihood}{col 15} = {res}{ralign 10:-1577.5554}{txt}{col 57}{lalign 13:Prob > chi2}{col 70} = {res}{ralign 6:0.0000}
+
+{txt}{hline 13}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 1}zhei2015_t~e{col 14}{c |} Coefficient{col 26}  Std. err.{col 38}      z{col 46}   P>|z|{col 54}     [95% con{col 67}f. interval]
+{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{res}mu           {txt}{c |}
+zPhenoAgeEAA {c |}{col 14}{res}{space 2}-.0473656{col 26}{space 2} .0285533{col 37}{space 1}   -1.66{col 46}{space 3}0.097{col 54}{space 4} -.103329{col 67}{space 3} .0085979
+{txt}{space 4}zAGE_HRS {c |}{col 14}{res}{space 2}  .138432{col 26}{space 2} .0325248{col 37}{space 1}    4.26{col 46}{space 3}0.000{col 54}{space 4} .0746845{col 67}{space 3} .2021795
+{txt}{space 9}SEX {c |}{col 14}{res}{space 2} .2418423{col 26}{space 2} .0587244{col 37}{space 1}    4.12{col 46}{space 3}0.000{col 54}{space 4} .1267446{col 67}{space 3} .3569399
+{txt}{space 9}NHB {c |}{col 14}{res}{space 2} .2082243{col 26}{space 2} .0967218{col 37}{space 1}    2.15{col 46}{space 3}0.031{col 54}{space 4} .0186531{col 67}{space 3} .3977955
+{txt}{space 8}HISP {c |}{col 14}{res}{space 2} .4862032{col 26}{space 2} .1024013{col 37}{space 1}    4.75{col 46}{space 3}0.000{col 54}{space 4} .2855003{col 67}{space 3}  .686906
+{txt}{space 7}OTHER {c |}{col 14}{res}{space 2} .0704584{col 26}{space 2} .1763502{col 37}{space 1}    0.40{col 46}{space 3}0.689{col 54}{space 4}-.2751817{col 67}{space 3} .4160984
+{txt}{space 8}zses {c |}{col 14}{res}{space 2} .2267509{col 26}{space 2} .0316164{col 37}{space 1}    7.17{col 46}{space 3}0.000{col 54}{space 4} .1647838{col 67}{space 3}  .288718
+{txt}{space 2}pbcell_pct {c |}{col 14}{res}{space 2} .2239225{col 26}{space 2} .6442406{col 37}{space 1}    0.35{col 46}{space 3}0.728{col 54}{space 4}-1.038766{col 67}{space 3} 1.486611
+{txt}{space 2}ptcell_pct {c |}{col 14}{res}{space 2} .3626395{col 26}{space 2} .3075795{col 37}{space 1}    1.18{col 46}{space 3}0.238{col 54}{space 4}-.2402053{col 67}{space 3} .9654842
+{txt}{space 5}pnk_pct {c |}{col 14}{res}{space 2}-.5967325{col 26}{space 2} 1.553407{col 37}{space 1}   -0.38{col 46}{space 3}0.701{col 54}{space 4}-3.641355{col 67}{space 3}  2.44789
+{txt}{space 3}pmono_pct {c |}{col 14}{res}{space 2} 2.171433{col 26}{space 2} 1.460939{col 37}{space 1}    1.49{col 46}{space 3}0.137{col 54}{space 4}-.6919543{col 67}{space 3} 5.034821
+{txt}{space 5}pdc_pct {c |}{col 14}{res}{space 2}  6.34215{col 26}{space 2} 4.670975{col 37}{space 1}    1.36{col 46}{space 3}0.175{col 54}{space 4}-2.812793{col 67}{space 3} 15.49709
+{txt}{space 7}_cons {c |}{col 14}{res}{space 2} -.614967{col 26}{space 2} .2869823{col 37}{space 1}   -2.14{col 46}{space 3}0.032{col 54}{space 4}-1.177442{col 67}{space 3}-.0524921
+{txt}{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{res}sigma2       {txt}{c |}
+{space 7}_cons {c |}{col 14}{res}{space 2} .9035345{col 26}{space 2} .0376309{col 37}{space 1}   24.01{col 46}{space 3}0.000{col 54}{space 4} .8297792{col 67}{space 3} .9772898
+{txt}{hline 13}{c BT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{res}
+
+{txt}-> 4-way decomposition: delta method
+
+{res}{txt}{hline 13}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 14}{c |} Coefficient{col 26}  Std. err.{col 38}      z{col 46}   P>|z|{col 54}     [95% con{col 67}f. interval]
+{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{space 6}tereri {c |}{col 14}{res}{space 2}  .237194{col 26}{space 2}   .09755{col 37}{space 1}    2.43{col 46}{space 3}0.015{col 54}{space 4} .0459994{col 67}{space 3} .4283885
+{txt}{space 3}ereri_cde {c |}{col 14}{res}{space 2}  .178362{col 26}{space 2} .0770085{col 37}{space 1}    2.32{col 46}{space 3}0.021{col 54}{space 4}  .027428{col 67}{space 3} .3292959
+{txt}ereri_intref {c |}{col 14}{res}{space 2} .0408116{col 26}{space 2} .0288617{col 37}{space 1}    1.41{col 46}{space 3}0.157{col 54}{space 4}-.0157563{col 67}{space 3} .0973795
+{txt}ereri_intmed {c |}{col 14}{res}{space 2} .0111685{col 26}{space 2} .0083376{col 37}{space 1}    1.34{col 46}{space 3}0.180{col 54}{space 4}-.0051729{col 67}{space 3} .0275099
+{txt}{space 3}ereri_pie {c |}{col 14}{res}{space 2} .0068518{col 26}{space 2} .0053532{col 37}{space 1}    1.28{col 46}{space 3}0.201{col 54}{space 4}-.0036402{col 67}{space 3} .0173438
+{txt}{space 6}terira {c |}{col 14}{res}{space 2} 1.237194{col 26}{space 2}   .09755{col 37}{space 1}   12.68{col 46}{space 3}0.000{col 54}{space 4} 1.045999{col 67}{space 3} 1.428389
+{txt}{space 7}p_cde {c |}{col 14}{res}{space 2} .7519668{col 26}{space 2} .1134365{col 37}{space 1}    6.63{col 46}{space 3}0.000{col 54}{space 4} .5296353{col 67}{space 3} .9742983
+{txt}{space 4}p_intref {c |}{col 14}{res}{space 2} .1720601{col 26}{space 2} .0904606{col 37}{space 1}    1.90{col 46}{space 3}0.057{col 54}{space 4}-.0052394{col 67}{space 3} .3493596
+{txt}{space 4}p_intmed {c |}{col 14}{res}{space 2}  .047086{col 26}{space 2} .0298387{col 37}{space 1}    1.58{col 46}{space 3}0.115{col 54}{space 4}-.0113968{col 67}{space 3} .1055688
+{txt}{space 7}p_pie {c |}{col 14}{res}{space 2} .0288871{col 26}{space 2} .0224057{col 37}{space 1}    1.29{col 46}{space 3}0.197{col 54}{space 4}-.0150274{col 67}{space 3} .0728015
+{txt}{space 8}op_m {c |}{col 14}{res}{space 2} .0759731{col 26}{space 2}  .048395{col 37}{space 1}    1.57{col 46}{space 3}0.116{col 54}{space 4}-.0188793{col 67}{space 3} .1708255
+{txt}{space 6}op_ati {c |}{col 14}{res}{space 2} .2191462{col 26}{space 2} .1028048{col 37}{space 1}    2.13{col 46}{space 3}0.033{col 54}{space 4} .0176525{col 67}{space 3} .4206398
+{txt}{space 8}op_e {c |}{col 14}{res}{space 2} .2480332{col 26}{space 2} .1134365{col 37}{space 1}    2.19{col 46}{space 3}0.029{col 54}{space 4} .0257017{col 67}{space 3} .4703647
+{txt}{hline 13}{c BT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+
+{p 3 3 5 0}
+tereri=total excess relative risk; ereri_cde=excess relative risk due to controlled direct effect; ereri_intref=excess relative risk due to reference interaction; ereri_intmed=excess relative risk due to mediated interaction; ereri_pie=excess relative risk due to pure indirect effect; terira=total effect risk ratio; p_cde=proportion controlled direct effect; p_intref=proportion reference interaction; p_intmed=proportion mediated interaction; p_pie=proportion pure indirect effect; op_m=overall proportion mediated; op_ati=overall proportion attributable to interaction; op_e=overall proportion eliminated.
+{p_end}
+{res}{err}Warning: this analysis assumes a rare outcome.
+Warning: fixed values for the covariates zAGE_HRS SEX NHB HISP OTHER zses pbcell_pct ptcell_pct pnk_pct pmono_pct pdc_pct were not provided. All covariates are fixed at their respective mean.
+
+{txt}-> Summary
+
+{col 4}Outcome    (yvar):{col 24}{res}TIMEyears
+{col 4}{txt}Exposure   (avar):{col 24}{res}zGrimAgeMortEAA
+{col 4}{txt}Mediator   (mvar):{col 24}{res}zhei2015_total_score
+{col 4}{txt}Covariates (cvars):{col 24}{res}zAGE_HRS SEX NHB HISP OTHER zses pbcell_pct ptcell_pct pnk_pct pmono_pct pdc_pct
+
+{col 4}{txt}Model for the outcome  (yreg):{col 35}{res}cox
+{col 4}{txt}Model for the mediator (mreg):{col 35}{res}linear
+
+{col 4}{txt}Referent exposure level (a0):{col 46}{res}0
+{col 4}{txt}Actual exposure level   (a1):{col 46}{res}1
+{col 4}{txt}Mediator level for the decomposition (m):{col 46}{res}0
+{col 4}{txt}Fixed values of the covariates (c):{col 46}{res}.3572 .6028 .1041 .1015 .02689 -.02764 .06633 .6892 .03614 .03069 .007945
+
+
+{txt}-> Model for the outcome
+
+{col 9}Failure {bf:_d}: {res}DIED==1
+{col 3}{txt}Analysis time {bf:_t}: {res}TIMEyears
+{col 8}{txt}ID variable: {res}ID
+{col 13}{txt}Weight: {res}[pweight=sampling_weight]
+
+{txt}(sum of wgt is 22,539,565)
+Iteration 0:  Log pseudolikelihood = {res}-1499.4729
+{txt}Iteration 1:  Log pseudolikelihood = {res}-1335.5763
+{txt}Iteration 2:  Log pseudolikelihood = {res}-1331.3277
+{txt}Iteration 3:  Log pseudolikelihood = {res}-1331.3159
+{txt}Iteration 4:  Log pseudolikelihood = {res}-1331.3159
+{txt}Refining estimates:
+Iteration 0:  Log pseudolikelihood = {res}-1331.3159
+
+{txt}Cox regression with Breslow method for ties
+
+No. of subjects = {res}{ralign 11:22,539,565}{col 57}{txt}{lalign 13:Number of obs} = {res}{ralign 6:1,128}
+{txt}No. of failures = {res}{ralign 11:4,349,255}
+{txt}Time at risk    = {res}{ralign 11:141691501.6}
+{col 57}{txt}{lalign 13:Wald chi2({res:14})} = {res}{ralign 6:261.79}
+{txt}Log pseudolikelihood = {res}-1331.3159{col 57}{txt}{lalign 13:Prob > chi2} = {res}{ralign 6:0.0000}
+
+{txt}{ralign 96:(Std. err. adjusted for {res:1,128} clusters in {res:ID})}
+{hline 31}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 32}{c |}{col 44}    Robust
+{col 1}                            _t{col 32}{c |} Haz. ratio{col 44}   std. err.{col 56}      z{col 64}   P>|z|{col 72}     [95% con{col 85}f. interval]
+{hline 31}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{space 15}zGrimAgeMortEAA {c |}{col 32}{res}{space 2} 1.453395{col 44}{space 2}  .129937{col 55}{space 1}    4.18{col 64}{space 3}0.000{col 72}{space 4} 1.219787{col 85}{space 3} 1.731741
+{txt}{space 10}zhei2015_total_score {c |}{col 32}{res}{space 2} .9196073{col 44}{space 2} .0706161{col 55}{space 1}   -1.09{col 64}{space 3}0.275{col 72}{space 4} .7911141{col 85}{space 3}  1.06897
+{txt}_zGrimAgeMortXzhei2015_tot_000 {c |}{col 32}{res}{space 2} .9427297{col 44}{space 2} .0890566{col 55}{space 1}   -0.62{col 64}{space 3}0.532{col 72}{space 4} .7833881{col 85}{space 3} 1.134482
+{txt}{space 22}zAGE_HRS {c |}{col 32}{res}{space 2}  3.22471{col 44}{space 2} .3170215{col 55}{space 1}   11.91{col 64}{space 3}0.000{col 72}{space 4} 2.659555{col 85}{space 3} 3.909961
+{txt}{space 27}SEX {c |}{col 32}{res}{space 2} 1.267987{col 44}{space 2} .1882217{col 55}{space 1}    1.60{col 64}{space 3}0.110{col 72}{space 4} .9478973{col 85}{space 3} 1.696166
+{txt}{space 27}NHB {c |}{col 32}{res}{space 2} 1.016872{col 44}{space 2} .2785279{col 55}{space 1}    0.06{col 64}{space 3}0.951{col 72}{space 4} .5944522{col 85}{space 3} 1.739466
+{txt}{space 26}HISP {c |}{col 32}{res}{space 2} .3383105{col 44}{space 2}   .12334{col 55}{space 1}   -2.97{col 64}{space 3}0.003{col 72}{space 4} .1655723{col 85}{space 3} .6912632
+{txt}{space 25}OTHER {c |}{col 32}{res}{space 2}  1.25937{col 44}{space 2} .6827022{col 55}{space 1}    0.43{col 64}{space 3}0.671{col 72}{space 4} .4352299{col 85}{space 3} 3.644082
+{txt}{space 26}zses {c |}{col 32}{res}{space 2} .7324317{col 44}{space 2} .0643043{col 55}{space 1}   -3.55{col 64}{space 3}0.000{col 72}{space 4} .6166452{col 85}{space 3} .8699594
+{txt}{space 20}pbcell_pct {c |}{col 32}{res}{space 2} .1883924{col 44}{space 2} .3547283{col 55}{space 1}   -0.89{col 64}{space 3}0.375{col 72}{space 4} .0047024{col 85}{space 3}  7.54762
+{txt}{space 20}ptcell_pct {c |}{col 32}{res}{space 2} .4356855{col 44}{space 2} .3073576{col 55}{space 1}   -1.18{col 64}{space 3}0.239{col 72}{space 4} .1093167{col 85}{space 3} 1.736439
+{txt}{space 23}pnk_pct {c |}{col 32}{res}{space 2} .0149419{col 44}{space 2} .0654603{col 55}{space 1}   -0.96{col 64}{space 3}0.337{col 72}{space 4} 2.79e-06{col 85}{space 3}  80.0784
+{txt}{space 21}pmono_pct {c |}{col 32}{res}{space 2} 2997.602{col 44}{space 2} 13468.03{col 55}{space 1}    1.78{col 64}{space 3}0.075{col 72}{space 4} .4491386{col 85}{space 3} 2.00e+07
+{txt}{space 23}pdc_pct {c |}{col 32}{res}{space 2} 4.13e-12{col 44}{space 2} 8.74e-11{col 55}{space 1}   -1.24{col 64}{space 3}0.216{col 72}{space 4} 3.94e-30{col 85}{space 3}  4326970
+{txt}{hline 31}{c BT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+
+
+-> Model for the mediator
+{res}
+{txt}Iteration 0:{space 2}Log likelihood = {res:-1565.6902}  
+Iteration 1:{space 2}Log likelihood = {res:-1565.6902}  
+{res}
+{txt}{col 1}Linear regression (Maximum Likelihood){col 57}{lalign 13:Number of obs}{col 70} = {res}{ralign 6:1,153}
+{txt}{col 57}{lalign 13:Wald chi2({res:12})}{col 70} = {res}{ralign 6:111.70}
+{txt}{col 1}{lalign 14:Log likelihood}{col 15} = {res}{ralign 10:-1565.6902}{txt}{col 57}{lalign 13:Prob > chi2}{col 70} = {res}{ralign 6:0.0000}
+
+{txt}{hline 16}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 1}zhei2015_tota~e{col 17}{c |} Coefficient{col 29}  Std. err.{col 41}      z{col 49}   P>|z|{col 57}     [95% con{col 70}f. interval]
+{hline 16}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{res}mu              {txt}{c |}
+zGrimAgeMortEAA {c |}{col 17}{res}{space 2}-.1699139{col 29}{space 2} .0328308{col 40}{space 1}   -5.18{col 49}{space 3}0.000{col 57}{space 4} -.234261{col 70}{space 3}-.1055667
+{txt}{space 7}zAGE_HRS {c |}{col 17}{res}{space 2} .1327025{col 29}{space 2} .0322068{col 40}{space 1}    4.12{col 49}{space 3}0.000{col 57}{space 4} .0695784{col 70}{space 3} .1958266
+{txt}{space 12}SEX {c |}{col 17}{res}{space 2} .1387446{col 29}{space 2} .0617466{col 40}{space 1}    2.25{col 49}{space 3}0.025{col 57}{space 4} .0177234{col 70}{space 3} .2597658
+{txt}{space 12}NHB {c |}{col 17}{res}{space 2} .2423362{col 29}{space 2} .0959469{col 40}{space 1}    2.53{col 49}{space 3}0.012{col 57}{space 4} .0542838{col 70}{space 3} .4303887
+{txt}{space 11}HISP {c |}{col 17}{res}{space 2} .4655932{col 29}{space 2} .1014381{col 40}{space 1}    4.59{col 49}{space 3}0.000{col 57}{space 4} .2667781{col 70}{space 3} .6644083
+{txt}{space 10}OTHER {c |}{col 17}{res}{space 2} .0685386{col 29}{space 2} .1744683{col 40}{space 1}    0.39{col 49}{space 3}0.694{col 57}{space 4}-.2734129{col 70}{space 3} .4104901
+{txt}{space 11}zses {c |}{col 17}{res}{space 2} .1957784{col 29}{space 2} .0319236{col 40}{space 1}    6.13{col 49}{space 3}0.000{col 57}{space 4} .1332092{col 70}{space 3} .2583476
+{txt}{space 5}pbcell_pct {c |}{col 17}{res}{space 2}-.0840834{col 29}{space 2} .6405689{col 40}{space 1}   -0.13{col 49}{space 3}0.896{col 57}{space 4}-1.339575{col 70}{space 3} 1.171409
+{txt}{space 5}ptcell_pct {c |}{col 17}{res}{space 2} .1943884{col 29}{space 2}  .305557{col 40}{space 1}    0.64{col 49}{space 3}0.525{col 57}{space 4}-.4044924{col 70}{space 3} .7932691
+{txt}{space 8}pnk_pct {c |}{col 17}{res}{space 2}-1.806829{col 29}{space 2} 1.555678{col 40}{space 1}   -1.16{col 49}{space 3}0.245{col 57}{space 4}-4.855903{col 70}{space 3} 1.242244
+{txt}{space 6}pmono_pct {c |}{col 17}{res}{space 2} 2.516957{col 29}{space 2} 1.447618{col 40}{space 1}    1.74{col 49}{space 3}0.082{col 57}{space 4}-.3203221{col 70}{space 3} 5.354236
+{txt}{space 8}pdc_pct {c |}{col 17}{res}{space 2} 2.947893{col 29}{space 2} 4.671869{col 40}{space 1}    0.63{col 49}{space 3}0.528{col 57}{space 4}-6.208802{col 70}{space 3} 12.10459
+{txt}{space 10}_cons {c |}{col 17}{res}{space 2}-.3600087{col 29}{space 2} .2883014{col 40}{space 1}   -1.25{col 49}{space 3}0.212{col 57}{space 4} -.925069{col 70}{space 3} .2050516
+{txt}{hline 16}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{res}sigma2          {txt}{c |}
+{space 10}_cons {c |}{col 17}{res}{space 2} .8851285{col 29}{space 2} .0368644{col 40}{space 1}   24.01{col 49}{space 3}0.000{col 57}{space 4} .8128757{col 70}{space 3} .9573813
+{txt}{hline 16}{c BT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{res}
+
+{txt}-> 4-way decomposition: delta method
+
+{res}{txt}{hline 13}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 14}{c |} Coefficient{col 26}  Std. err.{col 38}      z{col 46}   P>|z|{col 54}     [95% con{col 67}f. interval]
+{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{space 6}tereri {c |}{col 14}{res}{space 2} .4975942{col 26}{space 2} .1418916{col 37}{space 1}    3.51{col 46}{space 3}0.000{col 54}{space 4} .2194918{col 67}{space 3} .7756966
+{txt}{space 3}ereri_cde {c |}{col 14}{res}{space 2} .4521271{col 26}{space 2} .1301097{col 37}{space 1}    3.47{col 46}{space 3}0.001{col 54}{space 4} .1971168{col 67}{space 3} .7071373
+{txt}ereri_intref {c |}{col 14}{res}{space 2} .0095712{col 26}{space 2} .0172332{col 37}{space 1}    0.56{col 46}{space 3}0.579{col 54}{space 4}-.0242052{col 67}{space 3} .0433476
+{txt}ereri_intmed {c |}{col 14}{res}{space 2} .0215539{col 26}{space 2} .0245112{col 37}{space 1}    0.88{col 46}{space 3}0.379{col 54}{space 4}-.0264872{col 67}{space 3} .0695949
+{txt}{space 3}ereri_pie {c |}{col 14}{res}{space 2} .0143421{col 26}{space 2} .0135258{col 37}{space 1}    1.06{col 46}{space 3}0.289{col 54}{space 4}-.0121679{col 67}{space 3} .0408522
+{txt}{space 6}terira {c |}{col 14}{res}{space 2} 1.497594{col 26}{space 2} .1418916{col 37}{space 1}   10.55{col 46}{space 3}0.000{col 54}{space 4} 1.219492{col 67}{space 3} 1.775697
+{txt}{space 7}p_cde {c |}{col 14}{res}{space 2}  .908626{col 26}{space 2} .0820672{col 37}{space 1}   11.07{col 46}{space 3}0.000{col 54}{space 4} .7477772{col 67}{space 3} 1.069475
+{txt}{space 4}p_intref {c |}{col 14}{res}{space 2} .0192349{col 26}{space 2} .0327813{col 37}{space 1}    0.59{col 46}{space 3}0.557{col 54}{space 4}-.0450153{col 67}{space 3} .0834851
+{txt}{space 4}p_intmed {c |}{col 14}{res}{space 2} .0433161{col 26}{space 2} .0443574{col 37}{space 1}    0.98{col 46}{space 3}0.329{col 54}{space 4}-.0436227{col 67}{space 3} .1302549
+{txt}{space 7}p_pie {c |}{col 14}{res}{space 2} .0288229{col 26}{space 2} .0290306{col 37}{space 1}    0.99{col 46}{space 3}0.321{col 54}{space 4} -.028076{col 67}{space 3} .0857218
+{txt}{space 8}op_m {c |}{col 14}{res}{space 2}  .072139{col 26}{space 2} .0517981{col 37}{space 1}    1.39{col 46}{space 3}0.164{col 54}{space 4}-.0293834{col 67}{space 3} .1736615
+{txt}{space 6}op_ati {c |}{col 14}{res}{space 2} .0625511{col 26}{space 2} .0758342{col 37}{space 1}    0.82{col 46}{space 3}0.409{col 54}{space 4}-.0860812{col 67}{space 3} .2111833
+{txt}{space 8}op_e {c |}{col 14}{res}{space 2}  .091374{col 26}{space 2} .0820672{col 37}{space 1}    1.11{col 46}{space 3}0.266{col 54}{space 4}-.0694749{col 67}{space 3} .2522228
+{txt}{hline 13}{c BT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+
+{p 3 3 5 0}
+tereri=total excess relative risk; ereri_cde=excess relative risk due to controlled direct effect; ereri_intref=excess relative risk due to reference interaction; ereri_intmed=excess relative risk due to mediated interaction; ereri_pie=excess relative risk due to pure indirect effect; terira=total effect risk ratio; p_cde=proportion controlled direct effect; p_intref=proportion reference interaction; p_intmed=proportion mediated interaction; p_pie=proportion pure indirect effect; op_m=overall proportion mediated; op_ati=overall proportion attributable to interaction; op_e=overall proportion eliminated.
+{p_end}
+
+{com}. 
+. capture log close
+{smcl}
+{com}{sf}{ul off}
