@@ -5,3 +5,6 @@ May A. Beydoun1,†; Marie T. Fanelli Kuczmarski1 ; Nicole Noren Hooten1; Hind A
 
 
 Published in the journal: Aging Cell
+
+
+An updated version of HEI-2015 was added for the HRS with a comparison with the previous version, yielding a correlation of 0.90 for the total score. Please use the corrected version. 
